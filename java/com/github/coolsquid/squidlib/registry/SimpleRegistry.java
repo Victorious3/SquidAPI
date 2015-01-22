@@ -16,7 +16,7 @@ public class SimpleRegistry {
 	
 	protected List<Object> l = new ArrayList<Object>();
 	
-	public int maxSize = Integer.MAX_VALUE;
+	private int maxSize = Integer.MAX_VALUE;
 	
 	private int a = 0;
 	
@@ -71,12 +71,15 @@ public class SimpleRegistry {
 	
 	@Override
 	public String toString() {
-		int a = 0;
 		String s = "";
-		while (a < l.size()) {
+		for (int a = 0; a < l.size(); a++) {
 			s = s + l.get(a);
 			a++;
 		}
 		return s;
+	}
+	
+	public int getMaxSize() {
+		return maxSize;
 	}
 }

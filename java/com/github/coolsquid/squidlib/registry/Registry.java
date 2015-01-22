@@ -29,7 +29,7 @@ public class Registry extends SimpleRegistry {
 	
 	@Override
 	public void register(Object object) {
-		if (a < maxSize) {
+		if (a < getMaxSize()) {
 			if (m.get(object) == null) {
 				l.add(object);
 				m.put(object, a);

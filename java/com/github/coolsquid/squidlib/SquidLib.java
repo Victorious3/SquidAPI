@@ -7,7 +7,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Data.modid)
+@Mod(modid = Data.modid, name = Data.name, version = Data.version)
 public class SquidLib {
 	
 	@EventHandler

@@ -45,14 +45,13 @@ public class Logger {
 		}
 		
 		String time = t.format(Calendar.getInstance().getTime());
+		loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 		if (level.equals(Level.INFO)) {
-			loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			if (print) {
 				System.out.println("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			}
 		}
 		else if (level.equals(Level.WARN) || level.equals(Level.ERROR) || level.equals(Level.FATAL)) {
-			loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			if (print) {
 				System.err.println("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			}
@@ -72,8 +71,6 @@ public class Logger {
 	 */
 	
 	public final void save() {
-		int a = 0;
-		
 		String fileTime = ft.format(Calendar.getInstance().getTime());
 		String fileDate = fd.format(Calendar.getInstance().getTime());
 		
@@ -91,12 +88,9 @@ public class Logger {
 			logFolder.mkdirs();
 			if (!loglist.isEmpty()) {
 				w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
-				while (a < loglist.size()) {
-					if (a == 0) {
-						w.print("#Log");
-					}
+				w.print("#Log");
+				for (int a = 0; a < loglist.size(); a++) {
 					w.print("\n");w.print(loglist.get(a));
-					a++;
 				}
 				w.close();
 				loglist.clear();

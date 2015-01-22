@@ -74,7 +74,6 @@ public class SimpleRegistry {
 		String s = "";
 		for (int a = 0; a < l.size(); a++) {
 			s = s + l.get(a);
-			a++;
 		}
 		return s;
 	}

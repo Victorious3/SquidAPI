@@ -22,21 +22,18 @@ public class RecipeRemover {
 	 */
 	
 	public static final void removeRecipes() {
-		int b = 0;
 		if (recipesToRemove.size() != 0) {
 			LogHelper.info("Removing recipes...");
 			for (int a = 0; a < CraftingManager.getInstance().getRecipeList().size(); a++) {
 				IRecipe r = (IRecipe) CraftingManager.getInstance().getRecipeList().get(a);
 				try {
-					while (b < recipesToRemove.size()) {
+					for (int b = 0; b < recipesToRemove.size(); b++) {
 						String i = (String) recipesToRemove.get(b);
 						if (r.getRecipeOutput().getItem().getUnlocalizedName().equals(i)) {
 							CraftingManager.getInstance().getRecipeList().remove(a);
 						}
-						b++;
 					}
 				} catch (NullPointerException e) {}
-				b = 0;
 			}
 			LogHelper.info("Finished recipe removal.");
 		}

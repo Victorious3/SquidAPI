@@ -62,6 +62,9 @@ public class Logger {
 	}
 	
 	public void log(String msg) {
+		if (msg.length() > 150) {
+			throw new LoggingException("The message was too long!");
+		}
 		loglist.add(msg);
 	}
 	

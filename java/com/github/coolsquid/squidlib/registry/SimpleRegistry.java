@@ -3,7 +3,7 @@ package com.github.coolsquid.squidlib.registry;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.coolsquid.squidlib.exception.SquidLibException;
+import com.github.coolsquid.squidlib.exception.SquidAPIException;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class SimpleRegistry {
 		return l.get(i);
 	}
 	
-	protected class RegistryException extends SquidLibException {
+	protected class RegistryException extends SquidAPIException {
 		private static final long serialVersionUID = 1879823L;
 		public RegistryException(String comment) {
 			super(comment);

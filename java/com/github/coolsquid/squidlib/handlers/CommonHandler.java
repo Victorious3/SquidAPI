@@ -26,7 +26,7 @@ public class CommonHandler {
 	public static final void init() {
 		File file = new File("./crash-reports/README-I-AM-VERY-IMPORTANT.txt");
 		try {
-			if (file.exists()) {
+			if (!file.exists()) {
 				file.createNewFile();
 				PrintWriter w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file)));
 				w.format("Read through crash reports before posting them!\n");
@@ -34,8 +34,10 @@ public class CommonHandler {
 				w.format("Learn how to write bug reports at: http://vazkii.us/br101/.");
 				w.close();
 			}
-			else if (file.exists())
+			else if (file.exists()) {
 				file.setLastModified(0);
+			}
+			file.setReadOnly();
 		} catch (IOException e) {
 			
 		}

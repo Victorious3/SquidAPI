@@ -66,7 +66,7 @@ public class Utils {
 	 */
 	
 	public static final boolean wrongVersion() {
-		return !Loader.MC_VERSION.equals(Data.mcversion);
+		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
 	}
 	
 	/**

@@ -3,7 +3,7 @@ package com.github.coolsquid.squidlib.helpers;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
-import com.github.coolsquid.squidlib.util.Data;
+import com.github.coolsquid.squidlib.util.ModInfo;
 
 /**
  * 
@@ -14,7 +14,7 @@ import com.github.coolsquid.squidlib.util.Data;
 
 public final class LogHelper {
 	
-	public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Data.modid);
+	public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(ModInfo.modid);
 	
 	public static void info(String msg) {
 		logger.log(Level.INFO, msg);

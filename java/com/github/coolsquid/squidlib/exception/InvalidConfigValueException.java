@@ -7,7 +7,7 @@ package com.github.coolsquid.squidlib.exception;
  *
  */
 
-public class InvalidConfigValueException extends SquidLibException {
+public class InvalidConfigValueException extends SquidAPIException {
 	private static final long serialVersionUID = 434986523;
 		
 	public InvalidConfigValueException(String comment) {

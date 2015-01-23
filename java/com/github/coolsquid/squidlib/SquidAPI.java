@@ -29,6 +29,5 @@ public class SquidAPI {
 		if (!RecipeRemover.recipesToRemove.isEmpty()) {
 			RecipeRemover.removeRecipes();
 		}
-		BaseItem.dumpItemNames();
 	}
 }

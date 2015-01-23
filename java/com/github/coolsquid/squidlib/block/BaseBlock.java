@@ -15,5 +15,16 @@ public class BaseBlock extends Block {
 		GameRegistry.registerBlock(this, name);
 		setBlockTextureName(name);
 		setCreativeTab(SquidCreativeTabs.squidTab);
+		blockRegistry.register(this, name);
+	}
+	
+	public static final Registry blockRegistry = new Registry();
+	
+	public static void dumpItemNames() {
+		Logger logger = new Logger("", "SquidBlocks");
+		for (int a = 0; a < itemRegistry.size(); a++) {
+			logger.log(((BaseBlock) blockRegistry.getObjectFromName(blockRegistry.getNameFromId(a))).getUnlocalizedName());
+		}
+		logger.save(false);
 	}
 }

@@ -2,7 +2,7 @@ package com.github.coolsquid.squidlib;
 
 import com.github.coolsquid.squidlib.handlers.CommonHandler;
 import com.github.coolsquid.squidlib.handlers.RecipeRemover;
-import com.github.coolsquid.squidlib.helpers.LogHelper;
+import com.github.coolsquid.squidlib.item.BaseItem;
 import com.github.coolsquid.squidlib.util.ModInfo;
 
 import cpw.mods.fml.common.Mod;
@@ -21,7 +21,7 @@ public class SquidAPI {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		RecipeRemover.recipesToRemove.register("a");
+		
 	}
 	
 	@EventHandler
@@ -29,6 +29,6 @@ public class SquidAPI {
 		if (!RecipeRemover.recipesToRemove.isEmpty()) {
 			RecipeRemover.removeRecipes();
 		}
-		LogHelper.info(RecipeRemover.recipesToRemove.toString());
+		BaseItem.dumpItemNames();
 	}
 }

@@ -1,7 +1,9 @@
 package com.github.coolsquid.squidlib.registry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+
+import com.github.coolsquid.squidlib.exception.RegistryException;
 
 /**
  * 
@@ -10,14 +12,18 @@ import java.util.Map;
  *
  */
 
-public class Registry extends SimpleRegistry {
+public class Registry {
 	
-	protected Map<Object, Integer> m = new HashMap<Object, Integer>();
+	protected HashMap<Object, String> objectToName = new HashMap<Object, String>();
+	protected HashMap<String, Object> nameToObject = new HashMap<String, Object>();
+	protected ArrayList<String> idToName = new ArrayList<String>();
+	
+	private int maxSize = Integer.MAX_VALUE;
 	
 	private int a = 0;
 	
 	public Registry(int i) {
-		super(i);
+		maxSize = i;
 	}
 	
 	public Registry() {}
@@ -27,13 +33,11 @@ public class Registry extends SimpleRegistry {
 	 * @param object
 	 */
 	
-	@Override
-	public void register(Object object) {
-		if (a < getMaxSize()) {
-			if (m.get(object) == null) {
-				l.add(object);
-				m.put(object, a);
-			}
+	public void register(Object object, String name) {
+		if (a < maxSize) {
+			objectToName.put(object, name);
+			nameToObject.put(name, object);
+			idToName.add(name);
 			a++;
 		}
 		else {
@@ -41,7 +45,45 @@ public class Registry extends SimpleRegistry {
 		}
 	}
 	
-	public int get(Object o) {
-		return m.get(o);
+	public Object getNameFromObject(Object key) {
+		return objectToName.get(key);
+	}
+	
+	public Object getObjectFromName(Object value) {
+		return nameToObject.get(value);
+	}
+	
+	public String getNameFromId(int id) {
+		return idToName.get(id);
+	}
+	
+	public int size() {
+		return objectToName.size();
+	}
+
+	public boolean containsKey(Object object) {
+		return objectToName.containsKey(object);
+	}
+	
+	public boolean isEmpty() {
+		return objectToName.isEmpty();
+	}
+	
+	@Override
+	public final int hashCode() {
+		return toString().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		String s = "";
+		for (int a = 0; a < objectToName.size(); a++) {
+			s = s + idToName.get(a);
+		}
+		return s;
+	}
+	
+	public int getMaxSize() {
+		return maxSize;
 	}
 }

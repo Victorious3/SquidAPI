@@ -19,17 +19,17 @@ import java.util.List;
 
 public class Logger {
 	
-	private String folderName;
-	private String fileName;
+	protected String folderName;
+	protected String fileName;
 	
 	public Logger(String location, String name) {
 		folderName = location;
 		fileName = name;
 	}
 	
-	private List<String> loglist = new ArrayList<String>();
+	protected List<String> loglist = new ArrayList<String>();
 	
-	private SimpleDateFormat t = new SimpleDateFormat("HH:mm:ss");
+	protected SimpleDateFormat t = new SimpleDateFormat("HH:mm:ss");
 	
 	/**
 	 * Adds a message to the log list, and prints it to the console.
@@ -61,8 +61,12 @@ public class Logger {
 		}
 	}
 	
-	private static SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
-	private static SimpleDateFormat fd = new SimpleDateFormat("dd-MM-YYYY");
+	public void log(String msg) {
+		loglist.add(msg);
+	}
+	
+	protected static SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
+	protected static SimpleDateFormat fd = new SimpleDateFormat("dd-MM-YYYY");
 	
 	/**
 	 * Saves the log to the specified file at the specified location.
@@ -70,7 +74,34 @@ public class Logger {
 	 * @param name - The name of the log file.
 	 */
 	
-	public final void save() {
+	public final void save(boolean timeAndDate) {
+		if (!timeAndDate) {
+			File logFolder = new File("./" + folderName);
+			File log;
+			if (fileName.isEmpty()) {
+				log = new File("./" + folderName + "log.log");
+			}
+			else {
+				log = new File("./" + folderName, fileName + ".log");
+			}
+			PrintWriter w;
+			try {
+				logFolder.mkdirs();
+				if (!loglist.isEmpty()) {
+					w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
+					w.print("#Log");
+					for (int a = 0; a < loglist.size(); a++) {
+						w.print("\n");w.print(loglist.get(a));
+					}
+					w.close();
+					loglist.clear();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return;
+		}
 		String fileTime = ft.format(Calendar.getInstance().getTime());
 		String fileDate = fd.format(Calendar.getInstance().getTime());
 		

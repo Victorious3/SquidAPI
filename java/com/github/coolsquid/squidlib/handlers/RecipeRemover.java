@@ -4,7 +4,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 import com.github.coolsquid.squidlib.helpers.LogHelper;
-import com.github.coolsquid.squidlib.registry.Registry;
+import com.github.coolsquid.squidlib.registry.SimpleRegistry;
 
 /**
  * 
@@ -15,7 +15,7 @@ import com.github.coolsquid.squidlib.registry.Registry;
 
 public class RecipeRemover {
 	
-	public static final Registry recipesToRemove = new Registry();
+	public static final SimpleRegistry recipesToRemove = new SimpleRegistry();
 	
 	/**
 	 * Removes recipes for all blocks in the recipesToRemove list.

@@ -22,7 +22,7 @@ public class BaseBlock extends Block {
 	
 	public static final Registry blockRegistry = new Registry();
 	
-	public static void dumpItemNames() {
+	public static void dumpBlockNames() {
 		Logger logger = new Logger("", "SquidBlocks");
 		for (int a = 0; a < blockRegistry.size(); a++) {
 			logger.log(((BaseBlock) blockRegistry.getObjectFromName(blockRegistry.getNameFromId(a))).getUnlocalizedName());

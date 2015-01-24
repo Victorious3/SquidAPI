@@ -86,4 +86,6 @@ public class Utils {
 	public static final boolean isJava8() {
 		return System.getProperty("java.version").contains("1.8.0_");
 	}
+	
+	public static boolean debug = false;
 }

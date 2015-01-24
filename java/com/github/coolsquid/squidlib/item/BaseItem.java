@@ -14,11 +14,11 @@ public class BaseItem extends Item {
 	
 	public boolean isRepairable = false;
 	
-	public BaseItem(String name) {
+	public BaseItem(String name, CreativeTabs tab) {
 		setUnlocalizedName(name);
 		GameRegistry.registerItem(this, name);
 		setTextureName(name);
-		setCreativeTab(SquidCreativeTabs.squidTab);
+		setCreativeTab(tab);
 		itemRegistry.register(this, name);
 	}
 	

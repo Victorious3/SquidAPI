@@ -56,13 +56,7 @@ public class ConfigHandler {
 	 */
 	
 	private static final String CATEGORY_COMPAT = "Compatibility";
-	
-	/*
-	 * Hardcoded options. Modify them as you want to.
-	 */
-	
-	public static boolean debug = false;
-	
+
 	/**
 	 * Sets category comments.
 	 */

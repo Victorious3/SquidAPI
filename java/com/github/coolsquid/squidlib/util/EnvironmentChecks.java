@@ -23,6 +23,7 @@ public class EnvironmentChecks {
 		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
+			Utils.debug = true;
 		}
 	}
 }

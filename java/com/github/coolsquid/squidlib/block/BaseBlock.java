@@ -8,9 +8,11 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 
 public class BaseBlock extends Block {
-
+	
+	public static final Material material = new Material(MapColor.stoneColor);
+	
 	public BaseBlock(String name, CreativeTabs tab) {
-		super(new Material(MapColor.stoneColor));
+		super(material);
 		setBlockName(name);
 		GameRegistry.registerBlock(this, name);
 		setBlockTextureName(name);

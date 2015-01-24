@@ -1,3 +1,4 @@
+package com.github.coolsquid.squidlib.config;
 
 import java.io.File;
 

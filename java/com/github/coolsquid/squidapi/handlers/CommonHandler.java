@@ -42,10 +42,15 @@ public class CommonHandler {
 			
 		}
 		
-		if (Utils.isClient())
+		if (Utils.isClient()) {
 			EnvironmentChecks.preInit();
-		
-		if (Utils.isBukkit())
+		}
+		if (Utils.isBukkit()) {
 			LogHelper.warn("Running on Bukkit! No support will be given.");
+		}
+		if (Utils.developmentEnvironment) {
+			LogHelper.info("Running in a dev environment.");
+			Utils.debug = true;
+		}
 	}
 }

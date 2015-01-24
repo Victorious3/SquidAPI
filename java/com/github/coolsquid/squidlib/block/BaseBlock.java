@@ -9,12 +9,12 @@ import net.minecraft.block.material.Material;
 
 public class BaseBlock extends Block {
 
-	public BaseBlock(String name) {
+	public BaseBlock(String name, CreativeTabs tab) {
 		super(new Material(MapColor.stoneColor));
 		setBlockName(name);
 		GameRegistry.registerBlock(this, name);
 		setBlockTextureName(name);
-		setCreativeTab(SquidCreativeTabs.squidTab);
+		setCreativeTab(tab);
 		blockRegistry.register(this, name);
 	}
 	

@@ -2,6 +2,7 @@ package com.github.coolsquid.squidapi;
 
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.RecipeRemover;
+import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.util.ModInfo;
 
 import cpw.mods.fml.common.Mod;
@@ -12,6 +13,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version)
 public class SquidAPI {
+	
+	public static final Logger logger = new Logger("", "SquidAPI.log");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

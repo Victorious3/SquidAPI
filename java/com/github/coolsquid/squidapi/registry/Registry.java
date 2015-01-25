@@ -1,6 +1,5 @@
 package com.github.coolsquid.squidapi.registry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.coolsquid.squidapi.exception.RegistryException;
@@ -12,10 +11,9 @@ import com.github.coolsquid.squidapi.exception.RegistryException;
  *
  */
 
-public class Registry {
+public class Registry extends SimpleRegistry {
 	
 	protected HashMap<Object, Integer> objectToId = new HashMap<Object, Integer>();
-	protected ArrayList<Object> idToObject = new ArrayList<Object>();
 	
 	private int maxSize = Integer.MAX_VALUE;
 	
@@ -32,10 +30,11 @@ public class Registry {
 	 * @param object
 	 */
 	
+	@Override
 	public void register(Object object) {
 		if (a < maxSize) {
 			objectToId.put(object, a);
-			idToObject.add(object);
+			l.add(object);
 			a++;
 		}
 		else {
@@ -48,7 +47,7 @@ public class Registry {
 	}
 	
 	public Object getObjectFromId(int id) {
-		return idToObject.get(id);
+		return l.get(id);
 	}
 	
 	public int size() {
@@ -61,20 +60,6 @@ public class Registry {
 	
 	public boolean isEmpty() {
 		return objectToId.isEmpty();
-	}
-	
-	@Override
-	public final int hashCode() {
-		return toString().hashCode();
-	}
-	
-	@Override
-	public String toString() {
-		String s = "";
-		for (int a = 0; a < idToObject.size(); a++) {
-			s = s + idToObject.get(a);
-		}
-		return s;
 	}
 	
 	public int getMaxSize() {

@@ -25,20 +25,20 @@ public class ITab extends CreativeTabs {
 		return it;
 	}
 	
-	public static final void add(Object[] items, CreativeTabs tab) {
+	public void add(Object[] items) {
 		int a = 0;
 		try {
 			while (items[a] != null) {
 				if (items[a] instanceof Item)
-					((Item) items[a]).setCreativeTab(tab);
+					((Item) items[a]).setCreativeTab(this);
 				if (items[a] instanceof Block)
-					((Block) items[a]).setCreativeTab(tab);
+					((Block) items[a]).setCreativeTab(this);
 				a++;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {}
 	}
 	
-	public static final void remove(Object[] items) {
+	public void remove(Object[] items) {
 		int a = 0;
 		try {
 			while (items[a] != null) {

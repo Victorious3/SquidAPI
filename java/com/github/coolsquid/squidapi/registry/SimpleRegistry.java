@@ -1,7 +1,11 @@
 package com.github.coolsquid.squidapi.registry;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.github.coolsquid.squidapi.exception.RegistryException;
 
@@ -14,7 +18,7 @@ import com.github.coolsquid.squidapi.exception.RegistryException;
 
 public class SimpleRegistry {
 	
-	protected List<Object> l = new ArrayList<Object>();
+	protected ArrayList<Object> l = new ArrayList<Object>();
 	
 	private int maxSize = Integer.MAX_VALUE;
 	
@@ -73,5 +77,18 @@ public class SimpleRegistry {
 	
 	public int getMaxSize() {
 		return maxSize;
+	}
+	
+	public void dumpData(File file) {
+		try {
+			BufferedWriter w =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			for (int a = 0; a < l.size(); a++) {
+				w.write(l.get(a).toString());
+				w.newLine();
+			}
+			w.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,15 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.registry;
 
 import java.util.HashMap;
 
 import com.github.coolsquid.squidapi.exception.RegistryException;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class Registry extends SimpleRegistry {
 	

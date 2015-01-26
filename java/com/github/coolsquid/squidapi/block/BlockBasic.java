@@ -1,10 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.block;
+
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 
-import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.registry.Registry;
 import com.github.coolsquid.squidapi.util.ModInfo;
 
@@ -30,6 +36,7 @@ public class BlockBasic extends Block {
 		setBlockName(name);
 		GameRegistry.registerBlock(this, name);
 		setHardness(1.5F);
+		setHarvestLevel("pickaxe", 3);
 		setResistance(10F);
 		setStepSound(Block.soundTypeStone);
 		blockRegistry.register(this);
@@ -37,13 +44,7 @@ public class BlockBasic extends Block {
 	
 	public static final Registry blockRegistry = new Registry();
 	
-	public static void dumpBlockNames() {
-		Logger logger = new Logger("", "SquidBlocks");
-		for (int a = 0; a < blockRegistry.size(); a++) {
-			logger.log(((BlockBasic) blockRegistry.getObjectFromId(a)).getUnlocalizedName());
-		}
-		logger.save(false);
-	}
+	public Item drop = Item.getItemFromBlock(this);
 	
 	@Override
 	public int getMobilityFlag() {
@@ -53,5 +54,10 @@ public class BlockBasic extends Block {
 	@Override
 	public String toString() {
 		return getUnlocalizedName();
+	}
+	
+	@Override
+	public Item getItemDropped(int i, Random r, int i2) {
+		return drop;
 	}
 }

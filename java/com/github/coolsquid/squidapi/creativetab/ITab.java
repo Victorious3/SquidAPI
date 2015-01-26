@@ -1,15 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.creativetab;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- * @since 1.1.4
- */
 
 public class ITab extends CreativeTabs {
 	

@@ -1,12 +1,8 @@
-package com.github.coolsquid.squidapi.exception;
-
-/**
- * 
- * @author CoolSquid
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
- * My RuntimeException superclass.
- *
- */
+ *******************************************************************************/
+package com.github.coolsquid.squidapi.exception;
 
 public class SquidAPIException extends RuntimeException {
 	

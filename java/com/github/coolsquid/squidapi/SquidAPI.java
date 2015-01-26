@@ -1,6 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
+import com.github.coolsquid.squidapi.handlers.ModEventHandler;
 import com.github.coolsquid.squidapi.handlers.RecipeRemover;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.util.ModInfo;
@@ -14,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version)
 public class SquidAPI {
 	
-	public static final Logger logger = new Logger("", "SquidAPI.log");
+	public static final Logger logger = new Logger("", "SquidAPI");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -23,12 +30,15 @@ public class SquidAPI {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		
+		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
+		RecipeRemover.recipesToRemove.register("a");
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		if (!RecipeRemover.recipesToRemove.isEmpty()) {
+			logger.log("#Recipes to remove:");
+			RecipeRemover.recipesToRemove.dumpData(logger);
 			RecipeRemover.removeRecipes();
 		}
 	}

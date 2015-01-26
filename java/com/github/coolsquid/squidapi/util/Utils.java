@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
 import java.util.Random;
@@ -7,13 +11,6 @@ import net.minecraft.launchwrapper.Launch;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class Utils {
 	

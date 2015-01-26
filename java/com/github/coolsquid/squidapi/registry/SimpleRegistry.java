@@ -1,20 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.registry;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import com.github.coolsquid.squidapi.exception.RegistryException;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
+import com.github.coolsquid.squidapi.logging.Logger;
 
 public class SimpleRegistry {
 	
@@ -79,16 +72,10 @@ public class SimpleRegistry {
 		return maxSize;
 	}
 	
-	public void dumpData(File file) {
-		try {
-			BufferedWriter w =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-			for (int a = 0; a < l.size(); a++) {
-				w.write(l.get(a).toString());
-				w.newLine();
-			}
-			w.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void dumpData(Logger logger) {
+		for (int a = 0; a < l.size(); a++) {
+			logger.log(l.get(a).toString());
 		}
+		logger.save(false);
 	}
 }

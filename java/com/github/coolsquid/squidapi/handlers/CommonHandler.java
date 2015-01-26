@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.handlers;
 
 import java.io.File;
@@ -9,13 +13,6 @@ import java.io.PrintWriter;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.util.EnvironmentChecks;
 import com.github.coolsquid.squidapi.util.Utils;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class CommonHandler {
 	

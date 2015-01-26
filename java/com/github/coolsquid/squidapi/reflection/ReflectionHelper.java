@@ -1,15 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.reflection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- * 
- */
 
 @Deprecated
 public class ReflectionHelper {

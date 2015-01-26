@@ -1,12 +1,8 @@
-package com.github.coolsquid.squidapi.logging;
-
-
-/**
- * 
- * @author CoolSquid
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
- *
- */
+ *******************************************************************************/
+package com.github.coolsquid.squidapi.logging;
 
 public class LoggingException extends RuntimeException {
 	

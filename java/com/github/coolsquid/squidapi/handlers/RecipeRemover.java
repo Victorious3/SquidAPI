@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.handlers;
 
 import net.minecraft.item.crafting.CraftingManager;
@@ -5,13 +9,6 @@ import net.minecraft.item.crafting.IRecipe;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.registry.SimpleRegistry;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class RecipeRemover {
 	

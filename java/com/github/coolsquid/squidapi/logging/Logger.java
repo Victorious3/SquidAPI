@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.logging;
 
 import java.io.File;
@@ -8,14 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- * The logger itself.
- * 
- */
 
 public class Logger {
 	

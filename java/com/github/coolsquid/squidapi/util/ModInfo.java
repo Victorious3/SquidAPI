@@ -1,12 +1,8 @@
-package com.github.coolsquid.squidapi.util;
-
-
-/**
- * 
- * @author CoolSquid
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
- * 
- */
+ *******************************************************************************/
+package com.github.coolsquid.squidapi.util;
 
 public class ModInfo {
 	

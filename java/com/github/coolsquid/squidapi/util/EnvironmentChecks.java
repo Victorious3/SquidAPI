@@ -1,15 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
 import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class EnvironmentChecks {
 	

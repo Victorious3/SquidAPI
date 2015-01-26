@@ -1,11 +1,8 @@
-package com.github.coolsquid.squidapi.logging;
-
-/**
- * 
- * @author CoolSquid
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
- * All available levels for the Testy logging library.
- */
+ *******************************************************************************/
+package com.github.coolsquid.squidapi.logging;
 
 public enum Level {
 	

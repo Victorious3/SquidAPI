@@ -45,10 +45,11 @@ public class BlockBasic extends Block {
 	public static final Registry blockRegistry = new Registry();
 	
 	public Item drop = Item.getItemFromBlock(this);
+	public int mobility = 0;
 	
 	@Override
 	public int getMobilityFlag() {
-		return 2;
+		return mobility;
 	}
 	
 	@Override

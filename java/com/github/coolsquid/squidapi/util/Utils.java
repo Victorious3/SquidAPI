@@ -38,6 +38,14 @@ public class Utils {
 		return a <= d;
 	}
 	
+	public static int getRandInt(int min, int max) {
+		int a = r.nextInt(max);
+		if (a < min) {
+			a = min;
+		}
+		return a;
+	}
+	
 	/**
 	 * Checks if Minecraft is running in a deobfuscated enviroment.
 	 */

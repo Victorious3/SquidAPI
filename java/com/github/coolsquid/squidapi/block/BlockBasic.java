@@ -44,7 +44,6 @@ public class BlockBasic extends Block {
 	
 	public static final Registry blockRegistry = new Registry();
 	
-	public Item drop = Item.getItemFromBlock(this);
 	public int mobility = 0;
 	
 	@Override
@@ -55,10 +54,5 @@ public class BlockBasic extends Block {
 	@Override
 	public String toString() {
 		return getUnlocalizedName();
-	}
-	
-	@Override
-	public Item getItemDropped(int i, Random r, int i2) {
-		return drop;
 	}
 }

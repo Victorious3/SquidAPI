@@ -31,7 +31,6 @@ public class SquidAPI {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
-		RecipeRemover.recipesToRemove.register("a");
 	}
 	
 	@EventHandler

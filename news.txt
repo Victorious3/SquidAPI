@@ -1,1 +1,1 @@
-§4Hi.\nThis is a test.\nBye.
+§4test

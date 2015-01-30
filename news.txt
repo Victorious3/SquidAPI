@@ -1,5 +1,1 @@
-
-§4Test
-hi
-ja
-nei
+Hi.\nThis is a test.\nBye.

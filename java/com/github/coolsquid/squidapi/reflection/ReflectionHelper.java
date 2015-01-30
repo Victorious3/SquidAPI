@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-@Deprecated
 public class ReflectionHelper {
 	
 	/**
@@ -100,6 +99,21 @@ public class ReflectionHelper {
 			
 			f.setAccessible(true);
 			f.set(f, replacement);
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static final void replaceField(Class<?> c, Object object, String fieldName, Object replacement) {
+		try {
+			Field f = c.getDeclaredField(fieldName);
+			
+			Field m = Field.class.getDeclaredField("modifiers");
+			m.setAccessible(true);
+			m.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+			
+			f.setAccessible(true);
+			f.set(object, replacement);
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}

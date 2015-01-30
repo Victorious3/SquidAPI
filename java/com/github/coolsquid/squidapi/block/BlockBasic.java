@@ -4,12 +4,9 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.block;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 
 import com.github.coolsquid.squidapi.registry.Registry;
 import com.github.coolsquid.squidapi.util.ModInfo;
@@ -42,7 +39,7 @@ public class BlockBasic extends Block {
 		blockRegistry.register(this);
 	}
 	
-	public static final Registry blockRegistry = new Registry();
+	private static final Registry blockRegistry = new Registry();
 	
 	public int mobility = 0;
 	

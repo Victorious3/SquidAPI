@@ -8,9 +8,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
-import com.github.coolsquid.squidapi.handlers.RecipeRemover;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.util.ModInfo;
+import com.github.coolsquid.squidapi.util.RecipeRemover;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -36,9 +36,10 @@ public class SquidAPI {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		if (!RecipeRemover.recipesToRemove.isEmpty()) {
-			logger.log("#Recipes to remove:");
+			logger.log("Recipes to remove:");
 			RecipeRemover.recipesToRemove.dumpData(logger);
 			RecipeRemover.removeRecipes();
 		}
+		logger.save(false);
 	}
 }

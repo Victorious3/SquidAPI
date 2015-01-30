@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.github.coolsquid.squidapi.exception.SquidAPIException;
+
 public class Logger {
 	
 	protected String folderName;
@@ -80,6 +82,9 @@ public class Logger {
 			if (fileName.isEmpty()) {
 				log = new File("./" + folderName + "log.log");
 			}
+			else if (fileName.contains(".")) {
+				log = new File("./" + folderName, fileName);
+			}
 			else {
 				log = new File("./" + folderName, fileName + ".log");
 			}
@@ -128,6 +133,15 @@ public class Logger {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static class LoggingException extends SquidAPIException {
+		
+		private static final long serialVersionUID = 528745347;
+				
+		public LoggingException(String s2) {
+			super(s2);
 		}
 	}
 }

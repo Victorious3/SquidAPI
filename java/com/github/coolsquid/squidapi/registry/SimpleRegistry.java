@@ -78,4 +78,9 @@ public class SimpleRegistry {
 		}
 		logger.save(false);
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		return toString().equals(object.toString());
+	}
 }

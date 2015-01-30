@@ -13,14 +13,14 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
-	
+
 	/**
 	 * Sends a chat message to a player.
 	 * @param player
 	 * @param msg
 	 */
 	
-	public static final void sendMsg(EntityClientPlayerMP player, String msg) {
+	public static void sendMsg(EntityClientPlayerMP player, String msg) {
 		player.sendChatMessage(msg);
 	}
 	
@@ -39,25 +39,21 @@ public class Utils {
 	}
 	
 	public static int getRandInt(int min, int max) {
-		int a = r.nextInt(max);
-		if (a < min) {
-			a = min;
-		}
-		return a;
+		return min + r.nextInt(max - min + 1);
 	}
 	
 	/**
 	 * Checks if Minecraft is running in a deobfuscated enviroment.
 	 */
 	
-	public static final boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	public static boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	
 	/**
 	 * Checks if the server is running Bukkit.
 	 * @return boolean
 	 */
 	
-	public static final boolean isBukkit() {
+	public static boolean isBukkit() {
 		try {
 			return Class.forName("org.bukkit.Bukkit") != null;
 		} catch (ClassNotFoundException e) {
@@ -70,7 +66,7 @@ public class Utils {
 	 * @return boolean
 	 */
 	
-	public static final boolean wrongVersion() {
+	public static boolean wrongVersion() {
 		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
 	}
 	
@@ -79,7 +75,7 @@ public class Utils {
 	 * @return boolean
 	 */
 	
-	public static final boolean isClient() {
+	public static boolean isClient() {
 		return FMLCommonHandler.instance().getSide().equals(Side.CLIENT);
 	}
 	
@@ -88,7 +84,7 @@ public class Utils {
 	 * @return boolean
 	 */
 	
-	public static final boolean isJava8() {
+	public static boolean isJava8() {
 		return System.getProperty("java.version").contains("1.8.0_");
 	}
 	

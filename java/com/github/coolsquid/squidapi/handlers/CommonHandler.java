@@ -10,8 +10,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import org.apache.logging.log4j.Level;
+
 import com.github.coolsquid.squidapi.helpers.LogHelper;
-import com.github.coolsquid.squidapi.util.EnvironmentChecks;
 import com.github.coolsquid.squidapi.util.Utils;
 
 public class CommonHandler {
@@ -40,7 +41,9 @@ public class CommonHandler {
 		}
 		
 		if (Utils.isClient()) {
-			EnvironmentChecks.preInit();
+			if (Utils.wrongVersion()) {
+				LogHelper.bigWarning(Level.WARN, "MC is not running 1.7.10! Problems may occur. Do not report any errors.");
+			}
 		}
 		if (Utils.isBukkit()) {
 			LogHelper.warn("Running on Bukkit! No support will be given.");

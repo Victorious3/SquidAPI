@@ -6,6 +6,7 @@ package com.github.coolsquid.squidapi;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.command.CommandNews;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
 import com.github.coolsquid.squidapi.logging.Logger;
@@ -17,6 +18,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version)
 public class SquidAPI {
@@ -41,5 +43,10 @@ public class SquidAPI {
 			RecipeRemover.removeRecipes();
 		}
 		logger.save(false);
+	}
+	
+	@EventHandler
+	public void serverLoad(FMLServerStartingEvent event) {
+		event.registerServerCommand(new CommandNews());
 	}
 }

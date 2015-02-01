@@ -6,8 +6,10 @@ package com.github.coolsquid.squidapi.handlers;
 
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import com.github.coolsquid.squidapi.item.ItemBasic;
@@ -41,5 +43,11 @@ public class ModEventHandler {
 				ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "The squids will take over!");
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public void playerUpdate(LivingUpdateEvent event) {
+		if (event.entity instanceof EntityPlayer)
+			((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(0.3F);
 	}
 }

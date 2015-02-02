@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
+import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.item.ItemBasic;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.Utils;
@@ -40,7 +41,10 @@ public class ModEventHandler {
 	@SubscribeEvent
 	public void onGuiOpen(GuiOpenEvent event) {
 		if (event.gui instanceof GuiMainMenu) {
-			if (Utils.getChance(1, 10)) {
+			if (SquidAPI.isLocked) {
+				ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "WARNING");
+			}
+			else if (Utils.getChance(1, 10)) {
 				ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "The squids will take over!");
 			}
 		}

@@ -4,11 +4,6 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi;
 
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
-
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -45,8 +40,10 @@ public class SquidAPI {
 	public void preInit(FMLPreInitializationEvent event) {
 		SquidAPIAuthentificationHelper.auth(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=JpPZeb0q");
 		CommonHandler.init();
+		isLocked = true;
 		if (isLocked) {
 			FMLCommonHandler.instance().bus().register(this);
+			LogHelper.info("**********************************************************************************************************************************************************************");
 			LogHelper.warn("Authentification failed! The mod will not load. This happens because the mod might have been obtained trough an illegal site. Read more at http://stopmodreposts.org/.");
 			LogHelper.warn("Download the latest official version from: http://www.curse.com/mc-mods/minecraft/227345-squidapi/download.");
 			LogHelper.warn("Stacktrace:");
@@ -54,22 +51,12 @@ public class SquidAPI {
 			for (int a = 0; a < stacktrace.length; a++) {
 				LogHelper.warn(stacktrace[a] + "");
 			}
+			LogHelper.info("**********************************************************************************************************************************************************************");
 		}
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		boolean offline = false;
-		try {
-			URL url = new URL("google.com");
-			URLConnection connection = url.openConnection();
-			connection.setConnectTimeout(5000);
-		} catch (SocketTimeoutException e) {
-			offline = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		LogHelper.info(offline+"");
 		if (isLocked) {
 			return;
 		}

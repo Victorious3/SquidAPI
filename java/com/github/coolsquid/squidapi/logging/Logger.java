@@ -37,7 +37,7 @@ public class Logger {
 	 * @param print - Decides if the message should be printed to the console.
 	 */
 	
-	public final void log(String caller, Level level, String message, boolean print) {
+	public void log(String caller, Level level, String message, boolean print) {
 		if (message.length() > 150) {
 			throw new LoggingException("The message was too long!");
 		}
@@ -64,6 +64,12 @@ public class Logger {
 			throw new LoggingException("The message was too long!");
 		}
 		loglist.add(msg);
+	}
+	
+	public void log(StackTraceElement[] stacktrace) {
+		for (int a = 0; a < loglist.size(); a++) {
+			loglist.add(stacktrace[a].getClassName());
+		}
 	}
 	
 	protected static SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");

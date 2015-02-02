@@ -6,23 +6,12 @@ package com.github.coolsquid.squidapi.util;
 
 import java.util.Random;
 
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.launchwrapper.Launch;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
-
-	/**
-	 * Sends a chat message to a player.
-	 * @param player
-	 * @param msg
-	 */
-	
-	public static void sendMsg(EntityClientPlayerMP player, String msg) {
-		player.sendChatMessage(msg);
-	}
 	
 	private static Random r = new Random();
 	

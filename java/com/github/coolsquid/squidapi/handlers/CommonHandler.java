@@ -21,7 +21,7 @@ public class CommonHandler {
 	 * Generates a crash reporting info file and starts the environment checks.
 	 */
 	
-	public static final void init() {
+	public static void init() {
 		File file = new File("./crash-reports/README-I-AM-VERY-IMPORTANT.txt");
 		try {
 			if (!file.exists()) {

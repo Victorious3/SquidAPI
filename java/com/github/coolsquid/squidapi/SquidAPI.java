@@ -4,6 +4,11 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi;
 
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLConnection;
+
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -33,15 +38,12 @@ public class SquidAPI {
 	
 	public static final Logger logger = new Logger("", "SquidAPI");
 	
-	public static boolean isAuthed;
 	public static boolean isLocked;
 	public static boolean isOffline;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		SquidAPIAuthentificationHelper.auth(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=JpPZeb0q");
-		isLocked = !SquidAPIAuthentificationHelper.unauthorisedmods.isEmpty();
-		isAuthed = SquidAPIAuthentificationHelper.unauthorisedmods.isEmpty();
 		CommonHandler.init();
 		if (isLocked) {
 			FMLCommonHandler.instance().bus().register(this);
@@ -57,6 +59,17 @@ public class SquidAPI {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		boolean offline = false;
+		try {
+			URL url = new URL("google.com");
+			URLConnection connection = url.openConnection();
+			connection.setConnectTimeout(5000);
+		} catch (SocketTimeoutException e) {
+			offline = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		LogHelper.info(offline+"");
 		if (isLocked) {
 			return;
 		}

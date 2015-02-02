@@ -14,15 +14,12 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.github.coolsquid.squidapi.SquidAPI;
-import com.github.coolsquid.squidapi.registry.SimpleRegistry;
 import com.github.coolsquid.squidapi.util.Utils;
 
 public class SquidAPIAuthentificationHelper {
-	
-	public static final SimpleRegistry unauthorisedmods = new SimpleRegistry();
-	
+		
 	public static void auth(String modid, String version, String newversionurl) {
-		if (SquidAPI.isOffline) {
+		if (SquidAPI.isLocked || SquidAPI.isOffline) {
 			return;
 		}
 		File authFile = new File("./config/auth/" + modid + ".auth");
@@ -35,7 +32,7 @@ public class SquidAPIAuthentificationHelper {
 					return;
 				}
 				else {
-					unauthorisedmods.register(s);
+					SquidAPI.isLocked = true;
 					r2.close();
 					return;
 				}
@@ -58,20 +55,17 @@ public class SquidAPIAuthentificationHelper {
 				w.close();
 			}
 			else {
-				unauthorisedmods.register(s);
+				SquidAPI.isLocked = true;
 			}
 			
 			if (Utils.developmentEnvironment) {
-				SquidAPI.isAuthed = true;
 				SquidAPI.isLocked = false;
 			}
 		} catch (SocketTimeoutException e) {
 			SquidAPI.isLocked = false;
-			SquidAPI.isAuthed = true;
 			SquidAPI.isOffline = true;
 		} catch (IOException e) {
 			SquidAPI.isLocked = false;
-			SquidAPI.isAuthed = true;
 			e.printStackTrace();
 		}
 	}

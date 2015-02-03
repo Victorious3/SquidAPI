@@ -31,7 +31,7 @@ public class Registry extends SimpleRegistry {
 	public void register(Object object) {
 		if (a < maxSize) {
 			objectToId.put(object, a);
-			l.add(object);
+			super.register(object);
 			a++;
 		}
 		else {

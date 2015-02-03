@@ -10,7 +10,7 @@ public class DevEnvironmentEventHandler {
 	public void playerUpdate(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
 			((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(0.3F);
-			((EntityPlayer) event.entity).capabilities.setFlySpeed(0.5F);
+			((EntityPlayer) event.entity).capabilities.setFlySpeed(0.3F);
 		}
 	}
 }

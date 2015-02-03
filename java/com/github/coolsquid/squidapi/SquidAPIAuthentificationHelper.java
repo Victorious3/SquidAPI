@@ -29,10 +29,7 @@ public class SquidAPIAuthentificationHelper {
 			if (authFile.exists()) {
 				BufferedReader r2 = new BufferedReader(new InputStreamReader(new FileInputStream(authFile)));
 				String s = r2.readLine();
-				if (s == null) {
-					
-				}
-				else if (s.equals(version)) {
+				if (s != null && s.equals(version)) {
 					r2.close();
 					return;
 				}

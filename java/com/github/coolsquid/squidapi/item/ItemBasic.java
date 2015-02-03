@@ -4,7 +4,6 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.item;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 
 import com.github.coolsquid.squidapi.registry.Registry;
@@ -37,9 +36,5 @@ public class ItemBasic extends Item {
 	@Override
 	public String toString() {
 		return getUnlocalizedName();
-	}
-
-	public void onEntityItemJoinWorld(EntityItem entity) {
-		
 	}
 }

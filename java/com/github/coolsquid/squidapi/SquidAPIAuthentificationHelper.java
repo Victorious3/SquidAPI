@@ -58,17 +58,14 @@ public class SquidAPIAuthentificationHelper {
 				if (authFile.exists()) {
 					authFile.delete();
 				}
-				SquidAPI.setLocked(true);
+				SquidAPI.setLocked();
 				unauthorisedmods.register(modid);
 			}
 		} catch (SocketTimeoutException e) {
-			SquidAPI.setLocked(false);
-			SquidAPI.setOffline(true);
+			SquidAPI.setOffline();
 		} catch (FileNotFoundException e) {
-			SquidAPI.setLocked(false);
-			SquidAPI.setOffline(true);
+			SquidAPI.setOffline();
 		} catch (IOException e) {
-			SquidAPI.setLocked(false);
 			e.printStackTrace();
 		}
 	}

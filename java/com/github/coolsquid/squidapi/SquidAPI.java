@@ -38,35 +38,18 @@ public class SquidAPI {
 	
 	public static final Logger logger = new Logger("", "SquidAPI");
 	
-	private static boolean isLocked;
-	private static boolean isOffline;
-	
 	/**
 	 * @return the isLocked
 	 */
 	public static boolean isLocked() {
-		return isLocked;
-	}
-
-	/**
-	 * @param isLocked the isLocked to set
-	 */
-	public static void setLocked() {
-		SquidAPI.isLocked = true;
+		return !SquidAPIAuthentificationHelper.unathorisedmods.isEmpty();
 	}
 	
 	/**
 	 * @return the isOffline
 	 */
 	public static boolean isOffline() {
-		return isOffline;
-	}
-
-	/**
-	 * @param isOffline the isOffline to set
-	 */
-	public static void setOffline() {
-		SquidAPI.isOffline = true;
+		return false;
 	}
 
 	@EventHandler

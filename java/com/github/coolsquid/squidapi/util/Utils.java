@@ -13,8 +13,6 @@ import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
 	
-	private static Random r = new Random();
-	
 	/**
 	 * Has a d/k chance to return true.
 	 * @param d
@@ -32,12 +30,6 @@ public class Utils {
 	}
 	
 	/**
-	 * Checks if Minecraft is running in a deobfuscated enviroment.
-	 */
-	
-	public static boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-	
-	/**
 	 * Checks if the server is running Bukkit.
 	 * @return boolean
 	 */
@@ -48,15 +40,6 @@ public class Utils {
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
-	}
-	
-	/**
-	 * Checks if the mod is running on the correct MC version.
-	 * @return boolean
-	 */
-	
-	public static boolean wrongVersion() {
-		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
 	}
 	
 	/**
@@ -76,6 +59,23 @@ public class Utils {
 	public static boolean isJava8() {
 		return System.getProperty("java.version").contains("1.8.0_");
 	}
+	
+	/**
+	 * Checks if the mod is running on the correct MC version.
+	 * @return boolean
+	 */
+	
+	public static boolean wrongVersion() {
+		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
+	}
+	
+	private static Random r = new Random();
+	
+	/**
+	 * Checks if Minecraft is running in a deobfuscated enviroment.
+	 */
+	
+	public static boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	
 	public static boolean debug = false;
 }

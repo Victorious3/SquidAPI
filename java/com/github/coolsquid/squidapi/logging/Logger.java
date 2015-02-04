@@ -27,6 +27,46 @@ public class Logger {
 	
 	protected List<String> loglist = new ArrayList<String>();
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result
+				+ ((folderName == null) ? 0 : folderName.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Logger)) {
+			return false;
+		}
+		Logger other = (Logger) obj;
+		if (fileName == null) {
+			if (other.fileName != null) {
+				return false;
+			}
+		} else if (!fileName.equals(other.fileName)) {
+			return false;
+		}
+		if (folderName == null) {
+			if (other.folderName != null) {
+				return false;
+			}
+		} else if (!folderName.equals(other.folderName)) {
+			return false;
+		}
+		return true;
+	}
+
 	protected SimpleDateFormat t = new SimpleDateFormat("HH:mm:ss");
 	
 	/**

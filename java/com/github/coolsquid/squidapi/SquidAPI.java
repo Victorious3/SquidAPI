@@ -12,6 +12,7 @@ import javax.swing.JTextPane;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.command.CommandNews;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
@@ -38,20 +39,10 @@ public class SquidAPI {
 	
 	public static final Logger logger = new Logger("", "SquidAPI");
 	
-	/**
-	 * @return the isLocked
-	 */
 	public static boolean isLocked() {
-		return !SquidAPIAuthentificationHelper.unathorisedmods.isEmpty();
+		return !SquidAPIAuthentificationHelper.unauthorisedmods.isEmpty();
 	}
 	
-	/**
-	 * @return the isOffline
-	 */
-	public static boolean isOffline() {
-		return false;
-	}
-
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		SquidAPIAuthentificationHelper.auth(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=JpPZeb0q");
@@ -63,11 +54,16 @@ public class SquidAPI {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		if (isLocked()) {
-			Font font = new Font("Consolas", Font.BOLD, 20);
+			Font font = new Font("Dialog", Font.BOLD, 20);
 			JFrame frame = new JFrame();
 			JTextPane text = new JTextPane();
 			text.setFont(font);
-			text.setText("SquidAPI has detected mods downloaded through an illegal website." + n + "To fix this error, download the **latest** official version from: http://coolsquid.wix.com/software#!downloads/cppf.");
+			String warning = "SquidAPI has detected mods downloaded through an illegal website." + n + "To fix this error, download the **latest** official version from: http://coolsquid.wix.com/software#!downloads/cppf." + n + n + "Unauthorised mods:";
+			for (int a = 0; a < SquidAPIAuthentificationHelper.unauthorisedmods.size(); a++) {
+				warning = warning + n + SquidAPIAuthentificationHelper.unauthorisedmods.get(a);
+			}
+			warning = warning + n + n + "Proudly supporting #StopModReposts!" + n + "http://stopmodreposts.org/";
+			text.setText(warning);
 			text.setVisible(true);
 			text.setEditable(false);
 			frame.setTitle("ILLEGAL MOD DISTRIBUTION DETECTED!");

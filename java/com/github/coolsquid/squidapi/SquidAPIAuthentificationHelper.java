@@ -55,7 +55,6 @@ public class SquidAPIAuthentificationHelper {
 				if (authFile.exists()) {
 					authFile.delete();
 				}
-				SquidAPI.setLocked();
 				unauthorisedmods.register(modid);
 			}
 		} catch (SocketTimeoutException e) {

@@ -12,7 +12,6 @@ import javax.swing.JTextPane;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.command.CommandNews;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;

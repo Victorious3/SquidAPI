@@ -11,7 +11,7 @@ import com.github.coolsquid.squidapi.logging.Logger;
 
 public class SimpleRegistry {
 	
-	protected ArrayList<Object> l = new ArrayList<Object>();
+	protected final ArrayList<Object> l = new ArrayList<Object>();
 	
 	private int maxSize = Integer.MAX_VALUE;
 	

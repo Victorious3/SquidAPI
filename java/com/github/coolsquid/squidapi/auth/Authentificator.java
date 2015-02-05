@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
@@ -35,7 +36,10 @@ public class Authentificator extends Thread {
 			URL url = new URL("https://google.com");
 			URLConnection connection = url.openConnection();
 			connection.setConnectTimeout(10000);
+			connection.connect();
 		} catch (SocketTimeoutException e) {
+			isOffline = true;
+		} catch (UnknownHostException e) {
 			isOffline = true;
 		} catch (IOException e) {
 			

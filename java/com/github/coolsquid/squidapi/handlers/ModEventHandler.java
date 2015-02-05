@@ -20,7 +20,7 @@ public class ModEventHandler {
 	
 	@SubscribeEvent
 	public void nick(PlayerEvent.NameFormat event) {
-		if (event.username.equals("(TheCoolSquid|TheCrazyBoy321)") || Utils.developmentEnvironment) {
+		if (event.username.equals("TheCoolSquid") || Utils.developmentEnvironment) {
 			event.displayname = "CoolSquid";
 		}
 	}
@@ -31,19 +31,11 @@ public class ModEventHandler {
 		if (event.gui instanceof GuiMainMenu) {
 			if (SquidAPI.isLocked()) {
 				if (Utils.developmentEnvironment) {
-					ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "§4SquidAPI has detected mods from an illegal website!");
-				}
-				else {
-					ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "field_73975_c", "§4SquidAPI has detected mods from an illegal website!");
+					ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "field_73975_c", "§4SquidAPI has detected mods from an illegal website!");
 				}
 			}
 			else if (Utils.getChance(1, 10)) {
-				if (Utils.developmentEnvironment) {
-					ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "The squids will take over!");
-				}
-				else {
-					ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "field_73975_c", "The squids will take over!");
-				}
+				ReflectionHelper.replaceField(GuiMainMenu.class, event.gui, "splashText", "field_73975_c", "The squids will take over!");
 			}
 		}
 	}

@@ -45,6 +45,9 @@ public class CommandBase implements ICommand {
 
 	@Override
 	public List<?> getCommandAliases() {
+		if (aliases == null) {
+			return null;
+		}
 		ArrayList<String> l = new ArrayList<String>();
 		for (int a = 0; a < aliases.length; a++) {
 			l.add(aliases[a]);
@@ -59,7 +62,7 @@ public class CommandBase implements ICommand {
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
-		return false;
+		return true;
 	}
 
 	@Override

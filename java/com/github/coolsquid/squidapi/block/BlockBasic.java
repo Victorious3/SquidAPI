@@ -47,34 +47,4 @@ public class BlockBasic extends Block {
 	public int getMobilityFlag() {
 		return mobility;
 	}
-	
-	@Override
-	public String toString() {
-		return "BlockBasic [textureName=" + textureName + ", opaque=" + opaque
-				+ ", lightOpacity=" + lightOpacity + ", canBlockGrass="
-				+ canBlockGrass + ", lightValue=" + lightValue
-				+ ", useNeighborBrightness=" + useNeighborBrightness
-				+ ", blockHardness=" + blockHardness + ", blockResistance="
-				+ blockResistance + ", blockConstructorCalled="
-				+ blockConstructorCalled + ", enableStats=" + enableStats
-				+ ", needsRandomTick=" + needsRandomTick
-				+ ", isBlockContainer=" + isBlockContainer + ", minX=" + minX
-				+ ", minY=" + minY + ", minZ=" + minZ + ", maxX=" + maxX
-				+ ", maxY=" + maxY + ", maxZ=" + maxZ + ", stepSound="
-				+ stepSound + ", blockParticleGravity=" + blockParticleGravity
-				+ ", blockMaterial=" + blockMaterial + ", slipperiness="
-				+ slipperiness + ", blockIcon=" + blockIcon + ", delegate="
-				+ delegate + ", harvesters=" + harvesters + ", captureDrops="
-				+ captureDrops + ", capturedDrops=" + capturedDrops + "]";
-	}
-	
-	@Override
-	public int hashCode() {
-		return toString().hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object object) {
-		return toString().equals(object);
-	}
 }

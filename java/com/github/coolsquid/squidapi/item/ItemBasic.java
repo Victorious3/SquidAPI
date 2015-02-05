@@ -32,23 +32,4 @@ public class ItemBasic extends Item {
 	public boolean isRepairable() {
 		return isRepairable;
 	}
-
-	@Override
-	public String toString() {
-		return "ItemBasic [isRepairable=" + isRepairable + ", maxStackSize="
-				+ maxStackSize + ", bFull3D=" + bFull3D + ", hasSubtypes="
-				+ hasSubtypes + ", itemIcon=" + itemIcon + ", iconString="
-				+ iconString + ", delegate=" + delegate + ", canRepair="
-				+ canRepair + "]";
-	}
-	
-	@Override
-	public int hashCode() {
-		return toString().hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object object) {
-		return toString().equals(object);
-	}
 }

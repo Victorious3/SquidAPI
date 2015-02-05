@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import com.github.coolsquid.squidapi.auth.Authentificator;
 import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 
 public class ProtectedList extends ArrayList<Object> {
@@ -22,7 +23,9 @@ public class ProtectedList extends ArrayList<Object> {
 
 	@Override
 	public boolean add(Object e) {
-		if (!new Throwable().getStackTrace()[1].getClassName().equals(SquidAPIAuthentificationHelper.class.getName())) {
+		String auther = Authentificator.class.getName();
+		String authhelper = SquidAPIAuthentificationHelper.class.getName();
+		if (!new Throwable().getStackTrace()[1].getClassName().equals(auther) && !new Throwable().getStackTrace()[1].getClassName().equals(authhelper)) {
 			throw new SecurityException();
 		}
 		return super.add(e);

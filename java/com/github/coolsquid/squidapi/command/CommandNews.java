@@ -4,21 +4,14 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.command;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 
 public class CommandNews extends CommandBase {
 
-	@Override
-	public String getCommandName() {
-		return "news";
+	public CommandNews() {
+		super("news", "Gives you the latest news from CoolSquid!");
 	}
-
-	@Override
-	public String getCommandUsage(ICommandSender sender) {
-		return "";
-	}
-
+	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		NewsHandler.sender = sender;

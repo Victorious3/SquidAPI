@@ -4,12 +4,14 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.registry;
 
+import java.util.ArrayList;
+
 import com.github.coolsquid.squidapi.exception.RegistryException;
 import com.github.coolsquid.squidapi.logging.Logger;
 
 public class SimpleRegistry {
 	
-	protected final ProtectedList l = new ProtectedList();
+	protected final ArrayList<Object> l = new ArrayList<Object>();
 	
 	private int maxSize = Integer.MAX_VALUE;
 	

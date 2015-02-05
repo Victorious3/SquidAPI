@@ -14,13 +14,15 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
+
 public class ProtectedList extends ArrayList<Object> {
 	
 	private static final long serialVersionUID = -499304232520788110L;
 
 	@Override
 	public boolean add(Object e) {
-		if (!new Throwable().getStackTrace()[1].getClassName().equals(SimpleRegistry.class.getName())) {
+		if (!new Throwable().getStackTrace()[1].getClassName().equals(SquidAPIAuthentificationHelper.class.getName())) {
 			throw new SecurityException();
 		}
 		return super.add(e);

@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import com.github.coolsquid.squidapi.util.Utils;
+
 public class ReflectionHelper {
 	
 	/**
@@ -116,6 +118,24 @@ public class ReflectionHelper {
 			f.set(object, replacement);
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static final void replaceField(Class<?> c, Object object, String deObfFieldName, String obfFieldName, Object replacement) {
+		if (Utils.developmentEnvironment) {
+			replaceField(c, object, deObfFieldName, replacement);
+		}
+		else {
+			replaceField(c, object, obfFieldName, replacement);
+		}
+	}
+	
+	public static final void replaceField(Class<?> c, String deObfFieldName, String obfFieldName, Object replacement) {
+		if (Utils.developmentEnvironment) {
+			replaceField(c, deObfFieldName, replacement);
+		}
+		else {
+			replaceField(c, obfFieldName, replacement);
 		}
 	}
 }

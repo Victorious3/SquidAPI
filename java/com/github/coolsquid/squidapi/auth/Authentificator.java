@@ -111,7 +111,7 @@ public class Authentificator extends Thread {
 			text.setText(warning);
 			text.setVisible(true);
 			text.setEditable(false);
-			frame.setTitle("Unauthorised mods.");
+			frame.setTitle("ILLEGAL MOD DISTRIBUTION DETECTED!");
 			frame.setSize(800, 600);
 			frame.add(text);
 			frame.setVisible(true);

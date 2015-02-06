@@ -98,40 +98,44 @@ public class Authentificator extends Thread {
 	
 	private static void init() {
 		if (SquidAPI.isLocked()) {
-			Font font = new Font("Dialog", Font.BOLD, 20);
-			JFrame frame = new JFrame();
-			JTextPane text = new JTextPane();
-			text.setFont(font);
 			String warning = "SquidAPI has detected mods downloaded through an illegal website." + n + "To fix this error, download the **latest** official version from: http://coolsquid.wix.com/software#!downloads/cppf." + n + n + "Unauthorised mods:";
 			for (int a = 0; a < SquidAPIAuthentificationHelper.unauthorisedmods.size(); a++) {
 				warning = warning + n + SquidAPIAuthentificationHelper.unauthorisedmods.get(a);
 			}
 			warning = warning + n + n + "Proudly supporting #StopModReposts!" + n + "http://stopmodreposts.org/";
 			warning = warning + n + n + "Do you believe this is an error? Report it at:" + n + "https://github.com/coolsquid/SquidAPI/issues.";
-			text.setText(warning);
-			text.setVisible(true);
-			text.setEditable(false);
-			frame.setTitle("ILLEGAL MOD DISTRIBUTION DETECTED!");
-			frame.setSize(800, 600);
-			frame.add(text);
-			frame.setVisible(true);
+			
+			createGui("ILLEGAL MOD DISTRIBUTION DETECTED!", warning);
+			
 			FMLCommonHandler.instance().bus().register(new SquidAPI());
-			LogHelper.warn("**********************************************************************************************************************************************************************");
-			LogHelper.warn("SquidAPI has detected mods downloaded through an illegal website.");
-			LogHelper.warn("To fix this error, download the latest official version from: http://coolsquid.wix.com/software#!downloads/cppf.");
-			LogHelper.warn("Unauthorised mods:");
+			log("**********************************************************************************************************************************************************************");
+			log("SquidAPI has detected mods downloaded through an illegal website.");
+			log("To fix this error, download the latest official version from: http://coolsquid.wix.com/software#!downloads/cppf.");
+			log("Unauthorised mods:");
 			for (int a = 0; a < SquidAPIAuthentificationHelper.unauthorisedmods.size(); a++) {
-				LogHelper.warn((String) SquidAPIAuthentificationHelper.unauthorisedmods.get(a));
+				log((String) SquidAPIAuthentificationHelper.unauthorisedmods.get(a));
 			}
-			LogHelper.warn("**********************************************************************************************************************************************************************");
-			SquidAPI.logger.log("**********************************************************************************************************************************************************************");
-			SquidAPI.logger.log("SquidAPI has detected mods downloaded through an illegal website.");
-			SquidAPI.logger.log("To fix this error, download the latest official version from: http://coolsquid.wix.com/software#!downloads/cppf.");
-			SquidAPI.logger.log("Unauthorised mods:");
-			for (int a = 0; a < SquidAPIAuthentificationHelper.unauthorisedmods.size(); a++) {
-				SquidAPI.logger.log((String) SquidAPIAuthentificationHelper.unauthorisedmods.get(a));
-			}
-			SquidAPI.logger.log("**********************************************************************************************************************************************************************");
+			log("**********************************************************************************************************************************************************************");
 		}
+	}
+	
+	private static void log(String msg) {
+		SquidAPI.logger.log(msg);
+		LogHelper.warn(msg);
+	}
+	
+	private static void createGui(String title, String info) {
+		JTextPane text = new JTextPane();
+		Font font = new Font("Dialog", Font.BOLD, 20);
+		text.setFont(font);
+		text.setText(info);
+		text.setVisible(true);
+		text.setEditable(false);
+		
+		JFrame frame = new JFrame();
+		frame.setTitle(title);
+		frame.setSize(800, 600);
+		frame.add(text);
+		frame.setVisible(true);
 	}
 }

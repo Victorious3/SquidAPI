@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.coolsquid.squidapi.Localization;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 
@@ -18,7 +20,12 @@ public class CommandBase implements ICommand {
 	private String[] aliases;
 
 	public CommandBase(String name, String desc) {
-		this.name = name;
+		if (!Localization.getString(name).endsWith("_MISSING")) {
+			this.name = Localization.getString(name);
+		}
+		else {
+			this.name = name;
+		}
 		this.desc = desc;
 	}
 	

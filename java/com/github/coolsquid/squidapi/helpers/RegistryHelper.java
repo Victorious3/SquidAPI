@@ -26,8 +26,8 @@ public class RegistryHelper {
 		GameRegistry.addSmelting(input, output, 10);	
 	}
 	
-	public static void addExplosionRecipe(Object input, ItemStack output) {
-		new ExplosionRecipe(input, output);
+	public static void addExplosionRecipe(Object input, ItemStack output, float size) {
+		ExplosionRecipe.recipes.put(input, new ExplosionRecipe(input, output, size));
 	}
 	
 	public static void registerItem(Item item) {

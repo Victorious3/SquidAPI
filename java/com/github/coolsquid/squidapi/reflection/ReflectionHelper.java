@@ -13,32 +13,13 @@ import com.github.coolsquid.squidapi.util.Utils;
 public class ReflectionHelper {
 	
 	/**
-	 * Get a string.
-	 * @param c
-	 * @param fieldName
-	 * @return String
-	 */
-	
-	public static final String getString(Class<?> c, String fieldName) {
-		try {
-			Field f = c.getDeclaredField(fieldName);
-			f.setAccessible(true);
-			String f2 = f.get(f).toString();
-			return f2;
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-	
-	/**
 	 * Get an object.
 	 * @param c
 	 * @param fieldName
 	 * @return Object
 	 */
 	
-	public static final Object getObject(Class<?> c, String fieldName) {
+	public static final Object get(Class<?> c, String fieldName) {
 		try {
 			Field f = c.getDeclaredField(fieldName);
 			f.setAccessible(true);
@@ -48,13 +29,6 @@ public class ReflectionHelper {
 			return null;
 		}
 	}
-	
-	/**
-	 * Gets a method (why did I add this?).
-	 * @param c
-	 * @param methodName
-	 * @return Method
-	 */
 	
 	public static final Method getMethod(Class<?> c, String methodName) {
 		try {

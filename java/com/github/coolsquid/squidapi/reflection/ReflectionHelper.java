@@ -67,12 +67,6 @@ public class ReflectionHelper {
 		}
 	}
 	
-	/**
-	 * Invokes a method.
-	 * @param className
-	 * @param methodName
-	 */
-	
 	public static final void invoke(String className, String methodName) {
 		try {
 			Class<?> c = Class.forName(className);
@@ -83,13 +77,6 @@ public class ReflectionHelper {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Replaces the value of the specified field.
-	 * @param c
-	 * @param fieldName
-	 * @param replacement
-	 */
 	
 	public static final void replaceField(Class<?> c, String fieldName, Object replacement) {
 		try {

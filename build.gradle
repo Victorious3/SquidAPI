@@ -18,6 +18,7 @@ classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
 }
 
 apply plugin: "forge"
+apply plugin: "curseforge"
 
 sourceSets
 {
@@ -32,6 +33,13 @@ version = "1.0.2"
 group= "com.github.coolsquid"
 archivesBaseName = "SquidAPI"
 minecraft.version = "1.7.10-10.13.2.1272"
+
+curse {
+apiKey = project.curseAPIKey
+changelog = ''
+projectId = '227345'
+releaseType = 'alpha'
+}
 
 processResources
 {

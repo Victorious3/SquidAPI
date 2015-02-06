@@ -13,7 +13,7 @@ public class SquidAPIAuthentificationHelper {
 	
 	@Deprecated
 	public static void auth(String modid, String version, String newversionurl) {
-		modstocheck.add(new AuthEntry(modid, version, newversionurl));
+		auth(new AuthEntry(modid, version, newversionurl));
 	}
 	
 	public static void auth(AuthEntry entry) {

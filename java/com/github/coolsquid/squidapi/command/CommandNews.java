@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.command;
 
+import com.github.coolsquid.squidapi.handlers.command.NewsHandler;
+
 import net.minecraft.command.ICommandSender;
 
 public class CommandNews extends CommandBase {
@@ -14,8 +16,7 @@ public class CommandNews extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		NewsHandler.sender = sender;
-		NewsHandler thread = new NewsHandler();
+		NewsHandler thread = new NewsHandler(sender);
 		thread.start();
 	}
 }

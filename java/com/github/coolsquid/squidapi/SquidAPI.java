@@ -32,7 +32,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, acceptableRemoteVersions = "*")
 public class SquidAPI {
 	
-	public static final Logger logger = new Logger("", "SquidAPI");
+	public static final Logger logger = new Logger("", "SquidAPI", false);
 
 	public static boolean isLocked() {
 		return !SquidAPIAuthentificationHelper.unauthorisedmods.isEmpty();
@@ -63,7 +63,7 @@ public class SquidAPI {
 			RecipeRemover.recipesToRemove.dumpData(logger);
 			RecipeRemover.removeRecipes();
 		}
-		logger.save(false);
+		logger.save();
 	}
 	
 	@EventHandler

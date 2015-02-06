@@ -4,11 +4,15 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.recipe;
 
-import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
+import java.util.HashMap;
+
+import net.minecraft.item.ItemStack;
 
 public class ExplosionRecipe {
 	
-	public ExplosionRecipe(Object input, Object output) {
-		ExplosionRecipeHandler.recipes.put(input, output);
+	public static final HashMap<Object, ItemStack> recipes = new HashMap<Object, ItemStack>();
+	
+	public ExplosionRecipe(Object input, ItemStack output) {
+		recipes.put(input, output);
 	}
 }

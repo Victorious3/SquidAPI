@@ -76,7 +76,7 @@ public class SimpleRegistry {
 		for (int a = 0; a < l.size(); a++) {
 			logger.log(l.get(a).toString());
 		}
-		logger.save(false);
+		logger.save();
 	}
 	
 	@Override

@@ -10,7 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.github.coolsquid.squidapi.auth.AuthEntry;
 import com.github.coolsquid.squidapi.auth.Authentificator;
 import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
-import com.github.coolsquid.squidapi.command.CommandNews;
+import com.github.coolsquid.squidapi.command.CommandSquidAPI;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
@@ -68,7 +68,7 @@ public class SquidAPI {
 	
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandNews());
+		event.registerServerCommand(new CommandSquidAPI());
 	}
 	
 	@SubscribeEvent
@@ -76,5 +76,14 @@ public class SquidAPI {
 		if (Utils.isClient()) {
 			event.player.addChatMessage(new ChatComponentText("§4<SquidAPI>§r SquidAPI has detected mods downloaded through an illegal website. Please download the §4latest§r version from §6my§r §6website§r to remove this message. A list of unauthorised mods may be found in SquidAPI.log."));
 		}
+	}
+	
+	public static int hash(String input) {
+		int hash = 0;
+		int prime = 31;
+		for (int a = 0; a < input.length(); a++) {
+			hash = hash + (input.charAt(a) * prime * (a + 1));
+		}
+		return hash;
 	}
 }

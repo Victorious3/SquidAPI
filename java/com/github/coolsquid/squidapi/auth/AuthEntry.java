@@ -10,6 +10,7 @@ public class AuthEntry {
 	private String version;
 	private String newversionurl;
 	
+	/**Stores the data needed in the authentificator.*/
 	public AuthEntry(String modid, String version, String newversionurl) {
 		this.modid = modid;
 		this.version = version;

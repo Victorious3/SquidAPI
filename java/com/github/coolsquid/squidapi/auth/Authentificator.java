@@ -28,7 +28,7 @@ import com.github.coolsquid.squidapi.helpers.LogHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class Authentificator extends Thread {
-
+	
 	@Override
 	public void run() {
 		boolean isOffline = false;
@@ -60,7 +60,7 @@ public class Authentificator extends Thread {
 			if (authFile.exists()) {
 				BufferedReader r2 = new BufferedReader(new InputStreamReader(new FileInputStream(authFile)));
 				String s = r2.readLine();
-				if (s != null && s.equals(entry.getVersion())) {
+				if (s != null && s.hashCode() == entry.getVersion().hashCode()) {
 					r2.close();
 					return;
 				}
@@ -74,13 +74,13 @@ public class Authentificator extends Thread {
 			
 			BufferedReader r = new BufferedReader(new InputStreamReader(input));
 			String s = r.readLine();
-			if (entry.getVersion().equals(s)) {
+			if (entry.getVersion().hashCode() == s.hashCode()) {
 				File folder = new File("./config/auth/");
 				folder.mkdirs();
 				authFile.createNewFile();
 				
 				BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(authFile)));
-				w.write(entry.getVersion());
+				w.write(entry.getVersion().hashCode()+"");
 				w.close();
 			}
 			else {

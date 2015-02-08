@@ -20,9 +20,7 @@ public class ModEventHandler {
 	
 	@SubscribeEvent
 	public void nick(PlayerEvent.NameFormat event) {
-		if (event.username.equals("TheCoolSquid") || Utils.developmentEnvironment) {
-			event.displayname = "vagina";
-		}
+		
 	}
 	
 	@SideOnly(Side.CLIENT)

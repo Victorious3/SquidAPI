@@ -74,16 +74,7 @@ public class SquidAPI {
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
 		if (Utils.isClient()) {
-			event.player.addChatMessage(new ChatComponentText("§4<SquidAPI>§r SquidAPI has detected mods downloaded through an illegal website. Please download the §4latest§r version from §6my§r §6website§r to remove this message. A list of unauthorised mods may be found in SquidAPI.log."));
+			event.player.addChatMessage(new ChatComponentText("<SquidAPI> SquidAPI has detected mods downloaded through an illegal website. Please download the latest version from my website to remove this message. A list of unauthorised mods may be found in SquidAPI.log."));
 		}
-	}
-	
-	public static int hash(String input) {
-		int hash = 0;
-		int prime = 31;
-		for (int a = 0; a < input.length(); a++) {
-			hash = hash + (input.charAt(a) * prime * (a + 1));
-		}
-		return hash;
 	}
 }

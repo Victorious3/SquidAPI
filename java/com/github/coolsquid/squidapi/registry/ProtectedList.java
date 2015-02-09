@@ -17,7 +17,7 @@ import java.util.function.UnaryOperator;
 import com.github.coolsquid.squidapi.auth.Authentificator;
 import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 
-public class ProtectedList extends ArrayList<Object> {
+public final class ProtectedList extends ArrayList<Object> {
 	
 	private static final long serialVersionUID = -499304232520788110L;
 

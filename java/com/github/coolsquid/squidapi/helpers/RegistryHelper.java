@@ -27,6 +27,9 @@ public class RegistryHelper {
 	}
 	
 	public static void addExplosionRecipe(Object input, ItemStack output, float size) {
+		if (input instanceof Block) {
+			input = Item.getItemFromBlock((Block) input);
+		}
 		ExplosionRecipe.recipes.put(input, new ExplosionRecipe(input, output, size));
 	}
 	

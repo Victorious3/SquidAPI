@@ -78,4 +78,13 @@ public class Utils {
 	public static boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	
 	public static boolean debug = false;
+	
+	public static int hash(String input) {
+		final int prime = 31;
+		int hash = 1;
+		for (int a = 0; a < input.length(); a++) {
+			hash = hash + (input.charAt(a) * input.charAt(a) * prime * (a + 1 * hash) * input.length());
+		}
+		return hash;
+	}
 }

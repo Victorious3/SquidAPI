@@ -10,60 +10,24 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
 	
-	/**
-	 * The config file.
-	 */
+	public ConfigHandler(File configfile) {
+		this.config = new Configuration(configfile);
+	}
+
+	private Configuration config;
 	
-	private static File configFile;
-	
-	/**
-	 * The configuration.
-	 */
-	
-	private static Configuration config;
-	
-	public static final void preInit(File file) {
-		configFile = file;
-		createConfig();
+	public void preInit() {
 		initCategories();
 		readConfig();
 	}
 	
-	private static final void createConfig() {
-		if (config == null)
-			config = new Configuration(configFile);
-	}
+	private final String CATEGORY_GENERAL = "General";
 	
-	/*
-	 * Available categories. DO NOT MODIFY, as it breaks configs.
-	 */
-	
-	/**
-	 * For options that doesn't fit elsewhere.
-	 */
-	
-	private static final String CATEGORY_GENERAL = "General";
-	
-	/**
-	 * For intermod compatibility.
-	 */
-	
-	private static final String CATEGORY_COMPAT = "Compatibility";
-
-	/**
-	 * Sets category comments.
-	 */
-	
-	private static void initCategories() {
+	private void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
-		config.setCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
 	}
 	
-	/**
-	 * Reads the config.
-	 */
-	
-	private static final void readConfig() {
+	private final void readConfig() {
 		if (config.hasChanged()) {
 			config.save();
 		}

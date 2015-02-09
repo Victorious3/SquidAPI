@@ -17,7 +17,11 @@ public class CommandBase implements ICommand {
 	private String[] aliases;
 
 	public CommandBase(String name, String desc) {
+<<<<<<< HEAD
 		this.name = name;
+=======
+		this.name = CommandNames.getString(name);
+>>>>>>> origin/master
 		this.desc = desc;
 	}
 	

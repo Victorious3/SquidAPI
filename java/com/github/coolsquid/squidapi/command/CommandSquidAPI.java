@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.command;
 
 import net.minecraft.command.ICommandSender;
@@ -16,13 +20,13 @@ public class CommandSquidAPI extends CommandBase {
 	}
 	
 	private void sendHelp(ICommandSender sender, String msg) {
-		sendMsg(sender, "/" + getCommandName() + " " + msg);
+		this.sendMsg(sender, "/" + this.getCommandName() + " " + msg);
 	}
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		if (args.length != 1) {
-			sendMsg(sender, "Type \"/" + getCommandName() + " help\" to recieve a list of subcommands.");
+			this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");
 			return;
 		}
 		String subcommand = args[0];
@@ -31,12 +35,12 @@ public class CommandSquidAPI extends CommandBase {
 			thread.start();
 		}
 		else if (subcommand.equals("help")) {
-			sendMsg(sender, "Available commands:");
-			sendHelp(sender, "help");
-			sendHelp(sender, "news");
+			this.sendMsg(sender, "Available commands:");
+			this.sendHelp(sender, "help");
+			this.sendHelp(sender, "news");
 		}
 		else {
-			sendMsg(sender, "Type \"/" + getCommandName() + " help\" to recieve a list of subcommands.");
+			this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");
 		}
 	}
 }

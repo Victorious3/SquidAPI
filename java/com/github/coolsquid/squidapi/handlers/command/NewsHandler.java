@@ -33,10 +33,10 @@ public class NewsHandler extends Thread {
 			
 			BufferedReader r = new BufferedReader(new InputStreamReader(input));
 			
-			sender.addChatMessage(new ChatComponentText("§4<" + r.readLine() + ">§r " + r.readLine()));
+			this.sender.addChatMessage(new ChatComponentText("§4<" + r.readLine() + ">§r " + r.readLine()));
 		} catch (IOException e) {
 			if (e instanceof SocketTimeoutException) {
-				sender.addChatMessage(new ChatComponentText("§4<SquidAPI>§r Timed out."));
+				this.sender.addChatMessage(new ChatComponentText("§4<SquidAPI>§r Timed out."));
 				return;
 			}
 			e.printStackTrace();

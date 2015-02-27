@@ -17,19 +17,25 @@ public class ConfigHandler {
 	private Configuration config;
 	
 	public void preInit() {
-		initCategories();
-		readConfig();
+		this.initCategories();
+		this.readConfig();
 	}
 	
 	private final String CATEGORY_GENERAL = "General";
 	
 	private void initCategories() {
-		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
+		this.config.setCategoryComment(this.CATEGORY_GENERAL, "General options.");
 	}
 	
+	public static boolean cleanMenu;
+	public static String branding = null;
+	
 	private final void readConfig() {
-		if (config.hasChanged()) {
-			config.save();
+		cleanMenu = this.config.getBoolean("cleanMenu", this.CATEGORY_GENERAL, false, "Cleans up the main menu a bit.");
+		branding = this.config.getString("branding", this.CATEGORY_GENERAL, "", "Will show up besides the Forge branding on the main menu. Not affected by \"cleanMenu\".");
+		
+		if (this.config.hasChanged()) {
+			this.config.save();
 		}
 	}
 }

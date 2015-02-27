@@ -27,17 +27,14 @@ public class RegistryHelper {
 	}
 	
 	public static void addExplosionRecipe(Object input, ItemStack output, float size) {
-		if (input instanceof Block) {
-			input = Item.getItemFromBlock((Block) input);
-		}
 		ExplosionRecipe.recipes.put(input, new ExplosionRecipe(input, output, size));
 	}
 	
-	public static void registerItem(Item item) {
+	public static void registerItem(Item item, String name) {
 		GameRegistry.registerItem(item, item.getUnlocalizedName());
 	}
 	
-	public static void registerBlock(Block block) {
+	public static void registerBlock(Block block, String name) {
 		GameRegistry.registerBlock(block, block.getUnlocalizedName());
 	}
 }

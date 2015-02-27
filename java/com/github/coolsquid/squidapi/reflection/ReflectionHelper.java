@@ -4,99 +4,57 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.reflection;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Parameter;
 
-import com.github.coolsquid.squidapi.util.Utils;
-
+@SuppressWarnings("unchecked")
 public class ReflectionHelper {
 	
-	/**
-	 * Get an object.
-	 * @param c
-	 * @param fieldName
-	 * @return Object
-	 */
-	
-	public static final Object get(Class<?> c, String fieldName) {
-		try {
-			Field f = c.getDeclaredField(fieldName);
-			f.setAccessible(true);
-			return f;
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-			return null;
-		}
+	private final Class<?> clazz;
+
+	private ReflectionHelper(Class<?> clazz) {
+		this.clazz = clazz;
 	}
 	
-	public static final Method getMethod(Class<?> c, String methodName) {
-		try {
-			Method m = c.getDeclaredMethod(methodName);
-			m.setAccessible(true);
-			return m;
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public static ReflectionHelper in(Class<?> clazz) {
+		return new ReflectionHelper(clazz);
 	}
 	
-	public static final void invoke(String className, String methodName) {
-		try {
-			Class<?> c = Class.forName(className);
-			Method m = c.getDeclaredMethod(methodName);
-			m.setAccessible(true);
-			m.invoke(true);
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-		}
+	public MethodHelper method(String name, Class<?>... params) {
+		return new MethodHelper(this.clazz, name, params);
 	}
 	
-	public static final void replaceField(Class<?> c, String fieldName, Object replacement) {
+	public FieldHelper field(String deobfname, String obfname) {
+		return new FieldHelper(this.clazz, deobfname, obfname, false);
+	}
+	
+	public FieldHelper finalField(String deobfname, String obfname) {
+		return new FieldHelper(this.clazz, deobfname, obfname, true);
+	}
+	
+	public <E> E newInstance(Object... params) {
 		try {
-			Field f = c.getDeclaredField(fieldName);
-			
-			Field m = Field.class.getDeclaredField("modifiers");
-			m.setAccessible(true);
-			m.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-			
-			f.setAccessible(true);
-			f.set(f, replacement);
-		} catch (ReflectiveOperationException e) {
+			for (Constructor<?> c: this.clazz.getDeclaredConstructors()) {
+				c.setAccessible(true);
+				if (c.getParameters().length != params.length) {
+					continue;
+				}
+				for (int a = 0; a < c.getParameters().length; a++) {
+					Parameter p = c.getParameters()[a];
+					if (p.getClass() != params[a].getClass()) {
+						continue;
+					}
+				}
+				return (E) c.newInstance(params);
+			}
+		} catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
-	public static final void replaceField(Class<?> c, Object object, String fieldName, Object replacement) {
-		try {
-			Field f = c.getDeclaredField(fieldName);
-			
-			Field m = Field.class.getDeclaredField("modifiers");
-			m.setAccessible(true);
-			m.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-			
-			f.setAccessible(true);
-			f.set(object, replacement);
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static final void replaceField(Class<?> c, Object object, String deObfFieldName, String obfFieldName, Object replacement) {
-		if (Utils.developmentEnvironment) {
-			replaceField(c, object, deObfFieldName, replacement);
-		}
-		else {
-			replaceField(c, object, obfFieldName, replacement);
-		}
-	}
-	
-	public static final void replaceField(Class<?> c, String deObfFieldName, String obfFieldName, Object replacement) {
-		if (Utils.developmentEnvironment) {
-			replaceField(c, deObfFieldName, replacement);
-		}
-		else {
-			replaceField(c, obfFieldName, replacement);
-		}
+	public boolean isInstance(Object object) {
+		return this.clazz.isInstance(object);
 	}
 }

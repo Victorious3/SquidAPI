@@ -20,10 +20,17 @@ public class Logger {
 	protected String folderName;
 	protected String fileName;
 	protected boolean savewithtime;
+	protected String name = "#Log";
 	
-	public Logger(String location, String name) {
-		folderName = location;
-		fileName = name;
+	public Logger(String location, String filename) {
+		this.folderName = location;
+		this.fileName = filename;
+	}
+	
+	public Logger(String location, String filename, String name) {
+		this.folderName = location;
+		this.fileName = filename;
+		this.name = "#" + name;
 	}
 	
 	public Logger(String folderName, String fileName, boolean savewithtime) {
@@ -38,17 +45,24 @@ public class Logger {
 		this.savewithtime = savewithtime;
 		this.timeformat = timeformat;
 	}
+	
+	public Logger(String folderName, String fileName, boolean savewithtime, SimpleDateFormat timeformat, String name) {
+		this.folderName = folderName;
+		this.fileName = fileName;
+		this.savewithtime = savewithtime;
+		this.timeformat = timeformat;
+	}
 
 	public String getFolderName() {
-		return folderName;
+		return this.folderName;
 	}
 
 	public String getFileName() {
-		return fileName;
+		return this.fileName;
 	}
 
 	public boolean shouldSaveWithTime() {
-		return savewithtime;
+		return this.savewithtime;
 	}
 
 	public void setFolderName(String folderName) {
@@ -60,7 +74,7 @@ public class Logger {
 	}
 	
 	public SimpleDateFormat getTimeFormat() {
-		return timeformat;
+		return this.timeformat;
 	}
 
 	public void setTimeFormat(SimpleDateFormat timeformat) {
@@ -84,8 +98,8 @@ public class Logger {
 			throw new LoggingException("The message was too long!");
 		}
 		
-		String time = timeformat.format(Calendar.getInstance().getTime());
-		loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
+		String time = this.timeformat.format(Calendar.getInstance().getTime());
+		this.loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 		if (level.equals(Level.INFO)) {
 			if (print) {
 				System.out.println("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
@@ -102,15 +116,15 @@ public class Logger {
 	}
 	
 	public void log(String msg) {
-		if (msg.length() > 1500) {
+		if (msg.length() > 10500) {
 			throw new LoggingException("The message was too long!");
 		}
-		loglist.add(msg);
+		this.loglist.add(msg);
 	}
 	
 	public void log(StackTraceElement[] stacktrace) {
-		for (int a = 0; a < loglist.size(); a++) {
-			loglist.add(stacktrace[a].getClassName());
+		for (int a = 0; a < this.loglist.size(); a++) {
+			this.loglist.add(stacktrace[a].getClassName());
 		}
 	}
 	
@@ -124,29 +138,29 @@ public class Logger {
 	 */
 	
 	public final void save() {
-		if (!savewithtime) {
-			File logFolder = new File("./" + folderName);
+		if (!this.savewithtime) {
+			File logFolder = new File("./" + this.folderName);
 			File log;
-			if (fileName.isEmpty()) {
-				log = new File("./" + folderName + "log.log");
+			if (this.fileName.isEmpty()) {
+				log = new File("./" + this.folderName + "log.log");
 			}
-			else if (fileName.contains(".")) {
-				log = new File("./" + folderName, fileName);
+			else if (this.fileName.contains(".")) {
+				log = new File("./" + this.folderName, this.fileName);
 			}
 			else {
-				log = new File("./" + folderName, fileName + ".log");
+				log = new File("./" + this.folderName, this.fileName + ".log");
 			}
 			PrintWriter w;
 			try {
 				logFolder.mkdirs();
-				if (!loglist.isEmpty()) {
+				if (!this.loglist.isEmpty()) {
 					w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
-					w.print("#Log");
-					for (int a = 0; a < loglist.size(); a++) {
-						w.print("\n");w.print(loglist.get(a));
+					w.print(this.name);
+					for (int a = 0; a < this.loglist.size(); a++) {
+						w.print("\n");w.print(this.loglist.get(a));
 					}
 					w.close();
-					loglist.clear();
+					this.loglist.clear();
 				}
 			}
 			catch (Exception e) {
@@ -157,26 +171,26 @@ public class Logger {
 		String fileTime = ft.format(Calendar.getInstance().getTime());
 		String fileDate = fd.format(Calendar.getInstance().getTime());
 		
-		File logFolder = new File("./" + folderName);
+		File logFolder = new File("./" + this.folderName);
 		File log;
-		if (fileName.isEmpty()) {
-			log = new File("./" + folderName, fileTime + "-" + fileDate + ".log");
+		if (this.fileName.isEmpty()) {
+			log = new File("./" + this.folderName, fileTime + "-" + fileDate + ".log");
 		}
 		else {
-			log = new File("./" + folderName, fileName + "-" + fileTime + "-" + fileDate + ".log");
+			log = new File("./" + this.folderName, this.fileName + "-" + fileTime + "-" + fileDate + ".log");
 		}
 		
 		PrintWriter w;
 		try {
 			logFolder.mkdirs();
-			if (!loglist.isEmpty()) {
+			if (!this.loglist.isEmpty()) {
 				w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
 				w.print("#Log");
-				for (int a = 0; a < loglist.size(); a++) {
-					w.print("\n");w.print(loglist.get(a));
+				for (int a = 0; a < this.loglist.size(); a++) {
+					w.print("\n");w.print(this.loglist.get(a));
 				}
 				w.close();
-				loglist.clear();
+				this.loglist.clear();
 			}
 		}
 		catch (Exception e) {
@@ -195,8 +209,8 @@ public class Logger {
 
 	@Override
 	public String toString() {
-		return "Logger [folderName=" + folderName + ", fileName=" + fileName
-				+ ", savewithtime=" + savewithtime + ", timeformat=" + timeformat + "]";
+		return "Logger [folderName=" + this.folderName + ", fileName=" + this.fileName
+				+ ", savewithtime=" + this.savewithtime + ", timeformat=" + this.timeformat + "]";
 	}
 
 	@Override
@@ -204,10 +218,10 @@ public class Logger {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((fileName == null) ? 0 : fileName.hashCode());
+				+ ((this.fileName == null) ? 0 : this.fileName.hashCode());
 		result = prime * result
-				+ ((folderName == null) ? 0 : folderName.hashCode());
-		result = prime * result + (savewithtime ? 1231 : 1237);
+				+ ((this.folderName == null) ? 0 : this.folderName.hashCode());
+		result = prime * result + (this.savewithtime ? 1231 : 1237);
 		return result;
 	}
 
@@ -223,21 +237,21 @@ public class Logger {
 			return false;
 		}
 		Logger other = (Logger) obj;
-		if (fileName == null) {
+		if (this.fileName == null) {
 			if (other.fileName != null) {
 				return false;
 			}
-		} else if (!fileName.equals(other.fileName)) {
+		} else if (!this.fileName.equals(other.fileName)) {
 			return false;
 		}
-		if (folderName == null) {
+		if (this.folderName == null) {
 			if (other.folderName != null) {
 				return false;
 			}
-		} else if (!folderName.equals(other.folderName)) {
+		} else if (!this.folderName.equals(other.folderName)) {
 			return false;
 		}
-		if (savewithtime != other.savewithtime) {
+		if (this.savewithtime != other.savewithtime) {
 			return false;
 		}
 		return true;

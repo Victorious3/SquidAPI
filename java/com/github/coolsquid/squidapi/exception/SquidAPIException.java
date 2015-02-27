@@ -4,41 +4,30 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.exception;
 
+
 public class SquidAPIException extends RuntimeException {
 	
 	private static final long serialVersionUID = -6117434239809129613L;
-	private static Throwable t;
-	private static String s;
-	public SquidAPIException(String comment) {
-		crash(comment);
-	}
+	private Throwable t = this.getCause();
+	private String s;
 	
-	public SquidAPIException() {
-		crash();
+	public SquidAPIException() {}
+	
+	public SquidAPIException(String comment) {
+		this.s = comment;
 	}
 	
 	public SquidAPIException(Throwable cause) {
-		t = cause;
-		crash();
-	}
-	
-	public void crash(String comment) {
-		s = comment;
-		throw this;
-	}
-	
-	public void crash() {
-		s = "";
-		throw this;
+		this.t = cause;
 	}
 	
 	@Override
 	public String getMessage() {
-		return s;
+		return this.s;
 	}
 	
 	@Override
 	public Throwable getCause() {
-		return t;
+		return this.t;
 	}
 }

@@ -1,5 +1,10 @@
-package com.github.coolsquid.squidapi.helpers;
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
+package com.github.coolsquid.squidapi.helpers.server;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,25 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListBansEntry;
 import net.minecraft.util.ChatComponentText;
 
-import com.mojang.authlib.GameProfile;
-
 public class ServerHelper {
-	
-	/**
-	 * @return - A list of ops.
-	 */
-	
-	public static String[] getOps() {
-		return MinecraftServer.getServer().getConfigurationManager().func_152603_m().func_152685_a();
-	}
-	
-	/**
-	 * @return - A list of banned players.
-	 */
-	
-	public static String[] getBans() {
-		return MinecraftServer.getServer().getConfigurationManager().func_152608_h().func_152685_a();
-	}
 	
 	/**
 	 * @return - A list of whitelisted players.
@@ -34,16 +21,6 @@ public class ServerHelper {
 	
 	public static String[] getWhitelist() {
 		return MinecraftServer.getServer().getConfigurationManager().func_152599_k().func_152685_a();
-	}
-	
-	/**
-	 * Bans a player.
-	 * @param player - The GameProfile of the player to ban.
-	 * @param reason - The reason for the ban.
-	 */
-	
-	public static void ban(GameProfile player, String reason) {
-		MinecraftServer.getServer().getConfigurationManager().func_152608_h().func_152687_a(new UserListBansEntry(player, Calendar.getInstance().getTime(), "SafeChat", null, reason));
 	}
 	
 	/**
@@ -62,9 +39,22 @@ public class ServerHelper {
 	 * @param reason - The reason for the kickban.
 	 */
 	
-	public static void kickBan(EntityPlayer player, String reason) {
-		MinecraftServer.getServer().getConfigurationManager().func_152608_h().func_152687_a(new UserListBansEntry(player.getGameProfile(), Calendar.getInstance().getTime(), "SafeChat", null, reason));
+	public static void ban(EntityPlayer player, String reason) {
+		BanHelper.ban(new UserListBansEntry(player.getGameProfile(), Calendar.getInstance().getTime(), "SafeChat", null, reason));
 		kick(player, reason);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static ArrayList<EntityPlayerMP> getAllPlayers() {
+		return (ArrayList<EntityPlayerMP>) MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+	}
+	
+	public static ArrayList<String> getAllDisplayNames() {
+		ArrayList<String> names = new ArrayList<String>();
+		for (EntityPlayerMP a: getAllPlayers()) {
+			names.add(a.getDisplayName());
+		}
+		return names;
 	}
 	
 	/**
@@ -77,32 +67,14 @@ public class ServerHelper {
 		return MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
 	}
 	
-	/**
-	 * Checks whether a player is op.
-	 * @param player - The player to check for op.
-	 * @return - True if the player is op.
-	 */
-	
-	public static boolean isOp(String player) {
-		return MinecraftServer.getServer().getConfigurationManager().func_152596_g(getPlayerFromName(player).getGameProfile());
-	}
-	
-	/**
-	 * Deops a player.
-	 * @param player - The player to deop.
-	 */
-	
-	public static void deop(GameProfile player) {
-		MinecraftServer.getServer().getConfigurationManager().func_152610_b(player);
-	}
-	
-	/**
-	 * Ops a player.
-	 * @param player - The player to make op.
-	 */
-	
-	public static void op(GameProfile player) {
-		MinecraftServer.getServer().getConfigurationManager().func_152605_a(player);
+	public static EntityPlayerMP getPlayerFromNick(String name) {
+		for (Object a: MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
+			EntityPlayerMP player = (EntityPlayerMP) a;
+			if (player.getDisplayName().equals(name)) {
+				return player;
+			}
+		}
+		return null;
 	}
 	
 	/**

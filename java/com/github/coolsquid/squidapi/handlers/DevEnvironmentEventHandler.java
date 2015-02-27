@@ -4,8 +4,13 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.handlers;
 
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
+import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,6 +23,14 @@ public class DevEnvironmentEventHandler {
 		if (event.entity instanceof EntityPlayer) {
 			((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(0.3F);
 			((EntityPlayer) event.entity).capabilities.setFlySpeed(0.3F);
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onGuiOpen(GuiOpenEvent event) {
+		if (event.gui instanceof GuiMainMenu) {
+			ReflectionHelper.in(GuiMainMenu.class).field("splashText", "field_73975_c").set(event.gui, "");
 		}
 	}
 }

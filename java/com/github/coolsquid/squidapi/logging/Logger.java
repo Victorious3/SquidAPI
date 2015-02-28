@@ -4,10 +4,10 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.logging;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,61 +17,25 @@ import com.github.coolsquid.squidapi.exception.SquidAPIException;
 
 public class Logger {
 	
-	protected String folderName;
-	protected String fileName;
-	protected boolean savewithtime;
-	protected String name = "#Log";
-	
-	public Logger(String location, String filename) {
-		this.folderName = location;
-		this.fileName = filename;
-	}
-	
-	public Logger(String location, String filename, String name) {
-		this.folderName = location;
-		this.fileName = filename;
-		this.name = "#" + name;
+	protected final String folder;
+	protected final String logfile;
+	protected final boolean usetime;
+
+	public Logger(String folder, String logfile) {
+		this.folder = folder;
+		this.logfile = logfile;
+		this.usetime = false;
+		new Saver(this).start();
 	}
 	
-	public Logger(String folderName, String fileName, boolean savewithtime) {
-		this.folderName = folderName;
-		this.fileName = fileName;
-		this.savewithtime = savewithtime;
+	public Logger(String folder, String logfile, boolean usetime) {
+		this.folder = folder;
+		this.logfile = logfile;
+		this.usetime = usetime;
+		new Saver(this).start();
 	}
 
-	public Logger(String folderName, String fileName, boolean savewithtime, SimpleDateFormat timeformat) {
-		this.folderName = folderName;
-		this.fileName = fileName;
-		this.savewithtime = savewithtime;
-		this.timeformat = timeformat;
-	}
-	
-	public Logger(String folderName, String fileName, boolean savewithtime, SimpleDateFormat timeformat, String name) {
-		this.folderName = folderName;
-		this.fileName = fileName;
-		this.savewithtime = savewithtime;
-		this.timeformat = timeformat;
-	}
-
-	public String getFolderName() {
-		return this.folderName;
-	}
-
-	public String getFileName() {
-		return this.fileName;
-	}
-
-	public boolean shouldSaveWithTime() {
-		return this.savewithtime;
-	}
-
-	public void setFolderName(String folderName) {
-		this.folderName = folderName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+	protected SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
 	
 	public SimpleDateFormat getTimeFormat() {
 		return this.timeformat;
@@ -82,8 +46,6 @@ public class Logger {
 	}
 
 	protected List<String> loglist = new ArrayList<String>();
-
-	protected SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
 	
 	/**
 	 * Adds a message to the log list, and prints it to the console.
@@ -128,8 +90,8 @@ public class Logger {
 		}
 	}
 	
-	protected static SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
-	protected static SimpleDateFormat fd = new SimpleDateFormat("dd-MM-YYYY");
+	protected static final SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
+	protected static final SimpleDateFormat fd = new SimpleDateFormat("dd-MM-YYYY");
 	
 	/**
 	 * Saves the log to the specified file at the specified location.
@@ -137,60 +99,24 @@ public class Logger {
 	 * @param name - The name of the log file.
 	 */
 	
-	public final void save() {
-		if (!this.savewithtime) {
-			File logFolder = new File("./" + this.folderName);
+	public void save() {
+		try {
+			File folder = new File(this.folder);
+			folder.mkdirs();
 			File log;
-			if (this.fileName.isEmpty()) {
-				log = new File("./" + this.folderName + "log.log");
-			}
-			else if (this.fileName.contains(".")) {
-				log = new File("./" + this.folderName, this.fileName);
+			if (this.usetime) {
+				log = new File(this.logfile.replace(".log", ft.format(Calendar.getInstance()) + "-" + fd.format(Calendar.getInstance()) +".log"));
 			}
 			else {
-				log = new File("./" + this.folderName, this.fileName + ".log");
+				log = new File(this.logfile);
 			}
-			PrintWriter w;
-			try {
-				logFolder.mkdirs();
-				if (!this.loglist.isEmpty()) {
-					w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
-					w.print(this.name);
-					for (int a = 0; a < this.loglist.size(); a++) {
-						w.print("\n");w.print(this.loglist.get(a));
-					}
-					w.close();
-					this.loglist.clear();
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-		String fileTime = ft.format(Calendar.getInstance().getTime());
-		String fileDate = fd.format(Calendar.getInstance().getTime());
-		
-		File logFolder = new File("./" + this.folderName);
-		File log;
-		if (this.fileName.isEmpty()) {
-			log = new File("./" + this.folderName, fileTime + "-" + fileDate + ".log");
-		}
-		else {
-			log = new File("./" + this.folderName, this.fileName + "-" + fileTime + "-" + fileDate + ".log");
-		}
-		
-		PrintWriter w;
-		try {
-			logFolder.mkdirs();
 			if (!this.loglist.isEmpty()) {
-				w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
-				w.print("#Log");
+				BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(log)));
 				for (int a = 0; a < this.loglist.size(); a++) {
-					w.print("\n");w.print(this.loglist.get(a));
+					w.write(this.loglist.get(a));
+					w.newLine();
 				}
 				w.close();
-				this.loglist.clear();
 			}
 		}
 		catch (Exception e) {
@@ -208,20 +134,11 @@ public class Logger {
 	}
 
 	@Override
-	public String toString() {
-		return "Logger [folderName=" + this.folderName + ", fileName=" + this.fileName
-				+ ", savewithtime=" + this.savewithtime + ", timeformat=" + this.timeformat + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((this.fileName == null) ? 0 : this.fileName.hashCode());
-		result = prime * result
-				+ ((this.folderName == null) ? 0 : this.folderName.hashCode());
-		result = prime * result + (this.savewithtime ? 1231 : 1237);
+		result = prime * result + ((this.folder == null) ? 0 : this.folder.hashCode());
+		result = prime * result + ((this.logfile == null) ? 0 : this.logfile.hashCode());
 		return result;
 	}
 
@@ -233,27 +150,50 @@ public class Logger {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof Logger)) {
+		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
 		Logger other = (Logger) obj;
-		if (this.fileName == null) {
-			if (other.fileName != null) {
+		if (this.folder == null) {
+			if (other.folder != null) {
 				return false;
 			}
-		} else if (!this.fileName.equals(other.fileName)) {
+		} else if (!this.folder.equals(other.folder)) {
 			return false;
 		}
-		if (this.folderName == null) {
-			if (other.folderName != null) {
+		if (this.logfile == null) {
+			if (other.logfile != null) {
 				return false;
 			}
-		} else if (!this.folderName.equals(other.folderName)) {
-			return false;
-		}
-		if (this.savewithtime != other.savewithtime) {
+		} else if (!this.logfile.equals(other.logfile)) {
 			return false;
 		}
 		return true;
+	}
+	
+	public class Saver extends Thread {
+		
+		private final Logger logger;
+		private int size = 0;
+		
+		public Saver(Logger logger) {
+			super();
+			this.logger = logger;
+		}
+		
+		@Override
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (this.logger.loglist.size() != this.size) {
+					this.logger.save();
+					this.size = this.logger.loglist.size();
+				}
+			}
+		}
 	}
 }

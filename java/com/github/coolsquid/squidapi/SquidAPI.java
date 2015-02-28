@@ -20,6 +20,7 @@ import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
+import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
@@ -32,6 +33,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -43,10 +45,12 @@ public class SquidAPI extends SquidAPIMod {
 		super("An API for all my mods.");
 	}
 	
-	public static final Logger logger = new Logger("", "SquidAPI");
+	public static final Logger logger = new Logger("./logs", "./logs/SquidAPI.log");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		LogHelper.info("Preinitializing.");
+		
 		CommonHandler.init();
 		
 		new ConfigHandler(event.getSuggestedConfigurationFile()).preInit();
@@ -56,17 +60,25 @@ public class SquidAPI extends SquidAPIMod {
 			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Utils.newList());
 			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Utils.newList());
 		}
-		if (ConfigHandler.branding != null) {
+		if (!ConfigHandler.branding.equals("")) {
 			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Utils.newList(ConfigHandler.branding));
 			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Utils.newList(ConfigHandler.branding));
 		}
-		if (!Loader.isModLoaded("DragonAPI")) {
-			ReflectionHelper.in(Potion.class).finalField("potionTypes", "field_76425_a").set(Arrays.copyOf(Potion.potionTypes, 256));
+		
+		if (!Loader.isModLoaded("DragonAPI") && ConfigHandler.maxPotionId != 32) {
+			LogHelper.info("Setting the max potion id to 256.");
+			ReflectionHelper.in(Potion.class).finalField("potionTypes", "field_76425_a").set(Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId));
 		}
+		
+		ContentRemover.blacklist("Reika.R");
+		
+		LogHelper.info("Finished preinitialization.");
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		LogHelper.info("Initializing.");
+		
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
 		if (Utils.developmentEnvironment) {
@@ -76,11 +88,20 @@ public class SquidAPI extends SquidAPIMod {
 		nbttag.setString("curseProjectName", "227345-squidapi");
 		nbttag.setString("curseFilenameParser", ModInfo.modid + "-[].jar");
 		FMLInterModComms.sendRuntimeMessage(ModInfo.modid, "VersionChecker", "addCurseCheck", nbttag);
+		
+		LogHelper.info("Finished initialization.");
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		LogHelper.info("Initializing.");
 		ContentRemover.removeContent();
+		LogHelper.info("Finished initialization.");
+	}
+	
+	@EventHandler
+	public void finishedLoading(FMLLoadCompleteEvent event) {
+		
 	}
 	
 	public static final ArrayList<ICommand> commands = new ArrayList<ICommand>();

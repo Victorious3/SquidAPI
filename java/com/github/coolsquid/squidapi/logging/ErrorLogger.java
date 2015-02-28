@@ -19,7 +19,5 @@ public class ErrorLogger {
 			this.logger.log("	" + a.toString());
 		}
 		this.logger.log("---------------------------------------------------------------------------------------------------------------");
-		this.logger.save();
-		throw t;
 	}
 }

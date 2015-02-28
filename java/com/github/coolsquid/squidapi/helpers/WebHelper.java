@@ -16,23 +16,19 @@ public class WebHelper extends Thread {
 	
 	private String url;
 	
-	public WebHelper() {
-		
-	}
-	
 	@Override
 	public void run() {
-		read();
+		this.read();
 	}
 	
 	private ArrayList<String> text;
 	
 	public ArrayList<String> getText() {
-		return text;
+		return this.text;
 	}
 
 	public void read() {
-		text = new ArrayList<String>();
+		this.text = new ArrayList<String>();
 		try {
 			URL url = new URL(this.url);
 			URLConnection connection = url.openConnection();
@@ -44,7 +40,7 @@ public class WebHelper extends Thread {
 			while (true) {
 				String s = r.readLine();
 				if (s == null) break;
-				text.add(s);
+				this.text.add(s);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

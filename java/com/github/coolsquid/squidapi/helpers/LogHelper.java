@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.util.ModInfo;
 
-public final class LogHelper {
+public class LogHelper {
 	
 	public static final Logger logger = LogManager.getLogger(ModInfo.modid);
 	

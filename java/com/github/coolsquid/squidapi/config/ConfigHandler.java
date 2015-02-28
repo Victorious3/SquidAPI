@@ -28,11 +28,13 @@ public class ConfigHandler {
 	}
 	
 	public static boolean cleanMenu;
-	public static String branding = null;
+	public static String branding = "";
+	public static int maxPotionId = 256;
 	
 	private final void readConfig() {
 		cleanMenu = this.config.getBoolean("cleanMenu", this.CATEGORY_GENERAL, false, "Cleans up the main menu a bit.");
 		branding = this.config.getString("branding", this.CATEGORY_GENERAL, "", "Will show up besides the Forge branding on the main menu. Not affected by \"cleanMenu\".");
+		maxPotionId = this.config.getInt("maxPotionId", this.CATEGORY_GENERAL, 256, 32, 512, "Sets the max potion id to 256. The Vanilla max id is 32.");
 		
 		if (this.config.hasChanged()) {
 			this.config.save();

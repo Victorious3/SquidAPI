@@ -70,7 +70,7 @@ public class SquidAPI extends SquidAPIMod {
 			ReflectionHelper.in(Potion.class).finalField("potionTypes", "field_76425_a").set(Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId));
 		}
 		
-		ContentRemover.blacklist("Reika.R");
+		ContentRemover.blacklist("Reika.");
 		
 		LogHelper.info("Finished preinitialization.");
 	}

@@ -9,7 +9,7 @@ public class ReflectionException extends SquidAPIException {
 	
 	public ReflectionException() {}
 	
-	public ReflectionException(String comment) throws Exception {
+	public ReflectionException(String comment) {
 		super(comment);
 	}
 }

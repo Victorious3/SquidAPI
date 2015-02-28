@@ -29,23 +29,23 @@ public class BlockBasic extends Block {
 		
 	public BlockBasic(String name) {
 		super(material);
-		setBlockTextureName(ModInfo.modid + ":" + name);
-		initBlock(name);
+		this.setBlockTextureName(ModInfo.modid + ":" + name);
+		this.initBlock(name);
 	}
 	
 	public BlockBasic(String name, String textureName) {
 		super(material);
-		setBlockTextureName(ModInfo.modid + ":" + textureName);
-		initBlock(name);
+		this.setBlockTextureName(ModInfo.modid + ":" + textureName);
+		this.initBlock(name);
 	}
 	
 	public BlockBasic initBlock(String name) {
-		setBlockName(name);
+		this.setBlockName(name);
 		GameRegistry.registerBlock(this, name);
-		setHardness(1.5F);
-		setHarvestLevel("pickaxe", 3);
-		setResistance(10F);
-		setStepSound(Block.soundTypeStone);
+		this.setHardness(1.5F);
+		this.setHarvestLevel("pickaxe", 3);
+		this.setResistance(10F);
+		this.setStepSound(Block.soundTypeStone);
 		return this;
 	}
 
@@ -76,26 +76,26 @@ public class BlockBasic extends Block {
 
 	@Override
 	public int getMobilityFlag() {
-		return mobility;
+		return this.mobility;
 	}
 	
 	@Override
 	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
-		return canEntityDestroy;
+		return this.canEntityDestroy;
 	}
 	
 	@Override
 	public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
-		return isLadder;
+		return this.isLadder;
 	}
 	
 	@Override
 	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-		return canCreatureSpawn;
+		return this.canCreatureSpawn;
 	}
 	
 	@Override
 	public boolean canDropFromExplosion(Explosion explosion) {
-		return canDropFromExplosion;
+		return this.canDropFromExplosion;
 	}
 }

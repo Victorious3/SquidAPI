@@ -21,8 +21,8 @@ public class ReflectionHelper {
 		return new ReflectionHelper(clazz);
 	}
 	
-	public MethodHelper method(String name, Class<?>... params) {
-		return new MethodHelper(this.clazz, name, params);
+	public MethodHelper method(String deobfname, String obfname, Class<?>... params) {
+		return new MethodHelper(this.clazz, deobfname, obfname, params);
 	}
 	
 	public FieldHelper field(String deobfname, String obfname) {

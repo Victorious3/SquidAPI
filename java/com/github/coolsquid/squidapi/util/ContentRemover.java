@@ -5,7 +5,8 @@
 package com.github.coolsquid.squidapi.util;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -14,14 +15,14 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+
+import cpw.mods.fml.common.Loader;
 
 public class ContentRemover {
 
 	private static final ArrayList<Item> recipesToRemove = new ArrayList<Item>();
-	private static final ArrayList<Integer> enchantmentsToRemove = new ArrayList<Integer>();
-	private static final ArrayList<Integer> potionsToRemove = new ArrayList<Integer>();
-	private static final ArrayList<String> blacklist = new ArrayList<String>();
+	private static final HashSet<String> blacklist = new HashSet<String>();
 	
 	public static void blacklist(String... mods) {
 		for (String mod: mods) {
@@ -29,8 +30,17 @@ public class ContentRemover {
 		}
 	}
 	
-	public static List<String> getBlacklist() {
-		return ImmutableList.copyOf(blacklist);
+	public static Set<String> getBlacklist() {
+		return ImmutableSet.copyOf(blacklist);
+	}
+	
+	public static boolean isBlacklistedModLoaded() {
+		for (String mod: getBlacklist()) {
+			if (Loader.isModLoaded(mod)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static void remove(String name, ContentType contenttype) {
@@ -42,20 +52,27 @@ public class ContentRemover {
 			}
 		}
 		if (contenttype == ContentType.RECIPE) {
-			Item item = (Item) Item.itemRegistry.getObject(name);
+			recipesToRemove.add((Item) Item.itemRegistry.getObject(name));
+		}
+		else if (contenttype == ContentType.ENCHANTMENT) {
 			for (String mod: getBlacklist()) {
-				if (item.getClass().getName().startsWith(mod)) {
-					LogHelper.warn(name.split(":")[0] + " has requested to be blacklisted from content removal. " + name + " will not be removed.");
+				Enchantment e = Enchantment.enchantmentsList[Integer.parseInt(name)];
+				if (e != null && e.getClass().getName().contains(mod)) {
+					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Enchantment ", name, " will not be removed.");
 					return;
 				}
 			}
-			recipesToRemove.add(item);
-		}
-		else if (contenttype == ContentType.ENCHANTMENT) {
-			enchantmentsToRemove.add(Integer.parseInt(name));
+			Enchantment.enchantmentsList[Integer.parseInt(name)] = null;
 		}
 		else if (contenttype == ContentType.POTION) {
-			potionsToRemove.add(Integer.parseInt(name));
+			for (String mod: getBlacklist()) {
+				Potion e = Potion.potionTypes[Integer.parseInt(name)];
+				if (e != null && e.getClass().getName().contains(mod)) {
+					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Potion ", name, " will not be removed.");
+					return;
+				}
+			}
+			Potion.potionTypes[Integer.parseInt(name)] = null;
 		}
 	}
 	
@@ -81,16 +98,6 @@ public class ContentRemover {
 						}
 					}
 				}
-			}
-		}
-		if (!enchantmentsToRemove.isEmpty()) {
-			for (int a: enchantmentsToRemove) {
-				Enchantment.enchantmentsList[a] = null;
-			}
-		}
-		if (!potionsToRemove.isEmpty()) {
-			for (int a: potionsToRemove) {
-				Potion.potionTypes[a] = null;
 			}
 		}
 	}

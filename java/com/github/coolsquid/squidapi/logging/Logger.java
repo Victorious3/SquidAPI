@@ -22,10 +22,7 @@ public class Logger {
 	protected final boolean usetime;
 
 	public Logger(String folder, String logfile) {
-		this.folder = folder;
-		this.logfile = logfile;
-		this.usetime = false;
-		new Saver(this).start();
+		this(folder, logfile, false);
 	}
 	
 	public Logger(String folder, String logfile, boolean usetime) {

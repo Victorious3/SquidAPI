@@ -92,11 +92,6 @@ public class Utils {
 		return hash;
 	}
 	
-	/** Blacklist to enforce Reika's third party modification rules.*/
-	public static boolean doNotClearRecipes() {
-		return Loader.isModLoaded("Rotarycraft") || Loader.isModLoaded("Chromaticraft");
-	}
-	
 	@SuppressWarnings("unchecked")
 	public static <E> List<E> newList(Object... objects) {
 		ArrayList<Object> a = new ArrayList<Object>();
@@ -113,5 +108,13 @@ public class Utils {
 			a.add(object);
 		}
 		return (Set<E>) a;
+	}
+	
+	public static Class<?> getClass(String name) {
+		try {
+			return Class.forName(name);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
 	}
 }

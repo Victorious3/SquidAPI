@@ -66,11 +66,11 @@ public class SquidAPI extends SquidAPIMod {
 		}
 		
 		if (!Loader.isModLoaded("DragonAPI") && ConfigHandler.maxPotionId != 32) {
-			LogHelper.info("Setting the max potion id to 256.");
+			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxPotionId, ".");
 			ReflectionHelper.in(Potion.class).finalField("potionTypes", "field_76425_a").set(Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId));
 		}
 		
-		ContentRemover.blacklist("Reika.");
+		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
 		
 		LogHelper.info("Finished preinitialization.");
 	}
@@ -94,14 +94,13 @@ public class SquidAPI extends SquidAPIMod {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		LogHelper.info("Initializing.");
-		ContentRemover.removeContent();
-		LogHelper.info("Finished initialization.");
+		LogHelper.info("Postinitializing.");
+		LogHelper.info("Finished postinitialization.");
 	}
 	
 	@EventHandler
 	public void finishedLoading(FMLLoadCompleteEvent event) {
-		
+		ContentRemover.removeContent();
 	}
 	
 	public static final ArrayList<ICommand> commands = new ArrayList<ICommand>();

@@ -7,6 +7,7 @@ package com.github.coolsquid.squidapi.command;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
+import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.handlers.command.NewsHandler;
 
 public class CommandSquidAPI extends CommandBase {
@@ -25,10 +26,6 @@ public class CommandSquidAPI extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		if (args.length != 1) {
-			this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");
-			return;
-		}
 		String subcommand = args[0];
 		if (subcommand.equals("news")) {
 			NewsHandler thread = new NewsHandler(sender);
@@ -38,6 +35,9 @@ public class CommandSquidAPI extends CommandBase {
 			this.sendMsg(sender, "Available commands:");
 			this.sendHelp(sender, "help");
 			this.sendHelp(sender, "news");
+		}
+		else if (subcommand.equals("credits")) {
+			this.sendMsg(sender, SquidAPIMod.getMetadata(args[1]).credits);
 		}
 		else {
 			this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");

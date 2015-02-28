@@ -16,16 +16,14 @@ public class FieldHelper {
 	private final boolean isfinal;
 
 	FieldHelper(Class<?> clazz, String deobfname, String obfname, boolean isfinal) {
+		String name = obfname;
+		if (Utils.developmentEnvironment) {
+			name = deobfname;
+		}
 		try {
-			if (Utils.developmentEnvironment) {
-				this.field = clazz.getDeclaredField(deobfname);
-			}
-			else {
-				this.field = clazz.getDeclaredField(obfname);
-			}
+			this.field = clazz.getDeclaredField(name);
 		} catch (NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-			throw new ReflectionException();
+			throw new ReflectionException("Could not find field " + name);
 		}
 		this.isfinal = isfinal;
 	}

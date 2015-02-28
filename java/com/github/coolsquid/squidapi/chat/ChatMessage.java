@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.chat;
 
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -26,6 +28,11 @@ public class ChatMessage extends ChatComponentText {
 	
 	public ChatMessage setUnderlined() {
 		this.getChatStyle().setUnderlined(true);
+		return this;
+	}
+	
+	public ChatMessage setUrl(String url) {
+		this.getChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, url));
 		return this;
 	}
 }

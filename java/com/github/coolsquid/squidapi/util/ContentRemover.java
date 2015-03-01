@@ -11,10 +11,13 @@ import java.util.Set;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.WeightedRandomFishable;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DungeonHooks;
 
 import com.github.coolsquid.squidapi.helpers.FishingHelper;
@@ -108,6 +111,13 @@ public class ContentRemover {
 		else if (type == ContentType.DUNGEONMOB) {
 			DungeonHooks.removeDungeonMob(name);
 		}
+		else if (type == ContentType.CHESTGEN) {
+			String[] gg = name.split(";");
+			ChestGenHooks.removeItem(gg[0], new ItemStack((Item) Item.itemRegistry.getObject(gg[1])));
+		}
+		else if (type == ContentType.BIOME) {
+			BiomeGenBase.biomeList[Integer.parseInt(name)] = null;
+		}
 	}
 	
 	public enum ContentType {
@@ -117,7 +127,9 @@ public class ContentRemover {
 		FISH,
 		JUNK,
 		TREASURE,
-		DUNGEONMOB;
+		DUNGEONMOB,
+		CHESTGEN,
+		BIOME;
 	}
 	
 	/**

@@ -74,6 +74,7 @@ public class SquidAPI extends SquidAPIMod {
 		
 		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
 		ContentRemover.remove("minecraft:fish", ContentType.FISH);
+		ContentRemover.remove("Zombie", ContentType.DUNGEONMOB);
 		
 		LogHelper.info("Finished preinitialization.");
 	}

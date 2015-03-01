@@ -21,6 +21,7 @@ import net.minecraftforge.common.DungeonHooks;
 
 import com.github.coolsquid.squidapi.helpers.FishingHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
+import com.github.coolsquid.squidapi.helpers.VillageHelper;
 import com.google.common.collect.ImmutableSet;
 
 import cpw.mods.fml.common.Loader;
@@ -114,6 +115,9 @@ public class ContentRemover {
 			String[] gg = name.split(";");
 			ChestGenHooks.removeItem(gg[0], new ItemStack((Item) Item.itemRegistry.getObject(gg[1])));
 		}
+		else if (type == ContentType.PROFESSION) {
+			VillageHelper.professionstoremove.add(Integer.parseInt(name));
+		}
 	}
 	
 	public enum ContentType {
@@ -124,7 +128,8 @@ public class ContentRemover {
 		JUNK,
 		TREASURE,
 		DUNGEONMOB,
-		CHESTGEN;
+		CHESTGEN,
+		PROFESSION;
 	}
 	
 	/**

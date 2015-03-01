@@ -9,7 +9,7 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 
-import com.github.coolsquid.squidapi.util.Utils;
+import com.github.coolsquid.squidapi.exception.IdException;
 
 public class BiomeHelper {
 	
@@ -24,12 +24,12 @@ public class BiomeHelper {
 	}
 	
 	public static int findFreeId() {
-		for (int a = 0; a < BiomeGenBase.getBiomeGenArray().length; a++) {
+		for (int a = 0; a < 256; a++) {
 			BiomeGenBase b = BiomeGenBase.getBiomeGenArray()[a];
 			if (b == null) {
 				return a;
 			}
 		}
-		return Utils.getRandInt(32, 255);
+		throw new IdException("No free biome ids!");
 	}
 }

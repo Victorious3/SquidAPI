@@ -6,8 +6,7 @@ package com.github.coolsquid.squidapi.helpers;
 
 import net.minecraft.enchantment.Enchantment;
 
-import com.github.coolsquid.squidapi.config.ConfigHandler;
-import com.github.coolsquid.squidapi.util.Utils;
+import com.github.coolsquid.squidapi.exception.IdException;
 
 public class EnchantmentHelper {
 	
@@ -18,6 +17,6 @@ public class EnchantmentHelper {
 				return a;
 			}
 		}
-		return Utils.getRandInt(32, ConfigHandler.maxPotionId);
+		throw new IdException("No free enchantment ids!");
 	}
 }

@@ -11,7 +11,7 @@ import net.minecraft.command.ICommandSender;
 
 import com.github.coolsquid.squidapi.helpers.server.OpHelper;
 
-public class CommandBase implements ICommand {
+public abstract class CommandBase implements ICommand {
 	
 	private String name;
 	private String desc;
@@ -46,11 +46,6 @@ public class CommandBase implements ICommand {
 	@Override
 	public List<?> getCommandAliases() {
 		return null;
-	}
-
-	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
-		
 	}
 
 	@Override

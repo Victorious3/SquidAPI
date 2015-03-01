@@ -12,6 +12,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.coolsquid.squidapi.util.ModInfo;
 
@@ -21,12 +23,14 @@ public class BlockBasic extends Block {
 	
 	private static final Material material = new Material(MapColor.stoneColor);
 
-	private int mobility = 0;
-	private boolean canEntityDestroy = true;
-	private boolean isLadder;
-	private boolean canCreatureSpawn = true;
-	private boolean canDropFromExplosion = true;
-		
+	public int mobility = 0;
+	public boolean canEntityDestroy = true;
+	public boolean isLadder;
+	public boolean canCreatureSpawn = true;
+	public boolean canDropFromExplosion = true;
+
+	public boolean isFireSource;
+	
 	public BlockBasic(String name) {
 		super(material);
 		this.setBlockTextureName(ModInfo.modid + ":" + name);
@@ -48,32 +52,7 @@ public class BlockBasic extends Block {
 		this.setStepSound(Block.soundTypeStone);
 		return this;
 	}
-
-	public BlockBasic setMobility(int mobility) {
-		this.mobility = mobility;
-		return this;
-	}
-
-	public BlockBasic setCanEntityDestroy(boolean canEntityDestroy) {
-		this.canEntityDestroy = canEntityDestroy;
-		return this;
-	}
 	
-	public BlockBasic setIsLadder(boolean isLadder) {
-		this.isLadder = isLadder;
-		return this;
-	}
-
-	public BlockBasic setCanCreatureSpawn(boolean canCreatureSpawn) {
-		this.canCreatureSpawn = canCreatureSpawn;
-		return this;
-	}
-
-	public BlockBasic setCanDropFromExplosion(boolean canDropFromExplosion) {
-		this.canDropFromExplosion = canDropFromExplosion;
-		return this;
-	}
-
 	@Override
 	public int getMobilityFlag() {
 		return this.mobility;
@@ -97,5 +76,10 @@ public class BlockBasic extends Block {
 	@Override
 	public boolean canDropFromExplosion(Explosion explosion) {
 		return this.canDropFromExplosion;
+	}
+	
+	@Override
+	public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side) {
+		return this.isFireSource;
 	}
 }

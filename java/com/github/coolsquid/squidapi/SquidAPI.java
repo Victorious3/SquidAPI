@@ -10,7 +10,6 @@ import java.util.Arrays;
 import net.minecraft.command.ICommand;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,10 +22,10 @@ import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
+import com.github.coolsquid.squidapi.helpers.VillageHelper;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
-import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.Utils;
 
@@ -74,13 +73,6 @@ public class SquidAPI extends SquidAPIMod {
 		}
 		
 		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
-		ContentRemover.remove("minecraft:fish", ContentType.FISH);
-		ContentRemover.remove("Zombie", ContentType.DUNGEONMOB);
-		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:wooden_pickaxe", ContentType.CHESTGEN);
-		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:planks", ContentType.CHESTGEN);
-		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:wooden_axe", ContentType.CHESTGEN);
-		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:log", ContentType.CHESTGEN);
-		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:log2", ContentType.CHESTGEN);
 		
 		LogHelper.info("Finished preinitialization.");
 	}
@@ -111,6 +103,9 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void finishedLoading(FMLLoadCompleteEvent event) {
 		ContentRemover.removeContent();
+		if (!VillageHelper.professionstoremove.isEmpty()) {
+			MinecraftForge.EVENT_BUS.register(new VillageHelper());
+		}
 	}
 	
 	public static final ArrayList<ICommand> commands = new ArrayList<ICommand>();

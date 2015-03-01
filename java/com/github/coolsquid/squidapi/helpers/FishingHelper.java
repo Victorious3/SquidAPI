@@ -16,9 +16,11 @@ public class FishingHelper {
 	public static ArrayList<WeightedRandomFishable> getFish() {
 		return ReflectionHelper.in(FishingHooks.class).field("fish", "fish").get();
 	}
+	
 	public static ArrayList<WeightedRandomFishable> getJunk() {
 		return ReflectionHelper.in(FishingHooks.class).field("junk", "junk").get();
 	}
+	
 	public static ArrayList<WeightedRandomFishable> getTreasure() {
 		return ReflectionHelper.in(FishingHooks.class).field("treasure", "treasure").get();
 	}

@@ -6,7 +6,7 @@ package com.github.coolsquid.squidapi.helpers;
 
 import net.minecraft.potion.Potion;
 
-import com.github.coolsquid.squidapi.util.Utils;
+import com.github.coolsquid.squidapi.exception.IdException;
 
 public class PotionHelper {
 
@@ -17,6 +17,6 @@ public class PotionHelper {
 				return a;
 			}
 		}
-		return Utils.getRandInt(32, 255);
+		throw new IdException("No free potion ids!");
 	}
 }

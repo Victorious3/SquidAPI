@@ -11,8 +11,10 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.launchwrapper.Launch;
+import scala.util.hashing.MurmurHash3.ArrayHashing;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
@@ -116,5 +118,13 @@ public class Utils {
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
+	}
+	
+	public static ModContainer getMod(String modid) {
+		return Loader.instance().getIndexedModList().get(modid);
+	}
+	
+	public static int hash(Object object) {
+		return new ArrayHashing<Object>().hash(object);
 	}
 }

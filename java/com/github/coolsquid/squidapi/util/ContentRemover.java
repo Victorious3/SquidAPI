@@ -6,6 +6,7 @@ package com.github.coolsquid.squidapi.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.enchantment.Enchantment;
@@ -13,7 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.WeightedRandomFishable;
+import net.minecraftforge.common.DungeonHooks;
 
+import com.github.coolsquid.squidapi.helpers.FishingHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.google.common.collect.ImmutableSet;
 
@@ -43,18 +47,18 @@ public class ContentRemover {
 		return false;
 	}
 	
-	public static void remove(String name, ContentType contenttype) {
+	public static void remove(String name, ContentType type) {
 		for (String mod: blacklist) {
 			if (name.startsWith(mod + ":")) {
-				String content = contenttype.toString() + " " + name;
+				String content = type.toString() + " " + name;
 				LogHelper.warn(mod + " has requested to be blacklisted from content removal. " + content + " will not be removed.");
 				return;
 			}
 		}
-		if (contenttype == ContentType.RECIPE) {
+		if (type == ContentType.RECIPE) {
 			recipesToRemove.add((Item) Item.itemRegistry.getObject(name));
 		}
-		else if (contenttype == ContentType.ENCHANTMENT) {
+		else if (type == ContentType.ENCHANTMENT) {
 			for (String mod: getBlacklist()) {
 				Enchantment e = Enchantment.enchantmentsList[Integer.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
@@ -64,7 +68,7 @@ public class ContentRemover {
 			}
 			Enchantment.enchantmentsList[Integer.parseInt(name)] = null;
 		}
-		else if (contenttype == ContentType.POTION) {
+		else if (type == ContentType.POTION) {
 			for (String mod: getBlacklist()) {
 				Potion e = Potion.potionTypes[Integer.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
@@ -74,12 +78,46 @@ public class ContentRemover {
 			}
 			Potion.potionTypes[Integer.parseInt(name)] = null;
 		}
+		else if (type == ContentType.FISH) {
+			ArrayList<WeightedRandomFishable> fish = FishingHelper.getFish();
+			for (int a = 0; a < fish.size(); a++) {
+				WeightedRandomFishable fishable = fish.get(a);
+				if (fishable.func_150708_a(new Random()).getItem() == Item.itemRegistry.getObject(name)) {
+					fish.remove(a);
+				}
+			}
+		}
+		else if (type == ContentType.JUNK) {
+			ArrayList<WeightedRandomFishable> junk = FishingHelper.getJunk();
+			for (int a = 0; a < junk.size(); a++) {
+				WeightedRandomFishable fishable = junk.get(a);
+				if (fishable.func_150708_a(new Random()).getItem() == Item.itemRegistry.getObject(name)) {
+					junk.remove(a);
+				}
+			}
+		}
+		else if (type == ContentType.TREASURE) {
+			ArrayList<WeightedRandomFishable> treasure = FishingHelper.getTreasure();
+			for (int a = 0; a < treasure.size(); a++) {
+				WeightedRandomFishable fishable = treasure.get(a);
+				if (fishable.func_150708_a(new Random()).getItem() == Item.itemRegistry.getObject(name)) {
+					treasure.remove(a);
+				}
+			}
+		}
+		else if (type == ContentType.DUNGEONMOB) {
+			DungeonHooks.removeDungeonMob(name);
+		}
 	}
 	
 	public enum ContentType {
 		RECIPE,
 		ENCHANTMENT,
-		POTION;
+		POTION,
+		FISH,
+		JUNK,
+		TREASURE,
+		DUNGEONMOB;
 	}
 	
 	/**

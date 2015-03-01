@@ -14,6 +14,7 @@ import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandSquidAPI;
 import com.github.coolsquid.squidapi.config.ConfigHandler;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
@@ -24,6 +25,7 @@ import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
+import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.Utils;
 
@@ -71,6 +73,7 @@ public class SquidAPI extends SquidAPIMod {
 		}
 		
 		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
+		ContentRemover.remove("minecraft:fish", ContentType.FISH);
 		
 		LogHelper.info("Finished preinitialization.");
 	}
@@ -108,6 +111,7 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandSquidAPI());
+		event.registerServerCommand(new CommandAbout());
 		for (ICommand a: commands) {
 			event.registerServerCommand(a);
 		}

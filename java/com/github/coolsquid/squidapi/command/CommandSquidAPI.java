@@ -7,13 +7,13 @@ package com.github.coolsquid.squidapi.command;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
-import com.github.coolsquid.squidapi.SquidAPIMod;
+import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.command.NewsHandler;
 
 public class CommandSquidAPI extends CommandBase {
 
 	public CommandSquidAPI() {
-		super("SquidAPI", "");
+		super("SquidAPI", "", false);
 	}
 	
 	private void sendMsg(ICommandSender sender, String msg) {
@@ -36,8 +36,8 @@ public class CommandSquidAPI extends CommandBase {
 			this.sendHelp(sender, "help");
 			this.sendHelp(sender, "news");
 		}
-		else if (subcommand.equals("credits")) {
-			this.sendMsg(sender, SquidAPIMod.getMetadata(args[1]).credits);
+		else if (subcommand.equals("togglesuperspeed")) {
+			DevEnvironmentEventHandler.speedy = !DevEnvironmentEventHandler.speedy;
 		}
 		else {
 			this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");

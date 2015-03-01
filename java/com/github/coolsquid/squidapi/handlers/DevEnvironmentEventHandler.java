@@ -17,10 +17,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class DevEnvironmentEventHandler {
 	
+	public static boolean speedy = true;
+	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void playerUpdate(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
+			if (!speedy) {
+				((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(0.1F);
+				((EntityPlayer) event.entity).capabilities.setFlySpeed(0.05F);
+				return;
+			}
 			((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(0.3F);
 			((EntityPlayer) event.entity).capabilities.setFlySpeed(0.3F);
 		}

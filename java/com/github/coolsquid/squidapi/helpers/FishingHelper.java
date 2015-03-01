@@ -12,7 +12,7 @@ import net.minecraftforge.common.FishingHooks;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 
 public class FishingHelper {
-
+	
 	public static ArrayList<WeightedRandomFishable> getFish() {
 		return ReflectionHelper.in(FishingHooks.class).field("fish", "fish").get();
 	}

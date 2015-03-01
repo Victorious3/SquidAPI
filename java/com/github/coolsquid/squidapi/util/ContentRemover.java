@@ -16,7 +16,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.WeightedRandomFishable;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DungeonHooks;
 
@@ -115,9 +114,6 @@ public class ContentRemover {
 			String[] gg = name.split(";");
 			ChestGenHooks.removeItem(gg[0], new ItemStack((Item) Item.itemRegistry.getObject(gg[1])));
 		}
-		else if (type == ContentType.BIOME) {
-			BiomeGenBase.biomeList[Integer.parseInt(name)] = null;
-		}
 	}
 	
 	public enum ContentType {
@@ -128,8 +124,7 @@ public class ContentRemover {
 		JUNK,
 		TREASURE,
 		DUNGEONMOB,
-		CHESTGEN,
-		BIOME;
+		CHESTGEN;
 	}
 	
 	/**

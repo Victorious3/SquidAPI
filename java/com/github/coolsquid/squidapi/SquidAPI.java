@@ -10,6 +10,7 @@ import java.util.Arrays;
 import net.minecraft.command.ICommand;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
@@ -75,6 +76,11 @@ public class SquidAPI extends SquidAPIMod {
 		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
 		ContentRemover.remove("minecraft:fish", ContentType.FISH);
 		ContentRemover.remove("Zombie", ContentType.DUNGEONMOB);
+		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:wooden_pickaxe", ContentType.CHESTGEN);
+		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:planks", ContentType.CHESTGEN);
+		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:wooden_axe", ContentType.CHESTGEN);
+		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:log", ContentType.CHESTGEN);
+		ContentRemover.remove(ChestGenHooks.BONUS_CHEST + ";minecraft:log2", ContentType.CHESTGEN);
 		
 		LogHelper.info("Finished preinitialization.");
 	}

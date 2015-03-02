@@ -11,7 +11,7 @@ import net.minecraft.command.ICommandSender;
 
 import com.github.coolsquid.squidapi.helpers.server.OpHelper;
 
-public class CommandBase implements ICommand {
+public abstract class CommandBase implements ICommand {
 	
 	private String name;
 	private String desc;
@@ -66,9 +66,5 @@ public class CommandBase implements ICommand {
 	@Override
 	public boolean isUsernameIndex(String[] args, int index) {
 		return false;
-	}
-
-	@Override
-	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
 	}
 }

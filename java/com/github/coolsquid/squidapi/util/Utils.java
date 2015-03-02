@@ -4,11 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.launchwrapper.Launch;
 import scala.util.hashing.MurmurHash3.ArrayHashing;
@@ -92,24 +88,6 @@ public class Utils {
 			hash = hash + (input.charAt(a) * input.charAt(a) * prime * (a + 1 * hash) * input.length());
 		}
 		return hash;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <E> List<E> newList(Object... objects) {
-		ArrayList<Object> a = new ArrayList<Object>();
-		for (Object object: objects) {
-			a.add(object);
-		}
-		return (List<E>) a;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <E> Set<E> newSet(Object... objects) {
-		HashSet<Object> a = new HashSet<Object>();
-		for (Object object: objects) {
-			a.add(object);
-		}
-		return (Set<E>) a;
 	}
 	
 	public static Class<?> getClass(String name) {

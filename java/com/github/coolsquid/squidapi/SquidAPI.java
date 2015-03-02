@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.minecraft.command.ICommand;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.common.ForgeVersion;
@@ -28,6 +29,7 @@ import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.Utils;
+import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -59,17 +61,21 @@ public class SquidAPI extends SquidAPIMod {
 		
 		if (Utils.developmentEnvironment || ConfigHandler.cleanMenu) {
 			ReflectionHelper.in(ForgeVersion.class).field("status", "status").set(Status.UP_TO_DATE);
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Utils.newList());
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Utils.newList());
+			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Lists.newArrayList());
+			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Lists.newArrayList());
 		}
 		if (!ConfigHandler.branding.equals("")) {
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Utils.newList(ConfigHandler.branding));
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Utils.newList(ConfigHandler.branding));
+			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Lists.newArrayList(ConfigHandler.branding));
+			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Lists.newArrayList(ConfigHandler.branding));
 		}
 		
 		if (!Loader.isModLoaded("DragonAPI") && ConfigHandler.maxPotionId != 32) {
 			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxPotionId, ".");
-			ReflectionHelper.in(Potion.class).finalField("potionTypes", "field_76425_a").set(Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId));
+			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId);
+		}
+		if (ConfigHandler.maxEnchantmentId != 256) {
+			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxEnchantmentId, ".");
+			Enchantment.enchantmentsList = Arrays.copyOf(Enchantment.enchantmentsList, ConfigHandler.maxEnchantmentId);
 		}
 		
 		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");

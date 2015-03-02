@@ -31,6 +31,7 @@ public class CommandAbout extends CommandBase {
 			String modid = mod.getModId();
 			String description = meta.description;
 			String version = mod.getVersion();
+			String authors = mod.getMetadata().getAuthorList();
 			String url = meta.url;
 			
 			sender.addChatMessage(new ChatMessage(modid).setBold());
@@ -39,7 +40,10 @@ public class CommandAbout extends CommandBase {
 				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Description: ").append(description).toString()));
 			}
 			if (!version.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Version: ").append(mod.getVersion()).toString()));
+				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Version: ").append(version).toString()));
+			}
+			if (!authors.isEmpty()) {
+				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Authors: ").append(authors).toString()));
 			}
 			if (!url.isEmpty()) {
 				sender.addChatMessage(new ChatMessage("URL: ").appendSibling(new ChatMessage(url).setUrl(url)));

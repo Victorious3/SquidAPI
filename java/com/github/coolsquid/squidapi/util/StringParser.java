@@ -37,4 +37,11 @@ public class StringParser {
 		}
 		return difficulty;
 	}
+	
+	public static Object parseInput(String string) {
+		if (Item.itemRegistry.containsKey(string)) {
+			return parseItemStack(string);
+		}
+		return string;
+	}
 }

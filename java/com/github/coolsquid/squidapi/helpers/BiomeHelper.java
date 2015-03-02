@@ -9,8 +9,6 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 
-import com.github.coolsquid.squidapi.exception.IdException;
-
 public class BiomeHelper {
 	
 	public static void removeBiome(BiomeGenBase biome) {
@@ -21,15 +19,5 @@ public class BiomeHelper {
 				}
 			}
 		}
-	}
-	
-	public static int findFreeId() {
-		for (int a = 0; a < 256; a++) {
-			BiomeGenBase b = BiomeGenBase.getBiomeGenArray()[a];
-			if (b == null) {
-				return a;
-			}
-		}
-		throw new IdException("No free biome ids!");
 	}
 }

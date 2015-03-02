@@ -16,7 +16,7 @@ public class VillageHelper {
 	
 	@SubscribeEvent
 	public void onJoin(EntityJoinWorldEvent event) {
-		if (event.entity instanceof EntityVillager) {
+		if (!professionstoremove.isEmpty() && event.entity instanceof EntityVillager) {
 			EntityVillager villager = (EntityVillager) event.entity;
 			while (professionstoremove.contains(villager.getProfession())) {
 				int a = Utils.getRandInt(0, VillagerRegistry.getRegisteredVillagers().size());

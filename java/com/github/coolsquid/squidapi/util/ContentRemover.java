@@ -51,7 +51,7 @@ public class ContentRemover {
 	}
 	
 	public static void remove(String name, ContentType type) {
-		for (String mod: blacklist) {
+		for (String mod: getBlacklist()) {
 			if (name.startsWith(mod + ":")) {
 				String content = type.toString() + " " + name;
 				LogHelper.warn(mod + " has requested to be blacklisted from content removal. " + content + " will not be removed.");

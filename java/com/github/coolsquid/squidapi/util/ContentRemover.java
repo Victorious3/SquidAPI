@@ -11,7 +11,6 @@ import java.util.Set;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
@@ -113,7 +112,7 @@ public class ContentRemover {
 		}
 		else if (type == ContentType.CHESTGEN) {
 			String[] gg = name.split(";");
-			ChestGenHooks.removeItem(gg[0], new ItemStack((Item) Item.itemRegistry.getObject(gg[1])));
+			ChestGenHooks.removeItem(gg[0], StringParser.parseItemStack(gg[1]));
 		}
 		else if (type == ContentType.PROFESSION) {
 			VillageHelper.professionstoremove.add(Integer.parseInt(name));

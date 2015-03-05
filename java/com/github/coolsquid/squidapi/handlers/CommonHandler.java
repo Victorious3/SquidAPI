@@ -22,6 +22,20 @@ public class CommonHandler {
 	 */
 	
 	public static void init() {
+		if (Utils.isJavaVersionSameOrLower(6)) {
+			LogHelper.bigWarning(Level.WARN, "SquidAPI may not be compatible with your Java version. Please update to Java 7 or higher.");
+		}
+		if (Utils.isClient()) {
+			if (Utils.wrongVersion()) {
+				LogHelper.bigWarning(Level.WARN, "MC is not running 1.7.10! Problems may occur. Do not report any errors.");
+			}
+		}
+		if (Utils.isBukkit()) {
+			LogHelper.warn("Running on Bukkit! No support will be given.");
+		}
+		if (Utils.developmentEnvironment()) {
+			LogHelper.info("Running in a dev environment.");
+		}
 		File file = new File("./crash-reports/README-I-AM-VERY-IMPORTANT.txt");
 		try {
 			if (!file.exists()) {
@@ -38,19 +52,6 @@ public class CommonHandler {
 			file.setReadOnly();
 		} catch (IOException e) {
 			
-		}
-		
-		if (Utils.isClient()) {
-			if (Utils.wrongVersion()) {
-				LogHelper.bigWarning(Level.WARN, "MC is not running 1.7.10! Problems may occur. Do not report any errors.");
-			}
-		}
-		if (Utils.isBukkit()) {
-			LogHelper.warn("Running on Bukkit! No support will be given.");
-		}
-		if (Utils.developmentEnvironment) {
-			LogHelper.info("Running in a dev environment.");
-			Utils.debug = true;
 		}
 	}
 }

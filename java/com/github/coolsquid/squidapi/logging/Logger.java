@@ -15,7 +15,7 @@ import java.util.List;
 
 import com.github.coolsquid.squidapi.exception.SquidAPIException;
 
-public class Logger {
+public class Logger implements ILogger {
 	
 	protected final String folder;
 	protected final String logfile;
@@ -52,6 +52,7 @@ public class Logger {
 	 * @param print - Decides if the message should be printed to the console.
 	 */
 	
+	@Override
 	public void log(String caller, Level level, String message, boolean print) {
 		if (message.length() > 150) {
 			throw new LoggingException("The message was too long!");
@@ -74,6 +75,7 @@ public class Logger {
 		}
 	}
 	
+	@Override
 	public void log(String msg) {
 		if (msg.length() > 10500) {
 			throw new LoggingException("The message was too long!");
@@ -96,6 +98,7 @@ public class Logger {
 	 * @param name - The name of the log file.
 	 */
 	
+	@Override
 	public void save() {
 		try {
 			File folder = new File(this.folder);

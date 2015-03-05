@@ -6,9 +6,9 @@ package com.github.coolsquid.squidapi.logging;
 
 public class ErrorLogger {
 	
-	private Logger logger;
+	private ILogger logger;
 	
-	public ErrorLogger(Logger logger) {
+	public ErrorLogger(ILogger logger) {
 		this.logger = logger;
 	}
 

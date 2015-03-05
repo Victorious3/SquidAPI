@@ -8,6 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumDifficulty;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 
 public class StringParser {
 	
@@ -43,5 +45,24 @@ public class StringParser {
 			return parseItemStack(string);
 		}
 		return string;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> E parseEnumEntry(Class<?> enum2, String string) {
+		try {
+			return (E) enum2.getField(string).get(null);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static ModContainer parseMod(String string) {
+		for (ModContainer mod: Loader.instance().getModList()) {
+			if (mod.getModId().equals(string)) {
+				return mod;
+			}
+		}
+		return null;
 	}
 }

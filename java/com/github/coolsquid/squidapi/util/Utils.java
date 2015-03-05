@@ -4,23 +4,30 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
+import java.security.Key;
 import java.util.Random;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.nbt.NBTTagCompound;
 import scala.util.hashing.MurmurHash3.ArrayHashing;
+
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
-	
-	/**
-	 * Has a d/k chance to return true.
-	 * @param d
-	 * @param k
-	 * @return boolean
-	 */
 	
 	public static boolean getChance(int d, int k) {
 		int a = getRandInt(1, k);
@@ -31,12 +38,10 @@ public class Utils {
 		return min + r.nextInt(max - min + 1);
 	}
 	
-	/**
-	 * Checks if the server is running Bukkit.
-	 * @return boolean
-	 */
-	
 	public static boolean isBukkit() {
+		if (isClient()) {
+			return false;
+		}
 		try {
 			return Class.forName("org.bukkit.Bukkit") != null;
 		} catch (ClassNotFoundException e) {
@@ -44,28 +49,22 @@ public class Utils {
 		}
 	}
 	
-	/**
-	 * Checks if the mod is running on a client.
-	 * @return boolean
-	 */
-	
 	public static boolean isClient() {
 		return FMLCommonHandler.instance().getSide().equals(Side.CLIENT);
 	}
-	
-	/**
-	 * Checks if Minecraft is using Java 8.
-	 * @return boolean
-	 */
 	
 	public static boolean isJava8() {
 		return System.getProperty("java.version").contains("1.8.0_");
 	}
 	
-	/**
-	 * Checks if the mod is running on the correct MC version.
-	 * @return boolean
-	 */
+	public static boolean isJavaVersionSameOrLower(int version) {
+		for (int a = 0; a > 0; a--) {
+			if (System.getProperty("java.version").contains(newString("1.", version, ".0_"))) {
+				return System.getProperty("java.version").contains(newString("1.", version, ".0_"));
+			}
+		}
+		return false;
+	}
 	
 	public static boolean wrongVersion() {
 		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
@@ -73,13 +72,9 @@ public class Utils {
 	
 	private static Random r = new Random();
 	
-	/**
-	 * Checks if Minecraft is running in a deobfuscated enviroment.
-	 */
-	
-	public static boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-	
-	public static boolean debug = false;
+	public static boolean developmentEnvironment() {
+		return (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	}
 	
 	public static int hash(String input) {
 		final int prime = 31;
@@ -104,5 +99,77 @@ public class Utils {
 	
 	public static int hash(Object object) {
 		return new ArrayHashing<Object>().hash(object);
+	}
+	
+	public static void runVersionCheckerCompat(String id) {
+		NBTTagCompound tag = new NBTTagCompound();
+		String modid = Loader.instance().activeModContainer().getModId();
+		tag.setString("curseProjectName", newString(id, "-", modid));
+		tag.setString("curseFilenameParser", newString(modid, "-[].jar"));
+		sendModMessage("VersionChecker", "addCurseCheck", tag);
+	}
+	
+	public static String newString(Object... objects) {
+		if (objects == null || objects.length <= 0) {
+			return "";
+		}
+		StringBuilder builder = new StringBuilder();
+		for (Object object: objects) {
+			builder.append(object.toString());
+		}
+		return builder.toString();
+	}
+	
+	public static ModContainer getCurrentMod() {
+		return Loader.instance().activeModContainer();
+	}
+	
+	public static void sendModMessage(String target, String key, NBTTagCompound value) {
+		FMLInterModComms.sendRuntimeMessage(getCurrentMod().getModId(), target, key, value);
+	}
+	
+	public static void sendModMessage(String target, String key, String value) {
+		FMLInterModComms.sendRuntimeMessage(getCurrentMod().getModId(), target, key, value);
+	}
+	
+	public static void sendModMessage(String target, String key, ItemStack value) {
+		FMLInterModComms.sendRuntimeMessage(getCurrentMod().getModId(), target, key, value);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> ImmutableList<E> newImmutableList(Object... objects) {
+		return (ImmutableList<E>) ImmutableList.copyOf(Lists.newArrayList(objects));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> ImmutableSet<E> newImmutableSet(Object... objects) {
+		return (ImmutableSet<E>) ImmutableSet.copyOf(Sets.newHashSet(objects));
+	}
+	
+	public static ChatMessage newChatMsg(String msg) {
+		return new ChatMessage(msg);
+	}
+	
+	public static byte[] encrypt(String key, String string) {
+		try {
+			Key key2 = new SecretKeySpec(key.getBytes(), "AES");
+			Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, key2);
+			return cipher.doFinal(string.getBytes());
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public static byte[] decrypt(String key, byte[] encrypteddata) {
+		try {
+			Key key2 = new SecretKeySpec(key.getBytes(), "AES");
+			Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.DECRYPT_MODE, key2);
+			return cipher.doFinal(encrypteddata);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

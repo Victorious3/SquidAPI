@@ -13,13 +13,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileHelper {
 	
-	public static ArrayList<String> readFile(String location, String filename) {
-		File folder = new File(location);
-		folder.mkdirs();
-		File file = new File("./" + folder + "/" + filename);
+	public static List<File> getFilesInDir(String dir) {
+		List<File> files = new ArrayList<File>();
+		File directory = new File(dir);
+		for (File file: directory.listFiles()) {
+			files.add(file);
+		}
+		return files;
+	}
+	
+	public static List<String> readFile(String dirname, String filename) {
+		File dir = new File(dirname);
+		File file = new File("./" + dir + "/" + filename);
+		return readFile(dir, file);
+	}
+	
+	public static List<String> readFile(File dir, File file) {
+		dir.mkdirs();
 		if (!file.exists()) {
 			try {
 				file.createNewFile();

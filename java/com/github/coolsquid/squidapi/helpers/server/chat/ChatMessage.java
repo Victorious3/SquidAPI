@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package com.github.coolsquid.squidapi.chat;
+package com.github.coolsquid.squidapi.helpers.server.chat;
 
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;

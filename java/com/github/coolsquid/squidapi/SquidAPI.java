@@ -6,11 +6,12 @@ package com.github.coolsquid.squidapi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.command.ICommand;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,8 +23,10 @@ import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
+import com.github.coolsquid.squidapi.helpers.IdHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.VillageHelper;
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
@@ -36,11 +39,12 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, acceptableRemoteVersions = "*")
 public class SquidAPI extends SquidAPIMod {
@@ -73,10 +77,6 @@ public class SquidAPI extends SquidAPIMod {
 			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxPotionId, ".");
 			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId);
 		}
-		if (ConfigHandler.maxEnchantmentId != 256) {
-			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxEnchantmentId, ".");
-			Enchantment.enchantmentsList = Arrays.copyOf(Enchantment.enchantmentsList, ConfigHandler.maxEnchantmentId);
-		}
 		
 		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
 		
@@ -87,15 +87,14 @@ public class SquidAPI extends SquidAPIMod {
 	public void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");
 		
+		FMLCommonHandler.instance().bus().register(this);
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
 		if (Utils.developmentEnvironment) {
 			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
 		}
-		NBTTagCompound nbttag = new NBTTagCompound();
-		nbttag.setString("curseProjectName", "227345-squidapi");
-		nbttag.setString("curseFilenameParser", ModInfo.modid + "-[].jar");
-		FMLInterModComms.sendRuntimeMessage(ModInfo.modid, "VersionChecker", "addCurseCheck", nbttag);
+		
+		Utils.runVersionCheckerCompat(ModInfo.modid, "227345");
 		
 		LogHelper.info("Finished initialization.");
 	}
@@ -103,6 +102,7 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing.");
+		IdHelper.saveIds();
 		LogHelper.info("Finished postinitialization.");
 	}
 	
@@ -119,9 +119,18 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandSquidAPI());
-		event.registerServerCommand(new CommandAbout());
+		ClientCommandHandler.instance.registerCommand(new CommandAbout());
 		for (ICommand a: commands) {
 			event.registerServerCommand(a);
+		}
+	}
+	
+	public static final List<String> messages = Lists.newArrayList();
+	
+	@SubscribeEvent
+	public void onLogin(PlayerLoggedInEvent event) {
+		for (String message: messages) {
+			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
 		}
 	}
 }

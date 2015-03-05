@@ -1,0 +1,35 @@
+package com.github.coolsquid.squidapi.asm;
+
+import net.minecraft.launchwrapper.IClassTransformer;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.MethodNode;
+
+import com.github.coolsquid.squidapi.helpers.LogHelper;
+
+//not currently used
+public class SquidAPITransformer implements IClassTransformer, Opcodes {
+
+	@Override
+	public byte[] transform(String name, String transformedName, byte[] basicClass) {
+		if (transformedName.equals("net.minecraft.entity.ai.EntityAIBase")) {
+			LogHelper.info("Tweaking ", transformedName, ".class.");
+			ClassNode c = ASMHelper.createClassNode(basicClass);
+			
+			transformMethod(ASMHelper.findMethod(c, "startExecuting", "()V"));
+			
+			basicClass = ASMHelper.getBytes(c, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		}
+		return basicClass;
+	}
+	
+	private static void transformMethod(MethodNode m) {
+		InsnList list = new InsnList();
+		
+		m.instructions.insertBefore(new InsnNode(0), list);
+	}
+}

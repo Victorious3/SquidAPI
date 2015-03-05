@@ -13,8 +13,8 @@ public class SquidAPIException extends RuntimeException {
 	
 	public SquidAPIException() {}
 	
-	public SquidAPIException(String comment) {
-		this.s = comment;
+	public SquidAPIException(Object comment) {
+		this.s = comment.toString();
 	}
 	
 	public SquidAPIException(Throwable cause) {

@@ -7,10 +7,12 @@ package com.github.coolsquid.squidapi.util;
 import java.util.Random;
 
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.nbt.NBTTagCompound;
 import scala.util.hashing.MurmurHash3.ArrayHashing;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
@@ -104,5 +106,12 @@ public class Utils {
 	
 	public static int hash(Object object) {
 		return new ArrayHashing<Object>().hash(object);
+	}
+	
+	public static void runVersionCheckerCompat(String modid, String id) {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("curseProjectName", id + "-" + modid);
+		tag.setString("curseFilenameParser", modid + "-[].jar");
+		FMLInterModComms.sendRuntimeMessage(modid, "VersionChecker", "addCurseCheck", tag);
 	}
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.github.coolsquid.squidapi.chat.ChatMessage;
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.util.Utils;
 
 import cpw.mods.fml.common.Loader;

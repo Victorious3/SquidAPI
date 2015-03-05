@@ -44,4 +44,14 @@ public class StringParser {
 		}
 		return string;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> E parseEnumEntry(Class<?> enum2, String string) {
+		try {
+			return (E) enum2.getField(string).get(null);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

@@ -17,7 +17,7 @@ public class FieldHelper {
 
 	FieldHelper(Class<?> clazz, String deobfname, String obfname, boolean isfinal) {
 		String name = obfname;
-		if (Utils.developmentEnvironment) {
+		if (Utils.developmentEnvironment()) {
 			name = deobfname;
 		}
 		try {

@@ -5,7 +5,6 @@
 package com.github.coolsquid.squidapi.util;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -28,13 +27,7 @@ import cpw.mods.fml.common.Loader;
 public class ContentRemover {
 
 	private static final ArrayList<Item> recipesToRemove = new ArrayList<Item>();
-	private static final HashSet<String> blacklist = new HashSet<String>();
-	
-	public static void blacklist(String... mods) {
-		for (String mod: mods) {
-			blacklist.add(mod);
-		}
-	}
+	private static final ImmutableSet<String> blacklist = Utils.newImmutableSet("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
 	
 	public static Set<String> getBlacklist() {
 		return ImmutableSet.copyOf(blacklist);
@@ -117,6 +110,8 @@ public class ContentRemover {
 		else if (type == ContentType.PROFESSION) {
 			VillageHelper.professionstoremove.add(Integer.parseInt(name));
 		}
+		
+		LogHelper.info("Removed ", type, " ", name, ".");
 	}
 	
 	public enum ContentType {

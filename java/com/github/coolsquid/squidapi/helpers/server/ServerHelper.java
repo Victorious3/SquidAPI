@@ -11,7 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListBansEntry;
-import net.minecraft.util.ChatComponentText;
+
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 
 public class ServerHelper {
 	
@@ -110,6 +111,10 @@ public class ServerHelper {
 	 */
 	
 	public static void sendMsg(String msg) {
-		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(msg));
+		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatMessage(msg));
+	}
+	
+	public static void sendMsg(ChatMessage msg) {
+		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(msg);
 	}
 }

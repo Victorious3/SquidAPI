@@ -15,7 +15,7 @@ public class MethodHelper {
 
 	MethodHelper(Class<?> clazz, String deobfname, String obfname, Class<?>... params) {
 		String name = obfname;
-		if (Utils.developmentEnvironment) {
+		if (Utils.developmentEnvironment()) {
 			name = deobfname;
 		}
 		try {

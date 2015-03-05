@@ -11,8 +11,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class ChatMessage extends ChatComponentText {
 
-	public ChatMessage(String text) {
-		super(text);
+	public ChatMessage(String msg) {
+		super(msg);
 		this.getChatStyle().setColor(EnumChatFormatting.BLUE);
 	}
 	
@@ -34,5 +34,11 @@ public class ChatMessage extends ChatComponentText {
 	public ChatMessage setUrl(String url) {
 		this.getChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, url));
 		return this;
+	}
+	
+	public ChatMessage append(String msg) {
+		ChatMessage a = new ChatMessage(msg);
+		this.appendSibling(a);
+		return a;
 	}
 }

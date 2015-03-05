@@ -8,6 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumDifficulty;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 
 public class StringParser {
 	
@@ -53,5 +55,14 @@ public class StringParser {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static ModContainer parseMod(String string) {
+		for (ModContainer mod: Loader.instance().getModList()) {
+			if (mod.getModId().equals(string)) {
+				return mod;
+			}
+		}
+		return null;
 	}
 }

@@ -31,6 +31,7 @@ import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ModInfo;
+import com.github.coolsquid.squidapi.util.ShutdownHandler;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Lists;
 
@@ -61,9 +62,11 @@ public class SquidAPI extends SquidAPIMod {
 		
 		CommonHandler.init();
 		
+		Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
+		
 		new ConfigHandler(event.getSuggestedConfigurationFile()).preInit();
 		
-		if (Utils.developmentEnvironment || ConfigHandler.cleanMenu) {
+		if (Utils.developmentEnvironment() || ConfigHandler.cleanMenu) {
 			ReflectionHelper.in(ForgeVersion.class).field("status", "status").set(Status.UP_TO_DATE);
 			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Lists.newArrayList());
 			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Lists.newArrayList());
@@ -78,8 +81,6 @@ public class SquidAPI extends SquidAPIMod {
 			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId);
 		}
 		
-		ContentRemover.blacklist("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
-		
 		LogHelper.info("Finished preinitialization.");
 	}
 	
@@ -90,11 +91,11 @@ public class SquidAPI extends SquidAPIMod {
 		FMLCommonHandler.instance().bus().register(this);
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
-		if (Utils.developmentEnvironment) {
+		if (Utils.developmentEnvironment()) {
 			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
 		}
 		
-		Utils.runVersionCheckerCompat(ModInfo.modid, "227345");
+		Utils.runVersionCheckerCompat("227345");
 		
 		LogHelper.info("Finished initialization.");
 	}

@@ -15,4 +15,12 @@ public class ChatUtils {
 	public static void sendPublicMsg(String msg) {
 		ServerHelper.sendMsg(msg);
 	}
+	
+	public static void sendPrivateMsg(String player, ChatMessage msg) {
+		ServerHelper.getPlayerFromName(player).addChatMessage(msg);
+	}
+	
+	public static void sendPublicMsg(ChatMessage msg) {
+		ServerHelper.sendMsg(msg);
+	}
 }

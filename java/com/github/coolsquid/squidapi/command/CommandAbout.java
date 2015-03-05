@@ -37,13 +37,13 @@ public class CommandAbout extends CommandBase {
 			sender.addChatMessage(new ChatMessage(modid).setBold());
 			
 			if (!description.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Description: ").append(description).toString()));
+				sender.addChatMessage(new ChatMessage(Utils.newString("Description: ", description)));
 			}
 			if (!version.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Version: ").append(version).toString()));
+				sender.addChatMessage(new ChatMessage(Utils.newString("Version: ", version)));
 			}
 			if (!authors.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(new StringBuilder().append("Authors: ").append(authors).toString()));
+				sender.addChatMessage(new ChatMessage(Utils.newString("Authors: ", authors)));
 			}
 			if (!url.isEmpty()) {
 				sender.addChatMessage(new ChatMessage("URL: ").appendSibling(new ChatMessage(url).setUrl(url)));

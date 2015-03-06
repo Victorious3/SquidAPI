@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidapi.compat;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
@@ -9,24 +13,26 @@ import cpw.mods.fml.common.Loader;
 
 public enum Compat {
 	
-	ThermalExpansion(),
-	Botania("vazkii.botania.api", "35"),
-	RotaryCraft(),
-	AppliedEnergistics2("appeng.api", "rv2"),
-	BloodMagic();
+	ThermalExpansion("ThermalExpansion"),
+	Botania("Botania", "vazkii.botania.api", "35"),
+	RotaryCraft("RotaryCraft"),
+	AppliedEnergistics2("appliedenergistics2", "appeng.api", "rv2"),
+	BloodMagic("WayOfTime"),
+	ThaumCraft("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
+	RailCraft("RailCraft", "mods.railcraft.api.crafting", "1.0.0");
 
 	private final boolean loadCompat;
 	private final Package api;
 	private final int version;
 	
-	private Compat() {
-		this.loadCompat = Loader.isModLoaded(this.toString());
+	private Compat(String modid) {
+		this.loadCompat = Loader.isModLoaded(modid);
 		this.api = null;
 		this.version = 0;
 	}
 	
-	private Compat(String api, String version) {
-		this.loadCompat = Loader.isModLoaded(this.toString());
+	private Compat(String modid, String api, String version) {
+		this.loadCompat = Loader.isModLoaded(modid);
 		this.api = Package.getPackage(api);
 		this.version = Integers.parseInt(version);
 		if (this.loadCompat) {

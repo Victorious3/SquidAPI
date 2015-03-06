@@ -47,7 +47,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
-@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, acceptableRemoteVersions = "*")
+@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidAPI extends SquidAPIMod {
 	
 	public SquidAPI() {

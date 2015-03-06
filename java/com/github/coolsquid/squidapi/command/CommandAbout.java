@@ -56,6 +56,7 @@ public class CommandAbout extends CommandBase {
 	@Override
 	public List<?> addTabCompletionOptions(ICommandSender sender, String[] args) {
 		ArrayList<String> modids = new ArrayList<String>();
+		modids.add("Minecraft");
 		for (String modid: Loader.instance().getIndexedModList().keySet()) {
 			modids.add(modid);
 		}

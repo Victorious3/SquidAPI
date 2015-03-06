@@ -15,8 +15,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.coolsquid.squidapi.util.ModInfo;
+import com.github.coolsquid.squidapi.util.Utils;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockBasic extends Block {
@@ -33,13 +34,13 @@ public class BlockBasic extends Block {
 	
 	public BlockBasic(String name) {
 		super(material);
-		this.setBlockTextureName(ModInfo.modid + ":" + name);
+		this.setBlockTextureName(Utils.newString(Loader.instance().activeModContainer().getModId(), ":", name));
 		this.initBlock(name);
 	}
 	
 	public BlockBasic(String name, String textureName) {
 		super(material);
-		this.setBlockTextureName(ModInfo.modid + ":" + textureName);
+		this.setBlockTextureName(Utils.newString(Loader.instance().activeModContainer().getModId(), ":", textureName));
 		this.initBlock(name);
 	}
 	

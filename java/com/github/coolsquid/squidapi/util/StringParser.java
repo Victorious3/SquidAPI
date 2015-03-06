@@ -7,7 +7,6 @@ package com.github.coolsquid.squidapi.util;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.EnumDifficulty;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
@@ -30,16 +29,6 @@ public class StringParser {
 		return new ItemStack(parseItem(s[0]), amount);
 	}
 	
-	public static EnumDifficulty parseDifficulty(String string) {
-		EnumDifficulty difficulty = null;
-		for (EnumDifficulty d: EnumDifficulty.values()) {
-			if ((d + "").toLowerCase().contains(string.toLowerCase())) {
-				difficulty = d;
-			}
-		}
-		return difficulty;
-	}
-	
 	public static Object parseInput(String string) {
 		if (Item.itemRegistry.containsKey(string)) {
 			return parseItemStack(string);
@@ -57,9 +46,12 @@ public class StringParser {
 		}
 	}
 	
-	public static ModContainer parseMod(String string) {
+	public static ModContainer parseMod(String modid) {
+		if (modid.equals("Minecraft")) {
+			return Loader.instance().getMinecraftModContainer();
+		}
 		for (ModContainer mod: Loader.instance().getModList()) {
-			if (mod.getModId().equals(string)) {
+			if (mod.getModId().equals(modid)) {
 				return mod;
 			}
 		}

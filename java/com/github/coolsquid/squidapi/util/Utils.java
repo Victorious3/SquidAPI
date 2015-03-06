@@ -13,7 +13,6 @@ import javax.crypto.spec.SecretKeySpec;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
-import scala.util.hashing.MurmurHash3.ArrayHashing;
 
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
@@ -84,11 +83,10 @@ public class Utils {
 	}
 	
 	public static ModContainer getMod(String modid) {
+		if (modid.equals("Minecraft")) {
+			return Loader.instance().getMinecraftModContainer();
+		}
 		return Loader.instance().getIndexedModList().get(modid);
-	}
-	
-	public static int hash(Object object) {
-		return new ArrayHashing<Object>().hash(object);
 	}
 	
 	public static void runVersionCheckerCompat(String id) {
@@ -164,8 +162,12 @@ public class Utils {
 	}
 	
 	public static String hash(String input) {
+		return hash(input.getBytes());
+	}
+	
+	public static String hash(byte[] input) {
 		StringBuilder builder = new StringBuilder();
-		for (byte b: Hashing.sha512().hashUnencodedChars(input).asBytes()) {
+		for (byte b: Hashing.sha512().hashBytes(input).asBytes()) {
 			builder.append(b);
 		}
 		return builder.toString();
@@ -174,5 +176,13 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	public <E> E[] newArray(Object... objects) {
 		return (E[]) objects;
+	}
+	
+	public static int newInt(int... integers) {
+		int result = 0;
+		for (int i: integers) {
+			result += i;
+		}
+		return result;
 	}
 }

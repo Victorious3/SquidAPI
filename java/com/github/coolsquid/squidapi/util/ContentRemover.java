@@ -46,7 +46,7 @@ public class ContentRemover {
 		for (String mod: getBlacklist()) {
 			if (name.startsWith(mod + ":")) {
 				String content = type.toString() + " " + name;
-				LogHelper.warn(mod + " has requested to be blacklisted from content removal. " + content + " will not be removed.");
+				LogHelper.warn(Utils.newString(mod, " has requested to be blacklisted from content removal. ", content, " will not be removed."));
 				return;
 			}
 		}
@@ -55,23 +55,23 @@ public class ContentRemover {
 		}
 		else if (type == ContentType.ENCHANTMENT) {
 			for (String mod: getBlacklist()) {
-				Enchantment e = Enchantment.enchantmentsList[Integer.parseInt(name)];
+				Enchantment e = Enchantment.enchantmentsList[Integers.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
 					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Enchantment ", name, " will not be removed.");
 					return;
 				}
 			}
-			Enchantment.enchantmentsList[Integer.parseInt(name)] = null;
+			Enchantment.enchantmentsList[Integers.parseInt(name)] = null;
 		}
 		else if (type == ContentType.POTION) {
 			for (String mod: getBlacklist()) {
-				Potion e = Potion.potionTypes[Integer.parseInt(name)];
+				Potion e = Potion.potionTypes[Integers.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
 					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Potion ", name, " will not be removed.");
 					return;
 				}
 			}
-			Potion.potionTypes[Integer.parseInt(name)] = null;
+			Potion.potionTypes[Integers.parseInt(name)] = null;
 		}
 		else if (type == ContentType.FISH) {
 			ArrayList<WeightedRandomFishable> fish = FishingHelper.getFish();
@@ -108,7 +108,7 @@ public class ContentRemover {
 			ChestGenHooks.removeItem(gg[0], StringParser.parseItemStack(gg[1]));
 		}
 		else if (type == ContentType.PROFESSION) {
-			VillageHelper.professionstoremove.add(Integer.parseInt(name));
+			VillageHelper.professionstoremove.add(Integers.parseInt(name));
 		}
 		
 		LogHelper.info("Removed ", type, " ", name, ".");

@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.github.coolsquid.squidapi.exception.SquidAPIException;
+import com.github.coolsquid.squidapi.util.Utils;
 
 public class Logger implements ILogger {
 	
@@ -54,10 +55,6 @@ public class Logger implements ILogger {
 	
 	@Override
 	public void log(String caller, Level level, String message, boolean print) {
-		if (message.length() > 150) {
-			throw new LoggingException("The message was too long!");
-		}
-		
 		String time = this.timeformat.format(Calendar.getInstance().getTime());
 		this.loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 		if (level.equals(Level.INFO)) {
@@ -77,15 +74,12 @@ public class Logger implements ILogger {
 	
 	@Override
 	public void log(String msg) {
-		if (msg.length() > 10500) {
-			throw new LoggingException("The message was too long!");
-		}
 		this.loglist.add(msg);
 	}
 	
 	public void log(StackTraceElement[] stacktrace) {
-		for (int a = 0; a < this.loglist.size(); a++) {
-			this.loglist.add(stacktrace[a].getClassName());
+		for (StackTraceElement s: stacktrace) {
+			this.loglist.add(Utils.newString(s.getClassName(), ":", s.getMethodName(), ":", s.getLineNumber()));
 		}
 	}
 	

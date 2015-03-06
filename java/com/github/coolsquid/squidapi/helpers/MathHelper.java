@@ -8,20 +8,22 @@ package com.github.coolsquid.squidapi.helpers;
 public class MathHelper {
 	
 	public static class Counter {
-		private int a;
+		private double a;
+		private double b = 1;
 		
 		public Counter() {}
 		
-		public Counter(int a) {
+		public Counter(double a, double b) {
 			this.a = a;
+			this.b = b;
 		}
 		
-		public int next() {
-			return this.a++;
+		public double next() {
+			return this.a += this.b;
 		}
 		
-		public int last() {
-			return this.a--;
+		public double last() {
+			return this.a -= this.b;
 		}
 	}
 }

@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.hash.Hashing;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -74,15 +75,6 @@ public class Utils {
 	
 	public static boolean developmentEnvironment() {
 		return (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-	}
-	
-	public static int hash(String input) {
-		final int prime = 31;
-		int hash = 1;
-		for (int a = 0; a < input.length(); a++) {
-			hash = hash + (input.charAt(a) * input.charAt(a) * prime * (a + 1 * hash) * input.length());
-		}
-		return hash;
 	}
 	
 	public static Class<?> getClass(String name) {
@@ -171,5 +163,13 @@ public class Utils {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static String hash(String input) {
+		StringBuilder builder = new StringBuilder();
+		for (byte b: Hashing.sha512().hashUnencodedChars(input).asBytes()) {
+			builder.append(b);
+		}
+		return builder.toString();
 	}
 }

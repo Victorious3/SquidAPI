@@ -12,7 +12,8 @@ public enum Compat {
 	ThermalExpansion(),
 	Botania("vazkii.botania.api", "35"),
 	RotaryCraft(),
-	AppliedEnergistics2("appeng.api", "rv2");
+	AppliedEnergistics2("appeng.api", "rv2"),
+	BloodMagic();
 
 	private final boolean loadCompat;
 	private final Package api;

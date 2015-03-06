@@ -25,7 +25,7 @@ public class StringParser {
 		String[] s = string.split(";");
 		int amount = 1;
 		if (s.length == 2) {
-			amount = Integer.parseInt(s[1]);
+			amount = Integers.parseInt(s[1]);
 		}
 		return new ItemStack(parseItem(s[0]), amount);
 	}

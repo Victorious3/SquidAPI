@@ -18,8 +18,6 @@ import scala.util.hashing.MurmurHash3.ArrayHashing;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -130,12 +128,12 @@ public class Utils {
 	
 	@SuppressWarnings("unchecked")
 	public static <E> ImmutableList<E> newImmutableList(Object... objects) {
-		return (ImmutableList<E>) ImmutableList.copyOf(Lists.newArrayList(objects));
+		return (ImmutableList<E>) ImmutableList.builder().add(objects).build();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <E> ImmutableSet<E> newImmutableSet(Object... objects) {
-		return (ImmutableSet<E>) ImmutableSet.copyOf(Sets.newHashSet(objects));
+		return (ImmutableSet<E>) ImmutableSet.builder().add(objects).build();
 	}
 	
 	public static ChatMessage newChatMsg(String msg) {
@@ -171,5 +169,10 @@ public class Utils {
 			builder.append(b);
 		}
 		return builder.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <E> E[] newArray(Object... objects) {
+		return (E[]) objects;
 	}
 }

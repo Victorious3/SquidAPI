@@ -21,7 +21,11 @@ public class RotaryCraftCompat {
 		CompactorAPI.addCompactorRecipe(input, output, pressure, temperature);
 	}
 	
-	public static void addWorktableRecipe(ItemStack output, Object... input) {
+	public static void addShapedWorktableRecipe(ItemStack output, Object[] input) {
+		WorktableAPI.addshapelessRecipe(output, input);
+	}
+	
+	public static void addShapelessWorktableRecipe(ItemStack output, Object input) {
 		WorktableAPI.addshapelessRecipe(output, input);
 	}
 }

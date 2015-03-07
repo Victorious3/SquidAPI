@@ -25,6 +25,9 @@ public class CommandAbout extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
+		if (args.length != 1) {
+			sender.addChatMessage(new ChatMessage("Wrong syntax."));
+		}
 		ModContainer mod = Utils.getMod(args[0]);
 		ModMetadata meta = mod.getMetadata();
 		try {

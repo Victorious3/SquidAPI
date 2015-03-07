@@ -16,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.hash.Hashing;
 
@@ -98,6 +100,10 @@ public class Utils {
 	}
 	
 	public static String newString(Object... objects) {
+		return newString2(objects);
+	}
+	
+	public static String newString2(Object[] objects) {
 		if (objects == null || objects.length <= 0) {
 			return "";
 		}
@@ -132,6 +138,15 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	public static <E> ImmutableSet<E> newImmutableSet(Object... objects) {
 		return (ImmutableSet<E>) ImmutableSet.builder().add(objects).build();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E, D> ImmutableMap<E, D> newImmutableMap(Object[]... objects) {
+		Builder<Object, Object> builder = ImmutableMap.builder();
+		for (Object[] o: objects) {
+			builder.put(o[0], o[1]);
+		}
+		return (ImmutableMap<E, D>) builder.build();
 	}
 	
 	public static ChatMessage newChatMsg(String msg) {
@@ -176,13 +191,5 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	public <E> E[] newArray(Object... objects) {
 		return (E[]) objects;
-	}
-	
-	public static int newInt(int... integers) {
-		int result = 0;
-		for (int i: integers) {
-			result += i;
-		}
-		return result;
 	}
 }

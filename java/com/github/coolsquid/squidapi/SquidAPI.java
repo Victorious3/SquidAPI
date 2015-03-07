@@ -15,6 +15,7 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
@@ -26,12 +27,12 @@ import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
 import com.github.coolsquid.squidapi.helpers.IdHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
+import com.github.coolsquid.squidapi.helpers.OreDictionaryHelper;
 import com.github.coolsquid.squidapi.helpers.VillageHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
-import com.github.coolsquid.squidapi.util.Integers;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.ShutdownHandler;
 import com.github.coolsquid.squidapi.util.Utils;
@@ -61,7 +62,7 @@ public class SquidAPI extends SquidAPIMod {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		LogHelper.info("Preinitializing.", Integers.squareRootOf(400));
+		LogHelper.info("Preinitializing.");
 		
 		CommonHandler.init();
 		
@@ -88,6 +89,10 @@ public class SquidAPI extends SquidAPIMod {
 		if (!Loader.isModLoaded("DragonAPI") && ConfigHandler.maxPotionId != 32) {
 			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxPotionId, ".");
 			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId);
+		}
+		
+		if (Loader.isModLoaded("MineFactoryReloaded|CompatIC2")) {
+			MinecraftForge.EVENT_BUS.register(this);
 		}
 		
 		LogHelper.info("Finished preinitialization.");
@@ -142,6 +147,13 @@ public class SquidAPI extends SquidAPIMod {
 	public void onLogin(PlayerLoggedInEvent event) {
 		for (String message: messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
+		}
+	}
+	
+	@SubscribeEvent
+	public void onOredictRegistration(OreRegisterEvent event) {
+		if (event.Name.equals("greggy_greg_do_please_kindly_stuff_a_sock_in_it")) {
+			OreDictionaryHelper.removeEntry("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
 		}
 	}
 }

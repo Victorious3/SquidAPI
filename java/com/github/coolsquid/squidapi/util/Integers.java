@@ -8,7 +8,7 @@ import org.apache.commons.lang3.CharSet;
 
 public class Integers {
 	
-	public static String trimToInt(String string) {
+	public static String trim(String string) {
 		StringBuilder builder = new StringBuilder();
 		if (string.startsWith("-")) {
 			builder.append("-");
@@ -22,7 +22,7 @@ public class Integers {
 	}
 	
 	public static int parseInt(String string) {
-		return Integer.parseInt(trimToInt(string));
+		return Integer.parseInt(trim(string));
 	}
 	
 	public static int averageOf(int... ints) {
@@ -78,8 +78,10 @@ public class Integers {
 		return result;
 	}
 	
-	public static int totalOf(int... ints) {
+	public static int sumOf(int... ints) {
 		int total = 0;
+		
+		
 		for (int i: ints) {
 			total += i;
 		}
@@ -93,5 +95,15 @@ public class Integers {
 			}
 		}
 		return 0;
+	}
+	
+	public static int amountOf(int a, int... ints) {
+		int result = 0;
+		for (int i: ints) {
+			if (i == a) {
+				result++;
+			}
+		}
+		return result;
 	}
 }

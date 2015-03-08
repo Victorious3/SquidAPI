@@ -10,7 +10,6 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
@@ -190,16 +189,7 @@ public class Utils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <E> E[] newArray(Object... objects) {
+	public static <E> E[] newArray(Object... objects) {
 		return (E[]) objects;
-	}
-	
-	public static CreativeTabs getTabFromName(String name) {
-		for (CreativeTabs tab: CreativeTabs.creativeTabArray) {
-			if (tab.getTabLabel().equals(name)) {
-				return tab;
-			}
-		}
-		return null;
 	}
 }

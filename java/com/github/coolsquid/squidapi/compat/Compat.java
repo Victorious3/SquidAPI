@@ -44,12 +44,16 @@ public enum Compat {
 	}
 	
 	private void checkAPI() {
-		int versionnumber = Integers.parseInt(this.api.getAnnotation(API.class).apiVersion());
-		if (versionnumber > this.version) {
-			LogHelper.warn("The version of ", this.toString(), " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
-		}
-		else if (versionnumber < this.version) {
-			LogHelper.warn("The version of ", this.toString(), " loaded is older than the version SquidAPI was made with. Problems may occur. Please update ", this.toString(), ".");
+		try {
+			int versionnumber = Integers.parseInt(this.api.getAnnotation(API.class).apiVersion());
+			if (versionnumber > this.version) {
+				LogHelper.warn("The version of ", this.toString(), " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
+			}
+			else if (versionnumber < this.version) {
+				LogHelper.warn("The version of ", this.toString(), " loaded is older than the version SquidAPI was made with. Problems may occur. Please update ", this.toString(), ".");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

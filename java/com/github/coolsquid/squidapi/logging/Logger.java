@@ -77,10 +77,13 @@ public class Logger implements ILogger {
 		this.loglist.add(msg);
 	}
 	
-	public void log(StackTraceElement[] stacktrace) {
-		for (StackTraceElement s: stacktrace) {
+	public void log(Throwable t) {
+		this.loglist.add("");
+		this.loglist.add(Utils.newString(t.getClass().getName(), ": ", t.getMessage()));
+		for (StackTraceElement s: t.getStackTrace()) {
 			this.loglist.add(Utils.newString(s.getClassName(), ":", s.getMethodName(), ":", s.getLineNumber()));
 		}
+		this.loglist.add("");
 	}
 	
 	protected static final SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");

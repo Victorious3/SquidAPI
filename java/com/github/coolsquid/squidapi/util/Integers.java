@@ -4,7 +4,11 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
+import java.util.List;
+
 import org.apache.commons.lang3.CharSet;
+
+import com.google.common.collect.Lists;
 
 public class Integers {
 	
@@ -105,5 +109,32 @@ public class Integers {
 			}
 		}
 		return result;
+	}
+	
+	public static boolean isPrimeNumber(int a) {
+		for (int i = 2; i < a; i++) {
+			if (a % i == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static List<Integer> factorsOf(int a) {
+		List<Integer> result = Lists.newArrayList();
+		for (int i = 2; i < a; i++) {
+			if (a % i == 0) {
+				result.add(i);
+			}
+		}
+		return result;
+	}
+	
+	public static List<Integer> divideBy(int a, int... ints) {
+		List<Integer> list = Lists.newArrayList();
+		for (int i: ints) {
+			list.add(i/a);
+		}
+		return list;
 	}
 }

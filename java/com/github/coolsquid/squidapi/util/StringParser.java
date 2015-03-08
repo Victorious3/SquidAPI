@@ -5,8 +5,10 @@
 package com.github.coolsquid.squidapi.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
@@ -53,6 +55,24 @@ public class StringParser {
 		for (ModContainer mod: Loader.instance().getModList()) {
 			if (mod.getModId().equals(modid)) {
 				return mod;
+			}
+		}
+		return null;
+	}
+	
+	public static CreativeTabs parseCreativeTab(String string) {
+		for (CreativeTabs tab: CreativeTabs.creativeTabArray) {
+			if (tab.getTabLabel().equals(string)) {
+				return tab;
+			}
+		}
+		return null;
+	}
+	
+	public static Potion parsePotion(String string) {
+		for (Potion potion: Potion.potionTypes) {
+			if (potion.getName().equals(string)) {
+				return potion;
 			}
 		}
 		return null;

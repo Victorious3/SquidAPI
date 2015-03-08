@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
 import com.github.coolsquid.squidapi.util.Utils;
 
 import cpw.mods.fml.common.Loader;
@@ -26,7 +27,7 @@ public class CommandAbout extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		if (args.length != 1) {
-			sender.addChatMessage(new ChatMessage("Wrong syntax."));
+			sender.addChatMessage(new ChatMessage("<SquidAPI> Wrong syntax.").setColor(Color.RED));
 		}
 		ModContainer mod = Utils.getMod(args[0]);
 		ModMetadata meta = mod.getMetadata();

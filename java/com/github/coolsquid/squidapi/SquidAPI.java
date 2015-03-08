@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
+import com.github.coolsquid.squidapi.command.CommandEnable;
 import com.github.coolsquid.squidapi.command.CommandSquidAPI;
 import com.github.coolsquid.squidapi.config.ConfigHandler;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
@@ -135,6 +136,7 @@ public class SquidAPI extends SquidAPIMod {
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandSquidAPI());
 		event.registerServerCommand(new CommandDisable());
+		event.registerServerCommand(new CommandEnable());
 		ClientCommandHandler.instance.registerCommand(new CommandAbout());
 		for (ICommand a: commands) {
 			event.registerServerCommand(a);

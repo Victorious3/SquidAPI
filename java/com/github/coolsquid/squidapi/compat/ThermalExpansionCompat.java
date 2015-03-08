@@ -12,11 +12,11 @@ public class ThermalExpansionCompat {
 	
 	public static boolean loadCompat;
 	
-	public static void addPulverizerRecipe(ItemStack input, ItemStack primaryoutput, ItemStack secondaryoutput, int secondarychance, int energy) {
-		PulverizerManager.addRecipe(energy, input, primaryoutput, secondaryoutput, secondarychance);
+	public static void addPulverizerRecipe(ItemStack input, ItemStack primaryoutput, int energy) {
+		PulverizerManager.addRecipe(energy, input, primaryoutput);
 	}
 	
 	public static void addSawmillRecipe(ItemStack input, ItemStack output, int energy) {
-		SawmillManager.addRecipe(energy, input, output);
+		SawmillManager.addTERecipe(energy, input, output);
 	}
 }

@@ -5,7 +5,7 @@
 package com.github.coolsquid.squidapi.compat;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
-import com.github.coolsquid.squidapi.util.Integers;
+import com.github.coolsquid.squidapi.util.IntUtils;
 
 import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.Loader;
@@ -33,7 +33,7 @@ public enum Compat {
 	private Compat(String modid, String api, String version) {
 		this.loadCompat = Loader.isModLoaded(modid);
 		this.api = Package.getPackage(api);
-		this.version = Integers.parseInt(version);
+		this.version = IntUtils.parseInt(version);
 		if (this.loadCompat) {
 			this.checkAPI();
 		}
@@ -45,7 +45,7 @@ public enum Compat {
 	
 	private void checkAPI() {
 		try {
-			int versionnumber = Integers.parseInt(this.api.getAnnotation(API.class).apiVersion());
+			int versionnumber = IntUtils.parseInt(this.api.getAnnotation(API.class).apiVersion());
 			if (versionnumber > this.version) {
 				LogHelper.warn("The version of ", this.toString(), " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
 			}

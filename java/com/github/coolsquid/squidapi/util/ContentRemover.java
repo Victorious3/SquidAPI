@@ -55,23 +55,23 @@ public class ContentRemover {
 		}
 		else if (type == ContentType.ENCHANTMENT) {
 			for (String mod: getBlacklist()) {
-				Enchantment e = Enchantment.enchantmentsList[Integers.parseInt(name)];
+				Enchantment e = Enchantment.enchantmentsList[IntUtils.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
 					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Enchantment ", name, " will not be removed.");
 					return;
 				}
 			}
-			Enchantment.enchantmentsList[Integers.parseInt(name)] = null;
+			Enchantment.enchantmentsList[IntUtils.parseInt(name)] = null;
 		}
 		else if (type == ContentType.POTION) {
 			for (String mod: getBlacklist()) {
-				Potion e = Potion.potionTypes[Integers.parseInt(name)];
+				Potion e = Potion.potionTypes[IntUtils.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
 					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Potion ", name, " will not be removed.");
 					return;
 				}
 			}
-			Potion.potionTypes[Integers.parseInt(name)] = null;
+			Potion.potionTypes[IntUtils.parseInt(name)] = null;
 		}
 		else if (type == ContentType.FISH) {
 			ArrayList<WeightedRandomFishable> fish = FishingHelper.getFish();
@@ -108,7 +108,7 @@ public class ContentRemover {
 			ChestGenHooks.removeItem(gg[0], StringParser.parseItemStack(gg[1]));
 		}
 		else if (type == ContentType.PROFESSION) {
-			VillageHelper.professionstoremove.add(Integers.parseInt(name));
+			VillageHelper.professionstoremove.add(IntUtils.parseInt(name));
 		}
 		
 		LogHelper.info("Removed ", type, " ", name, ".");

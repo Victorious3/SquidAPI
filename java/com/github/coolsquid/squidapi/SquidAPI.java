@@ -36,6 +36,7 @@ import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.ShutdownHandler;
+import com.github.coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Lists;
 
@@ -157,5 +158,10 @@ public class SquidAPI extends SquidAPIMod {
 		if (event.Name.equals("greggy_greg_do_please_kindly_stuff_a_sock_in_it")) {
 			OreDictionaryHelper.removeEntry("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
 		}
+	}
+	
+	@SubscribeEvent
+	public void onShutdown(ShutdownEvent event) {
+		logger.save();
 	}
 }

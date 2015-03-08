@@ -84,6 +84,7 @@ public class Logger implements ILogger {
 			this.loglist.add(Utils.newString(s.getClassName(), ":", s.getMethodName(), ":", s.getLineNumber()));
 		}
 		this.loglist.add("");
+		this.save();
 	}
 	
 	protected static final SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");

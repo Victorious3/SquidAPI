@@ -10,7 +10,7 @@ import org.apache.commons.lang3.CharSet;
 
 import com.google.common.collect.Lists;
 
-public class Integers {
+public class IntUtils {
 	
 	public static String trim(String string) {
 		StringBuilder builder = new StringBuilder();
@@ -130,11 +130,7 @@ public class Integers {
 		return result;
 	}
 	
-	public static List<Integer> divideBy(int a, int... ints) {
-		List<Integer> list = Lists.newArrayList();
-		for (int i: ints) {
-			list.add(i/a);
-		}
-		return list;
+	public static int percentOf(int a, int b) {
+		return a * 100 / b;
 	}
 }

@@ -34,7 +34,9 @@ public class ServerHelper {
 			int line = s.getLineNumber();
 			LoadController loader = ReflectionHelper.in(Loader.class).field("modController", "modController").get(Loader.instance());
 			LoaderState state = ReflectionHelper.in(LoadController.class).field("state", "state").get(loader);
-			LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance during ", state.toString().toLowerCase(), "!"));
+			if (state != LoaderState.SERVER_STARTED) {
+				LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance during ", state.toString().toLowerCase(), "!"));
+			}
 			LogHelper.fatal("The error was caused by: ", clazz, ":", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}

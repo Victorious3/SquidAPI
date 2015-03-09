@@ -7,21 +7,46 @@ package com.github.coolsquid.squidapi.helpers.server;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.apache.logging.log4j.Level;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListBansEntry;
 
+import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
+import com.github.coolsquid.squidapi.util.Utils;
+
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 
 public class ServerHelper {
+	
+	private static MinecraftServer getServer() {
+		MinecraftServer server = MinecraftServer.getServer();
+		if (server == null) {
+			StackTraceElement s = new Throwable().getStackTrace()[2];
+			String clazz = s.getClassName();
+			String method = s.getMethodName();
+			int line = s.getLineNumber();
+			LoadController loader = ReflectionHelper.in(Loader.class).field("modController", "modController").get(Loader.instance());
+			LoaderState state = ReflectionHelper.in(LoadController.class).field("state", "state").get(loader);
+			LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance during ", state.toString().toLowerCase(), "!"));
+			LogHelper.fatal("The error was caused by: ", clazz, ":", method, ":", line, ".");
+			throw new NullPointerException("No existing MinecraftServer instance.");
+		}
+		return server;
+	}
 	
 	/**
 	 * @return - A list of whitelisted players.
 	 */
 	
 	public static String[] getWhitelist() {
-		return MinecraftServer.getServer().getConfigurationManager().func_152599_k().func_152685_a();
+		return getServer().getConfigurationManager().func_152599_k().func_152685_a();
 	}
 	
 	/**
@@ -47,7 +72,7 @@ public class ServerHelper {
 	
 	@SuppressWarnings("unchecked")
 	public static ArrayList<EntityPlayerMP> getAllPlayers() {
-		return (ArrayList<EntityPlayerMP>) MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		return (ArrayList<EntityPlayerMP>) getServer().getConfigurationManager().playerEntityList;
 	}
 	
 	public static ArrayList<String> getAllDisplayNames() {
@@ -65,11 +90,11 @@ public class ServerHelper {
 	 */
 	
 	public static EntityPlayerMP getPlayerFromName(String name) {
-		return MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
+		return getServer().getConfigurationManager().func_152612_a(name);
 	}
 	
 	public static EntityPlayerMP getPlayerFromNick(String name) {
-		for (Object a: MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
+		for (Object a: getServer().getConfigurationManager().playerEntityList) {
 			EntityPlayerMP player = (EntityPlayerMP) a;
 			if (player.getDisplayName().equals(name)) {
 				return player;
@@ -84,7 +109,7 @@ public class ServerHelper {
 	 */
 	
 	public static void setViewDistance(int distance) {
-		MinecraftServer.getServer().getConfigurationManager().func_152611_a(distance);
+		getServer().getConfigurationManager().func_152611_a(distance);
 	}
 	
 	/**
@@ -92,7 +117,7 @@ public class ServerHelper {
 	 */
 	
 	public static void kickAll() {
-		MinecraftServer.getServer().getConfigurationManager().removeAllPlayers();
+		getServer().getConfigurationManager().removeAllPlayers();
 	}
 	
 	/**
@@ -102,7 +127,7 @@ public class ServerHelper {
 	 */
 	
 	public static void respawnPlayer(EntityPlayer player, int dimension) {
-		MinecraftServer.getServer().getConfigurationManager().respawnPlayer((EntityPlayerMP) player, dimension, true);
+		getServer().getConfigurationManager().respawnPlayer((EntityPlayerMP) player, dimension, true);
 	}
 	
 	/**
@@ -111,10 +136,14 @@ public class ServerHelper {
 	 */
 	
 	public static void sendMsg(String msg) {
-		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatMessage(msg));
+		getServer().getConfigurationManager().sendChatMsg(new ChatMessage(msg));
 	}
 	
 	public static void sendMsg(ChatMessage msg) {
-		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(msg);
+		getServer().getConfigurationManager().sendChatMsg(msg);
+	}
+	
+	public static void removeCommand(String command) {
+		getServer().getCommandManager().getCommands().remove("disable");
 	}
 }

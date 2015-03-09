@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.util.ModInfo;
+import com.github.coolsquid.squidapi.util.Utils;
 
 public class LogHelper {
 	
@@ -21,44 +22,24 @@ public class LogHelper {
 	}
 	
 	public static void info(Object... msg) {
-		StringBuilder builder = new StringBuilder();
-		for (Object string: msg) {
-			builder.append(string);
-		}
-		log(Level.INFO, builder.toString());
+		log(Level.INFO, Utils.newString(msg));
 	}
 	
 	public static void warn(Object... msg) {
-		StringBuilder builder = new StringBuilder();
-		for (Object string: msg) {
-			builder.append(string);
-		}
-		log(Level.WARN, builder.toString());
+		log(Level.WARN, Utils.newString(msg));
 	}
 	
 	public static void error(Object... msg) {
-		StringBuilder builder = new StringBuilder();
-		for (Object string: msg) {
-			builder.append(string);
-		}
-		log(Level.ERROR, builder.toString());
+		log(Level.ERROR, Utils.newString(msg));
 	}
 	
 	public static void fatal(Object... msg) {
-		StringBuilder builder = new StringBuilder();
-		for (Object string: msg) {
-			builder.append(string);
-		}
-		log(Level.FATAL, builder.toString());
+		log(Level.FATAL, Utils.newString(msg));
 	}
 	
 	public static void bigWarning(Level level, Object... msg) {
-		StringBuilder builder = new StringBuilder();
-		for (Object string: msg) {
-			builder.append(string);
-		}
 		log(level, "-------------------------------------------------------------------------------------");
-		log(level, builder.toString());
+		log(level, Utils.newString(msg));
 		log(level, "-------------------------------------------------------------------------------------");
 	}
 }

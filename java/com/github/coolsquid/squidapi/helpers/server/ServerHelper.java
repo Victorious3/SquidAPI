@@ -4,26 +4,31 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.helpers.server;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.logging.log4j.Level;
-
+import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListBansEntry;
 
+import org.apache.logging.log4j.Level;
+
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.Utils;
+import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 
 public class ServerHelper {
+	
+	private static final List<LoaderState> safestates = Utils.newImmutableList(LoaderState.SERVER_ABOUT_TO_START, LoaderState.SERVER_STARTED, LoaderState.SERVER_STARTING, LoaderState.SERVER_STOPPING);
 	
 	private static MinecraftServer getServer() {
 		MinecraftServer server = MinecraftServer.getServer();
@@ -34,13 +39,17 @@ public class ServerHelper {
 			int line = s.getLineNumber();
 			LoadController loader = ReflectionHelper.in(Loader.class).field("modController", "modController").get(Loader.instance());
 			LoaderState state = ReflectionHelper.in(LoadController.class).field("state", "state").get(loader);
-			if (state != LoaderState.SERVER_STARTED) {
-				LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance during ", state.toString().toLowerCase(), "!"));
+			if (safestates.contains(state)) {
+				LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance while the game was in the state: \"", state.toString(), "\"!"));
 			}
 			LogHelper.fatal("The error was caused by: ", clazz, ":", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}
 		return server;
+	}
+	
+	public static MinecraftServer getServerInstance() {
+		return getServer();
 	}
 	
 	/**
@@ -73,12 +82,12 @@ public class ServerHelper {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<EntityPlayerMP> getAllPlayers() {
-		return (ArrayList<EntityPlayerMP>) getServer().getConfigurationManager().playerEntityList;
+	public static List<EntityPlayerMP> getAllPlayers() {
+		return getServer().getConfigurationManager().playerEntityList;
 	}
 	
-	public static ArrayList<String> getAllDisplayNames() {
-		ArrayList<String> names = new ArrayList<String>();
+	public static List<String> getAllDisplayNames() {
+		List<String> names = Lists.newArrayList();
 		for (EntityPlayerMP a: getAllPlayers()) {
 			names.add(a.getDisplayName());
 		}
@@ -145,7 +154,21 @@ public class ServerHelper {
 		getServer().getConfigurationManager().sendChatMsg(msg);
 	}
 	
-	public static void removeCommand(String command) {
-		getServer().getCommandManager().getCommands().remove("disable");
+	public static void removeCommand(String name) {
+		getServer().getCommandManager().getCommands().remove(name);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void registerCommand(String name, ICommand command) {
+		getServer().getCommandManager().getCommands().put(name, command);
+	}
+	
+	public static void clearCommands() {
+		getServer().getCommandManager().getCommands().clear();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String, ICommand> getCommands() {
+		return getServer().getCommandManager().getCommands();
 	}
 }

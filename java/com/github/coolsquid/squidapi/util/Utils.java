@@ -58,9 +58,9 @@ public class Utils {
 	}
 	
 	public static boolean isJavaVersionSameOrLower(int version) {
-		for (int a = 0; a > 0; a--) {
-			if (System.getProperty("java.version").contains(newString("1.", version, ".0_"))) {
-				return System.getProperty("java.version").contains(newString("1.", version, ".0_"));
+		for (int a = version; a > 0; a--) {
+			if (System.getProperty("java.version").contains(newString("1.", a, ".0_"))) {
+				return true;
 			}
 		}
 		return false;

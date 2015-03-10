@@ -27,6 +27,14 @@ public class ReflectionHelper {
 		return new ReflectionHelper(clazz);
 	}
 	
+	public static PackageHelper in(String pakkage) {
+		if (pakkage == null || pakkage.isEmpty()) {
+			String mod = Utils.getCurrentMod().getModId();
+			throw new NullPointerException(Utils.newString("The parameter \"pakkage\" can't be null! Contact the author of ", mod, "."));
+		}
+		return new PackageHelper(Package.getPackage(pakkage));
+	}
+	
 	public MethodHelper method(String deobfname, String obfname, Class<?>... params) {
 		return new MethodHelper(this.clazz, deobfname, obfname, params);
 	}

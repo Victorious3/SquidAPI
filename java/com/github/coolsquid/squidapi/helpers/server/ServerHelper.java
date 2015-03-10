@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.helpers.server;
 
+import io.netty.channel.Channel;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -170,5 +172,13 @@ public class ServerHelper {
 	@SuppressWarnings("unchecked")
 	public static Map<String, ICommand> getCommands() {
 		return getServer().getCommandManager().getCommands();
+	}
+	
+	public static void disconnectPlayer(EntityPlayerMP player) {
+		player.playerNetServerHandler.netManager.channel().close();
+	}
+	
+	public static Channel getChannel(EntityPlayerMP player) {
+		return player.playerNetServerHandler.netManager.channel();
 	}
 }

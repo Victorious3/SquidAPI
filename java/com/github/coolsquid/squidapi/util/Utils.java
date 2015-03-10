@@ -205,4 +205,13 @@ public class Utils {
 		}
 		return newlist;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> List<E> clone(int amount, E object) {
+		List<Object> list = Lists.newArrayList();
+		for (int a = 0; a < amount; a++) {
+			list.add(object);
+		}
+		return (List<E>) list;
+	}
 }

@@ -8,6 +8,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 
+import com.github.coolsquid.squidapi.util.Utils;
+
 @SuppressWarnings("unchecked")
 public class ReflectionHelper {
 	
@@ -18,6 +20,10 @@ public class ReflectionHelper {
 	}
 	
 	public static ReflectionHelper in(Class<?> clazz) {
+		if (clazz == null) {
+			String mod = Utils.getCurrentMod().getModId();
+			throw new NullPointerException(Utils.newString("The parameter \"clazz\" can't be null! Contact the author of ", mod, "."));
+		}
 		return new ReflectionHelper(clazz);
 	}
 	
@@ -56,5 +62,10 @@ public class ReflectionHelper {
 	
 	public boolean isInstance(Object object) {
 		return this.clazz.isInstance(object);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public <E> E getAnnotation(Class a) {
+		return (E) this.clazz.getAnnotation(a);
 	}
 }

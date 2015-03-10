@@ -9,18 +9,13 @@ import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.github.coolsquid.squidapi.util.Utils;
+
 public class ChatMessage extends ChatComponentText {
 
-	public ChatMessage(String msg) {
-		super(msg);
+	public ChatMessage(String... msg) {
+		super(Utils.newString2(msg));
 		this.getChatStyle().setColor(EnumChatFormatting.BLUE);
-	}
-	
-	public ChatMessage(ChatMessage... components) {
-		super("");
-		for (ChatMessage component: components) {
-			this.appendSibling(component);
-		}
 	}
 	
 	public ChatMessage setColor(EnumChatFormatting color) {

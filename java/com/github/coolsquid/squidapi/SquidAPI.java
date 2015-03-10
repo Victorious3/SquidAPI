@@ -64,8 +64,17 @@ public class SquidAPI extends SquidAPIMod {
 	@Instance
 	private static SquidAPI instance;
 	
+	private static Mod mod;
+	
 	public static SquidAPI instance() {
 		return instance;
+	}
+	
+	public static Mod getMod() {
+		if (mod == null) {
+			mod = ReflectionHelper.in(SquidAPI.class).getAnnotation(Mod.class);
+		}
+		return mod;
 	}
 	
 	public static final Logger logger = new Logger("./logs", "./logs/SquidAPI.log");

@@ -19,7 +19,8 @@ public class CommandBase implements ICommand {
 	private String name;
 	private String desc;
 	private boolean needsop;
-	private Map<String, ISubCommand> subcommands;
+	private Map<String, ISubCommand> subcommands = Maps.newHashMap();
+	private List<String> autofilloptions;
 
 	public CommandBase(String name, String desc, boolean needsop) {
 		this.name = name;
@@ -36,16 +37,15 @@ public class CommandBase implements ICommand {
 		this.name = name;
 		this.desc = desc;
 		this.needsop = needsop;
-		this.subcommands = Maps.newHashMap();
 		for (ISubCommand subcommand: subcommands) {
 			this.subcommands.put(subcommand.getName(), subcommand);
+			this.autofilloptions.add(subcommand.getName());
 		}
 	}
 
 	public CommandBase(String name, String desc, ISubCommand... subcommands) {
 		this.name = name;
 		this.desc = desc;
-		this.subcommands = Maps.newHashMap();
 		for (ISubCommand subcommand: subcommands) {
 			this.subcommands.put(subcommand.getName(), subcommand);
 		}
@@ -83,7 +83,7 @@ public class CommandBase implements ICommand {
 
 	@Override
 	public List<?> addTabCompletionOptions(ICommandSender sender, String[] args) {
-		return null;
+		return Lists.newArrayList(this.subcommands.keySet());
 	}
 
 	@Override
@@ -93,8 +93,11 @@ public class CommandBase implements ICommand {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		if (this.subcommands != null && this.subcommands.containsKey(args[0])) {
-			List<String> args2 = Lists.newArrayList(args);
+		if (this.subcommands.containsKey(args[0])) {
+			List<String> args2 = Lists.newArrayList();
+			for (int a = 1; a < args.length; a++) {
+				args2.add(args[a]);
+			}
 			this.subcommands.get(args[0]).execute(sender, args2);
 		}
 	}

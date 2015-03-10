@@ -42,7 +42,7 @@ public class ServerHelper {
 			if (safestates.contains(state)) {
 				LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance while the game was in the state: \"", state.toString(), "\"!"));
 			}
-			LogHelper.fatal("The error was caused by: ", clazz, ":", method, ":", line, ".");
+			LogHelper.fatal("The error was caused by: ", clazz, ".", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}
 		return server;

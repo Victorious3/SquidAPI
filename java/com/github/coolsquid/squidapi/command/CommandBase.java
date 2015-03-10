@@ -5,17 +5,21 @@
 package com.github.coolsquid.squidapi.command;
 
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 
 import com.github.coolsquid.squidapi.helpers.server.OpHelper;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class CommandBase implements ICommand {
 	
 	private String name;
 	private String desc;
 	private boolean needsop;
+	private Map<String, ISubCommand> subcommands;
 
 	public CommandBase(String name, String desc, boolean needsop) {
 		this.name = name;
@@ -26,6 +30,25 @@ public class CommandBase implements ICommand {
 	public CommandBase(String name, String desc) {
 		this.name = name;
 		this.desc = desc;
+	}
+	
+	public CommandBase(String name, String desc, boolean needsop, ISubCommand... subcommands) {
+		this.name = name;
+		this.desc = desc;
+		this.needsop = needsop;
+		this.subcommands = Maps.newHashMap();
+		for (ISubCommand subcommand: subcommands) {
+			this.subcommands.put(subcommand.getName(), subcommand);
+		}
+	}
+
+	public CommandBase(String name, String desc, ISubCommand... subcommands) {
+		this.name = name;
+		this.desc = desc;
+		this.subcommands = Maps.newHashMap();
+		for (ISubCommand subcommand: subcommands) {
+			this.subcommands.put(subcommand.getName(), subcommand);
+		}
 	}
 
 	@Override
@@ -69,5 +92,10 @@ public class CommandBase implements ICommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {}
+	public void processCommand(ICommandSender sender, String[] args) {
+		if (this.subcommands != null && this.subcommands.containsKey(args[0])) {
+			List<String> args2 = Lists.newArrayList(args);
+			this.subcommands.get(args[0]).execute(sender, args2);
+		}
+	}
 }

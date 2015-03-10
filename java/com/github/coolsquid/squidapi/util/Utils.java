@@ -5,6 +5,7 @@
 package com.github.coolsquid.squidapi.util;
 
 import java.security.Key;
+import java.util.List;
 import java.util.Random;
 
 import javax.crypto.Cipher;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.hash.Hashing;
@@ -191,5 +193,16 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	public static <E> E[] newArray(Object... objects) {
 		return (E[]) objects;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> List<E> merge(List<E>... lists) {
+		List<E> newlist = Lists.newArrayList();
+		for (List<E> list: lists) {
+			for (E e: list) {
+				newlist.add(e);
+			}
+		}
+		return newlist;
 	}
 }

@@ -44,6 +44,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -55,9 +56,16 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidAPI extends SquidAPIMod {
-	
+
 	public SquidAPI() {
 		super("An API for all my mods.");
+	}
+	
+	@Instance
+	private static SquidAPI instance;
+	
+	public static SquidAPI instance() {
+		return instance;
 	}
 	
 	public static final Logger logger = new Logger("./logs", "./logs/SquidAPI.log");

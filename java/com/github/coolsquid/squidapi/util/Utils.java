@@ -18,9 +18,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -191,8 +191,8 @@ public class Utils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <E> E[] newArray(Object... objects) {
-		return (E[]) objects;
+	public static <E> E[] newArray(E... objects) {
+		return objects;
 	}
 	
 	@SuppressWarnings("unchecked")

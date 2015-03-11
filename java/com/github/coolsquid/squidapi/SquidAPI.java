@@ -45,6 +45,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -63,17 +64,14 @@ public class SquidAPI extends SquidAPIMod {
 	
 	@Instance
 	private static SquidAPI instance;
-	
-	private static Mod mod;
-	
+
+	private static ModContainer mod;
+
 	public static SquidAPI instance() {
 		return instance;
 	}
 	
-	public static Mod getMod() {
-		if (mod == null) {
-			mod = ReflectionHelper.in(SquidAPI.class).getAnnotation(Mod.class);
-		}
+	public static ModContainer getMod() {
 		return mod;
 	}
 	
@@ -82,6 +80,8 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
+		
+		mod = Loader.instance().activeModContainer();
 		
 		CommonHandler.init();
 		

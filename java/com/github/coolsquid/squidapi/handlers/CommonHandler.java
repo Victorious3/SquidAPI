@@ -4,11 +4,11 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.handlers;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 
 import org.apache.logging.log4j.Level;
 
@@ -40,10 +40,12 @@ public class CommonHandler {
 		try {
 			if (!file.exists()) {
 				file.createNewFile();
-				PrintWriter w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file)));
-				w.format("Read through crash reports before posting them!\n");
-				w.format("If you do not do this, you might be ignored, or in worst case banned for spamming.\n");
-				w.format("Learn how to write bug reports at: http://vazkii.us/br101/.");
+				BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+				w.write("Read through crash reports before posting them!");
+				w.newLine();
+				w.write("If you do not do this, you might be ignored.");
+				w.newLine();
+				w.write("Learn how to write bug reports at: http://vazkii.us/br101/.");
 				w.close();
 			}
 			else if (file.exists()) {

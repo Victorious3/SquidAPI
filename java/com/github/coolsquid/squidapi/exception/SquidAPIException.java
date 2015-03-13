@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.exception;
 
+import com.github.coolsquid.squidapi.util.Utils;
+
 
 public class SquidAPIException extends RuntimeException {
 	
@@ -15,6 +17,10 @@ public class SquidAPIException extends RuntimeException {
 	
 	public SquidAPIException(Object comment) {
 		this.s = comment.toString();
+	}
+	
+	public SquidAPIException(Object... comment) {
+		this.s = Utils.newString2(comment);
 	}
 	
 	public SquidAPIException(Throwable cause) {

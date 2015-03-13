@@ -36,11 +36,12 @@ public class CommandDisable extends CommandBase {
 			sender.addChatMessage(new ChatMessage("<SquidAPI> The mod is already disabled.").setColor(Color.RED));
 			return;
 		}
-		if (mod.disable()) {
+		try {
+			mod.disable();
 			disabledmods.add(mod);
 			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Disabled ", args[0], ".")));
-		}
-		else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Could not disable ", args[0], ".")).setColor(Color.RED));
 		}
 	}

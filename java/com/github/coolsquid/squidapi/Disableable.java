@@ -5,6 +5,6 @@
 package com.github.coolsquid.squidapi;
 
 public interface Disableable {
-	boolean disable();
-	boolean enable();
+	void disable() throws Exception;
+	void enable() throws Exception;
 }

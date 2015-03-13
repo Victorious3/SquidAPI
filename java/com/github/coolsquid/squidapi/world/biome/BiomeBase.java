@@ -13,5 +13,6 @@ public class BiomeBase extends BiomeGenBase {
 	public BiomeBase(String biomename) {
 		super(IdHelper.findFreeBiomeId(biomename));
 		this.setBiomeName(biomename);
+		IdHelper.registerBiome(this);
 	}
 }

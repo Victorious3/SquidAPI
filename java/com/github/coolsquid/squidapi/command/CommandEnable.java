@@ -28,11 +28,12 @@ public class CommandEnable extends CommandBase {
 			sender.addChatMessage(new ChatMessage("<SquidAPI> The mod is already enabled.").setColor(Color.RED));
 			return;
 		}
-		if (mod.enable()) {
+		try {
+			mod.disable();
 			CommandDisable.disabledmods.remove(mod);
 			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Enabled ", args[0], ".")));
-		}
-		else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Could not disable ", args[0], ".")).setColor(Color.RED));
 		}
 	}

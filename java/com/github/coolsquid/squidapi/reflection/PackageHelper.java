@@ -17,4 +17,8 @@ public class PackageHelper {
 	public <E> E getAnnotation(Class annotation) {
 		return (E) this.pakkage.getAnnotation(annotation);
 	}
+	
+	public boolean isCompatibleWith(String a) {
+		return this.pakkage.isCompatibleWith(a);
+	}
 }

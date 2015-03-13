@@ -214,4 +214,13 @@ public class Utils {
 		}
 		return (List<E>) list;
 	}
+
+	public static ModContainer getModFromPackage(String string) {
+		for (ModContainer mod: Loader.instance().getActiveModList()) {
+			if (mod.getOwnedPackages().contains(string)) {
+				return mod;
+			}
+		}
+		return null;
+	}
 }

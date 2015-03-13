@@ -25,6 +25,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 public class IdHelper {
 	
 	private static final Map<String, Integer> biomenameToId;
+	private static final Map<Integer, BiomeGenBase> idToBiome = Maps.newHashMap();
 	
 	public static int findFreeBiomeId(String biomename) {
 		if (biomenameToId.containsKey(biomename)) {
@@ -38,6 +39,30 @@ public class IdHelper {
 			}
 		}
 		throw new IdException("No free biome ids!");
+	}
+	
+	public static void registerBiome(BiomeGenBase biome) {
+		idToBiome.put(biome.biomeID, biome);
+	}
+	
+	public static void checkForConflicts() {
+		for (int a = 0; a < idToBiome.size(); a++) {
+			if (idToBiome.containsKey(a)) {
+				BiomeGenBase b = BiomeGenBase.biomeList[a];
+				BiomeGenBase c = idToBiome.get(a);
+				if (b != c) {
+					String d = "null";
+					String e = "null";
+					if (b != null) {
+						d = b.biomeName;
+					}
+					if (c != null) {
+						e = c.biomeName;
+					}
+					throw new IdException("Biome id conflict! Change the id of ", d, " or ", e, ".");
+				}
+			}
+		}
 	}
 	
 	public static int findFreeEnchantmentId() {

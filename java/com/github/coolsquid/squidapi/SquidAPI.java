@@ -132,11 +132,12 @@ public class SquidAPI extends SquidAPIMod {
 		
 		LogHelper.info("Finished initialization.");
 	}
-	
+
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing.");
 		IdHelper.saveIds();
+		IdHelper.checkForConflicts();
 		LogHelper.info("Finished postinitialization.");
 	}
 	
@@ -180,5 +181,11 @@ public class SquidAPI extends SquidAPIMod {
 	@SubscribeEvent
 	public void onShutdown(ShutdownEvent event) {
 		logger.save();
+	}
+
+	public static void registerCommands(ICommand... commands) {
+		for (ICommand command: commands) {
+			SquidAPI.commands.add(command);
+		}
 	}
 }

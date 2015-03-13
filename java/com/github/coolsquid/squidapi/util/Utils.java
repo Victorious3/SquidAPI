@@ -223,4 +223,8 @@ public class Utils {
 		}
 		return null;
 	}
+
+	public static StringBuilder builder() {
+		return new StringBuilder();
+	}
 }

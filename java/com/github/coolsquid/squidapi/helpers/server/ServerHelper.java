@@ -13,6 +13,7 @@ import java.util.Map;
 import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListBansEntry;
 
@@ -39,12 +40,21 @@ public class ServerHelper {
 			String clazz = s.getClassName();
 			String method = s.getMethodName();
 			int line = s.getLineNumber();
-			LoadController loader = ReflectionHelper.in(Loader.class).field("modController", "modController").get(Loader.instance());
-			LoaderState state = ReflectionHelper.in(LoadController.class).field("state", "state").get(loader);
-			if (safestates.contains(state)) {
-				LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance while the game was in the state: \"", state.toString(), "\"!"));
+			boolean b = true;
+			for (LoaderState state: safestates) {
+				if (Loader.instance().isInState(state)) {
+					b = false;
+					break;
+				}
 			}
-			LogHelper.fatal("The error was caused by: ", clazz, ".", method, ":", line, ".");
+			if (b) {
+				LoadController loader = ReflectionHelper.in(Loader.instance()).field("modController", "modController").get();
+				LoaderState state = ReflectionHelper.in(loader).field("state", "state").get();
+				if (safestates.contains(state)) {
+					LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance while the game was in the state: \"", state.toString(), "\"!"));
+				}
+			}
+			LogHelper.fatal("The error occured in: ", clazz, ".", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}
 		return server;
@@ -157,16 +167,15 @@ public class ServerHelper {
 	}
 	
 	public static void removeCommand(String name) {
-		getServer().getCommandManager().getCommands().remove(name);
+		getCommands().remove(name);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void registerCommand(String name, ICommand command) {
-		getServer().getCommandManager().getCommands().put(name, command);
+		getCommands().put(name, command);
 	}
 	
 	public static void clearCommands() {
-		getServer().getCommandManager().getCommands().clear();
+		getCommands().clear();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -180,5 +189,9 @@ public class ServerHelper {
 	
 	public static Channel getChannel(EntityPlayerMP player) {
 		return player.playerNetServerHandler.netManager.channel();
+	}
+	
+	public static void sendPacket(EntityPlayerMP player, Packet packet) {
+		player.playerNetServerHandler.sendPacket(packet);
 	}
 }

@@ -74,4 +74,30 @@ public class FileHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void writeFile(File file, Iterable<String> lines) {
+		try {
+			BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			for (String line: lines) {
+				w.write(line);
+				w.newLine();
+			}
+			w.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeFile(File file, String[] lines) {
+		try {
+			BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			for (String line: lines) {
+				w.write(line);
+				w.newLine();
+			}
+			w.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

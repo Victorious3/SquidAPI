@@ -13,9 +13,11 @@ import com.github.coolsquid.squidapi.util.Utils;
 public class FieldHelper {
 	
 	private final Field field;
+	private final Object object;
 	private final boolean isfinal;
 
 	FieldHelper(Class<?> clazz, String deobfname, String obfname, boolean isfinal) {
+		this.object = null;
 		String name = obfname;
 		if (Utils.developmentEnvironment()) {
 			name = deobfname;
@@ -28,23 +30,36 @@ public class FieldHelper {
 		this.isfinal = isfinal;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <E> E get() {
-		return (E) this.get(null);
+	FieldHelper(Object object, String deobfname, String obfname, boolean isfinal) {
+		this.object = object;
+		String name = obfname;
+		if (Utils.developmentEnvironment()) {
+			name = deobfname;
+		}
+		try {
+			if (object != null) {
+				this.field = object.getClass().getDeclaredField(name);
+			}
+			else {
+				throw new NullPointerException(name);
+			}
+		} catch (NoSuchFieldException | SecurityException e) {
+			throw new ReflectionException("Could not find field " + name);
+		}
+		this.isfinal = isfinal;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <E> E get(Object object) {
+	public <E> E get() {
 		try {
-			this.field.setAccessible(true);
-			return (E) this.field.get(object);
-		} catch (ReflectiveOperationException e) {
+			return (E) this.field.get(this.object);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
-			return null;
+			throw new ReflectionException();
 		}
 	}
 	
-	public void set(Object object, Object replacement) {
+	public void set(Object replacement) {
 		try {
 			if (this.isfinal) {
 				Field m = Field.class.getDeclaredField("modifiers");
@@ -53,13 +68,9 @@ public class FieldHelper {
 			}
 			
 			this.field.setAccessible(true);
-			this.field.set(object, replacement);
+			this.field.set(this.object, replacement);
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void set(Object replacement) {
-		this.set(null, replacement);
 	}
 }

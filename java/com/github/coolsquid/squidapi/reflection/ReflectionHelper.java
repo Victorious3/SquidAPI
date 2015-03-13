@@ -14,17 +14,32 @@ import com.github.coolsquid.squidapi.util.Utils;
 public class ReflectionHelper {
 	
 	private final Class<?> clazz;
+	private final Object object;
 
 	private ReflectionHelper(Class<?> clazz) {
 		this.clazz = clazz;
+		this.object = null;
 	}
 	
+	public ReflectionHelper(Object object) {
+		this.clazz = object.getClass();
+		this.object = object;
+	}
+
 	public static ReflectionHelper in(Class<?> clazz) {
 		if (clazz == null) {
 			String mod = Utils.getCurrentMod().getModId();
 			throw new NullPointerException(Utils.newString("The parameter \"clazz\" can't be null! Contact the author of ", mod, "."));
 		}
 		return new ReflectionHelper(clazz);
+	}
+	
+	public static ReflectionHelper in(Object object) {
+		if (object == null) {
+			String mod = Utils.getCurrentMod().getModId();
+			throw new NullPointerException(Utils.newString("The parameter \"clazz\" can't be null! Contact the author of ", mod, "."));
+		}
+		return new ReflectionHelper(object);
 	}
 	
 	public static PackageHelper in(String pakkage) {
@@ -40,11 +55,17 @@ public class ReflectionHelper {
 	}
 	
 	public FieldHelper field(String deobfname, String obfname) {
-		return new FieldHelper(this.clazz, deobfname, obfname, false);
+		if (this.object == null) {
+			return new FieldHelper(this.clazz, deobfname, obfname, false);
+		}
+		return new FieldHelper(this.object, deobfname, obfname, false);
 	}
 	
 	public FieldHelper finalField(String deobfname, String obfname) {
-		return new FieldHelper(this.clazz, deobfname, obfname, true);
+		if (this.object == null) {
+			return new FieldHelper(this.clazz, deobfname, obfname, true);
+		}
+		return new FieldHelper(this.object, deobfname, obfname, true);
 	}
 	
 	public <E> E newInstance(Object... params) {

@@ -4,12 +4,18 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.helpers;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.github.coolsquid.squidapi.exception.SquidAPIException;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
+import com.google.common.collect.Lists;
 
 public class OreDictionaryHelper {
 	
@@ -26,5 +32,30 @@ public class OreDictionaryHelper {
 	public static void removeEntry(String name) {
 		idToName().remove(name);
 		nameToId().remove(name);
+	}
+	
+	public static void registerOres(String name, Object... ores) {
+		for (Object ore: ores) {
+			if (ore instanceof Item) {
+				OreDictionary.registerOre(name, (Item) ore);
+			}
+			else if (ore instanceof Block) {
+				OreDictionary.registerOre(name, (Block) ore);
+			}
+			else if (ore instanceof ItemStack) {
+				OreDictionary.registerOre(name, (ItemStack) ore);
+			}
+			else {
+				throw new SquidAPIException("The ore must be an Item, Block or an ItemStack!");
+			}
+		}
+	}
+	
+	public static void dumpOres(File file) {
+		List<String> list = Lists.newArrayList();
+		for (String name: OreDictionary.getOreNames()) {
+			list.add(name);
+		}
+		FileHelper.writeFile(file, OreDictionary.getOreNames());
 	}
 }

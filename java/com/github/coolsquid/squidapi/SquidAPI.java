@@ -97,12 +97,12 @@ public class SquidAPI extends SquidAPIMod {
 		
 		if (Utils.developmentEnvironment() || ConfigHandler.cleanMenu) {
 			ReflectionHelper.in(ForgeVersion.class).field("status", "status").set(Status.UP_TO_DATE);
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Lists.newArrayList());
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Lists.newArrayList());
+			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList());
+			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList());
 		}
 		if (!ConfigHandler.branding.equals("")) {
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandings", "brandings").set(FMLCommonHandler.instance(), Lists.newArrayList(ConfigHandler.branding));
-			ReflectionHelper.in(FMLCommonHandler.class).field("brandingsNoMC", "brandingsNoMC").set(FMLCommonHandler.instance(), Lists.newArrayList(ConfigHandler.branding));
+			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList(ConfigHandler.branding));
+			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList(ConfigHandler.branding));
 		}
 		
 		if (!Loader.isModLoaded("DragonAPI") && ConfigHandler.maxPotionId != 32) {

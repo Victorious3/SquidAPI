@@ -15,10 +15,6 @@ public class SquidAPIException extends RuntimeException {
 	
 	public SquidAPIException() {}
 	
-	public SquidAPIException(Object comment) {
-		this.s = comment.toString();
-	}
-	
 	public SquidAPIException(Object... comment) {
 		this.s = Utils.newString2(comment);
 	}

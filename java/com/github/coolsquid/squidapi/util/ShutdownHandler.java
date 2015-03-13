@@ -9,10 +9,10 @@ import cpw.mods.fml.common.eventhandler.Event;
 
 public class ShutdownHandler extends Thread {
 	
+	public static class ShutdownEvent extends Event {}
+	
 	@Override
 	public void run() {
 		MinecraftForge.EVENT_BUS.post(new ShutdownEvent());
 	}
-	
-	public static class ShutdownEvent extends Event {}
 }

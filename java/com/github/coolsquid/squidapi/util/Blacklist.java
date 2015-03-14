@@ -6,48 +6,67 @@ package com.github.coolsquid.squidapi.util;
 
 import java.util.Iterator;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 
 public final class Blacklist<E> implements Iterable<E> {
 	
-	private final ImmutableList<E> list;
+	private final ImmutableSet<E> list;
 
 	@SuppressWarnings("unchecked")
 	private Blacklist(E... values) {
-		this.list = ImmutableList.copyOf(values);
+		this.list = ImmutableSet.copyOf(values);
 	}
 	
-	public ImmutableList<E> getBlacklist() {
-		return ImmutableList.copyOf(this.list);
+	private Blacklist(ImmutableSet<E> values) {
+		this.list = ImmutableSet.copyOf(values);
+	}
+	
+	public ImmutableSet<E> getBlacklist() {
+		return ImmutableSet.copyOf(this.list);
+	}
+	
+	public boolean contains(E value) {
+		return this.list.contains(value);
 	}
 	
 	public boolean isBlacklisted(E value) {
-		return this.list.contains(value);
+		for (E e: this.list) {
+			if (value.getClass().getName().startsWith(e.toString())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		return new BlacklistIterator<E>();
-	}
-	
-	private final class BlacklistIterator<T> implements Iterator<E> {
-
-		private int a = 0;
-		
-		@Override
-		public boolean hasNext() {
-			return this.a < Blacklist.this.list.size();
-		}
-
-		@Override
-		public E next() {
-			return Blacklist.this.list.get(this.a++);
-		}
+		return this.list.iterator();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T> Blacklist<T> newInstance(T... values) {
 		return new Blacklist<T>(values);
+	}
+	
+	public static class Builder<T> {
+		
+		private final ImmutableSet.Builder<T> builder = ImmutableSet.builder();
+		
+		private Builder() {
+			
+		}
+		
+		public void add(T t) {
+			this.builder.add(t);
+		}
+		
+		public Blacklist<T> build() {
+			return new Blacklist<T>(this.builder.build());
+		}
+	}
+	
+	public static <T> Builder<T> builder() {
+		return new Builder<T>();
 	}
 }

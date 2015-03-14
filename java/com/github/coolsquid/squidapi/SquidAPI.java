@@ -7,6 +7,7 @@ package com.github.coolsquid.squidapi;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.potion.Potion;
@@ -38,6 +39,7 @@ import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.ShutdownHandler;
 import com.github.coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
 import com.github.coolsquid.squidapi.util.Utils;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -171,10 +173,12 @@ public class SquidAPI extends SquidAPIMod {
 		}
 	}
 	
+	private static final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
+	
 	@SubscribeEvent
 	public void onOredictRegistration(OreRegisterEvent event) {
-		if (event.Name.equals("greggy_greg_do_please_kindly_stuff_a_sock_in_it")) {
-			OreDictionaryHelper.removeEntry("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
+		if (oredictEntriesToRemove.contains(event.Name)) {
+			OreDictionaryHelper.removeEntry(event.Name);
 		}
 	}
 	

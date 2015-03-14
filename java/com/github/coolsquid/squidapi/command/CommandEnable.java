@@ -29,7 +29,7 @@ public class CommandEnable extends CommandBase {
 			return;
 		}
 		try {
-			mod.disable();
+			mod.enable();
 			CommandDisable.disabledmods.remove(mod);
 			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Enabled ", args[0], ".")));
 		} catch (Exception e) {

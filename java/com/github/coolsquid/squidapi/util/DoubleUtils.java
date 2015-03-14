@@ -17,9 +17,14 @@ public class DoubleUtils {
 		if (string.startsWith("-")) {
 			builder.append("-");
 		}
+		boolean b = false;
 		for (char a: string.toCharArray()) {
-			if (CharSet.ASCII_NUMERIC.contains(a) || a == '.') {
+			if (CharSet.ASCII_NUMERIC.contains(a)) {
 				builder.append(a);
+			}
+			else if (a == '.' && !b) {
+				builder.append(a);
+				b = true;
 			}
 		}
 		return builder.toString();

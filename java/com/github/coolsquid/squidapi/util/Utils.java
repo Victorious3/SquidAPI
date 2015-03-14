@@ -241,4 +241,32 @@ public class Utils {
 		}
 		return null;
 	}
+	
+	public static String newStringWithSpaces(Object... objects) {
+		return newStringWithSpaces2(objects);
+	}
+	
+	public static String newStringWithSpaces2(Object[] objects) {
+		if (objects == null || objects.length <= 0) {
+			return "";
+		}
+		StringBuilder builder = new StringBuilder();
+		for (Object object: objects) {
+			if (object != null) {
+				builder.append(object.toString());
+				builder.append(" ");
+			}
+		}
+		return builder.substring(0, builder.length() - 1);
+	}
+
+	public static Random newRandom(long seed) {
+		Random rand = new Random();
+		rand.setSeed(seed);
+		return rand;
+	}
+	
+	public static Random newRandom() {
+		return new Random();
+	}
 }

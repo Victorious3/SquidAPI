@@ -136,6 +136,7 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing.");
+		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();
 		LogHelper.info("Finished postinitialization.");
@@ -143,7 +144,6 @@ public class SquidAPI extends SquidAPIMod {
 	
 	@EventHandler
 	public void finishedLoading(FMLLoadCompleteEvent event) {
-		ContentRemover.removeContent();
 		if (!VillageHelper.professionstoremove.isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(new VillageHelper());
 		}

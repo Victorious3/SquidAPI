@@ -14,6 +14,8 @@ import javax.crypto.spec.SecretKeySpec;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.AchievementList;
 
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
@@ -111,7 +113,9 @@ public class Utils {
 		}
 		StringBuilder builder = new StringBuilder();
 		for (Object object: objects) {
-			builder.append(object.toString());
+			if (object != null) {
+				builder.append(object.toString());
+			}
 		}
 		return builder.toString();
 	}
@@ -226,5 +230,15 @@ public class Utils {
 
 	public static StringBuilder builder() {
 		return new StringBuilder();
+	}
+	
+	public static Achievement getAchievement(String name) {
+		for (Object a: AchievementList.achievementList) {
+			Achievement b = (Achievement) a;
+			if (b.statId.equals(name)) {
+				return b;
+			}
+		}
+		return null;
 	}
 }

@@ -18,12 +18,16 @@ public class RegistryHelper {
 		GameRegistry.addShapelessRecipe(output, params);
 	}
 	
-	public static void addSmelting(Item input, ItemStack output) {
-		GameRegistry.addSmelting(input, output, 10);
-	}
-	
-	public static void addSmelting(Block input, ItemStack output) {
-		GameRegistry.addSmelting(input, output, 10);	
+	public static void addSmelting(Object input, ItemStack output) {
+		if (input instanceof Block) {
+			GameRegistry.addSmelting((Block) input, output, 10);
+		}
+		else if (input instanceof Item) {
+			GameRegistry.addSmelting((Item) input, output, 10);
+		}
+		else if (input instanceof ItemStack) {
+			GameRegistry.addSmelting((ItemStack) input, output, 10);
+		}
 	}
 	
 	public static void addExplosionRecipe(Object input, ItemStack output, float size) {

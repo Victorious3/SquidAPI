@@ -5,12 +5,16 @@
 package com.github.coolsquid.squidapi.util;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.WeightedRandomFishable;
@@ -20,17 +24,19 @@ import net.minecraftforge.common.DungeonHooks;
 import com.github.coolsquid.squidapi.helpers.FishingHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.VillageHelper;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.Loader;
 
 public class ContentRemover {
 
-	private static final ArrayList<Item> recipesToRemove = new ArrayList<Item>();
-	private static final ImmutableSet<String> blacklist = Utils.newImmutableSet("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
+	private static final List<Item> recipesToRemove = new ArrayList<Item>();
+	private static final Blacklist<String> blacklist = Blacklist.newInstance("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
+	private static final Set<Item> furnaceRecipesToRemove = Sets.newHashSet();
 	
-	public static Set<String> getBlacklist() {
-		return ImmutableSet.copyOf(blacklist);
+	public static Blacklist<String> getBlacklist() {
+		return blacklist;
 	}
 	
 	public static boolean isBlacklistedModLoaded() {
@@ -110,6 +116,9 @@ public class ContentRemover {
 		else if (type == ContentType.PROFESSION) {
 			VillageHelper.professionstoremove.add(IntUtils.parseInt(name));
 		}
+		else if (type == ContentType.SMELTING) {
+			furnaceRecipesToRemove.add((Item) Item.itemRegistry.getObject(name));
+		}
 		
 		LogHelper.info("Removed ", type, " ", name, ".");
 	}
@@ -123,7 +132,8 @@ public class ContentRemover {
 		TREASURE,
 		DUNGEONMOB,
 		CHESTGEN,
-		PROFESSION;
+		PROFESSION,
+		SMELTING;
 	}
 	
 	/**
@@ -141,6 +151,16 @@ public class ContentRemover {
 							CraftingManager.getInstance().getRecipeList().remove(a);
 						}
 					}
+				}
+			}
+		}
+		if (!furnaceRecipesToRemove.isEmpty()) {
+			@SuppressWarnings("unchecked")
+			Map<ItemStack, ItemStack> recipes = Maps.newHashMap(FurnaceRecipes.smelting().getSmeltingList());
+			for (ItemStack input: recipes.keySet()) {
+				ItemStack output = recipes.get(input);
+				if (furnaceRecipesToRemove.contains(output.getItem())) {
+					FurnaceRecipes.smelting().getSmeltingList().remove(input);
 				}
 			}
 		}

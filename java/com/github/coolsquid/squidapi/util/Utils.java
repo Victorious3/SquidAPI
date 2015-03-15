@@ -269,4 +269,8 @@ public class Utils {
 	public static Random newRandom() {
 		return new Random();
 	}
+	
+	public static String trim(String string, int length) {
+		return string.substring(0, length);
+	}
 }

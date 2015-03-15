@@ -12,4 +12,12 @@ public class WorldHelper {
 	public static void setBlock(Block block, World world, int x, int y, int z) {
 		world.setBlock(x, y, z, block, 0, 3);
 	}
+	
+	public static void setHardcore(World world) {
+		world.getWorldInfo().hardcore = true;
+	}
+	
+	public static boolean isHardcore(World world) {
+		return world.getWorldInfo().hardcore;
+	}
 }

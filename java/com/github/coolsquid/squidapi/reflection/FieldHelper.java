@@ -28,6 +28,7 @@ public class FieldHelper {
 			throw new ReflectionException("Could not find field " + name);
 		}
 		this.isfinal = isfinal;
+		this.field.setAccessible(true);
 	}
 	
 	FieldHelper(Object object, String deobfname, String obfname, boolean isfinal) {
@@ -47,6 +48,7 @@ public class FieldHelper {
 			throw new ReflectionException("Could not find field " + name);
 		}
 		this.isfinal = isfinal;
+		this.field.setAccessible(true);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -66,8 +68,6 @@ public class FieldHelper {
 				m.setAccessible(true);
 				m.setInt(this.field, this.field.getModifiers() & ~Modifier.FINAL);
 			}
-			
-			this.field.setAccessible(true);
 			this.field.set(this.object, replacement);
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();

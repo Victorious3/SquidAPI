@@ -31,8 +31,6 @@ import cpw.mods.fml.common.LoaderState;
 
 public class ServerHelper {
 	
-	private static final List<LoaderState> safestates = Utils.newImmutableList(LoaderState.SERVER_ABOUT_TO_START, LoaderState.SERVER_STARTED, LoaderState.SERVER_STARTING, LoaderState.SERVER_STOPPING);
-	
 	private static MinecraftServer getServer() {
 		MinecraftServer server = MinecraftServer.getServer();
 		if (server == null) {
@@ -40,20 +38,9 @@ public class ServerHelper {
 			String clazz = s.getClassName();
 			String method = s.getMethodName();
 			int line = s.getLineNumber();
-			boolean b = true;
-			for (LoaderState state: safestates) {
-				if (Loader.instance().isInState(state)) {
-					b = false;
-					break;
-				}
-			}
-			if (b) {
-				LoadController loader = ReflectionHelper.in(Loader.instance()).field("modController", "modController").get();
-				LoaderState state = ReflectionHelper.in(loader).field("state", "state").get();
-				if (safestates.contains(state)) {
-					LogHelper.bigWarning(Level.FATAL, Utils.newString("A mod tried to access the MinecraftServer instance while the game was in the state: \"", state.toString(), "\"!"));
-				}
-			}
+			LoadController loader = ReflectionHelper.in(Loader.instance()).field("modController", "modController").get();
+			LoaderState state = ReflectionHelper.in(loader).field("state", "state").get();
+			LogHelper.bigWarning(Level.FATAL, Utils.newString("LoaderState: ", state.toString()));
 			LogHelper.fatal("The error occured in: ", clazz, ".", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}

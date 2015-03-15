@@ -30,9 +30,9 @@ public final class Blacklist<E> implements Iterable<E> {
 		return this.list.contains(value);
 	}
 	
-	public boolean isBlacklisted(E value) {
+	public boolean isBlacklisted(Object object) {
 		for (E e: this.list) {
-			if (value.getClass().getName().startsWith(e.toString())) {
+			if (object.getClass().getName().startsWith(e.toString())) {
 				return true;
 			}
 		}

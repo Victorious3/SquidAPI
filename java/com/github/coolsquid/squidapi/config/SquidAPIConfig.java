@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
+import com.github.coolsquid.squidapi.util.IntUtils;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,7 +20,7 @@ public class SquidAPIConfig {
 	
 	private final File configFile;
 	private List<String> lines;
-	private final Map<String, Boolean> values = Maps.newHashMap();
+	private final Map<String, Object> values = Maps.newHashMap();
 
 	public SquidAPIConfig(File configFile) {
 		this.configFile = configFile;
@@ -37,9 +38,23 @@ public class SquidAPIConfig {
 		this.lines = FileUtils.readLines(this.configFile);
 		for (String value: this.lines) {
 			if (!value.startsWith("//") && !value.startsWith("#")) {
-				String[] s = value.split("=");
-				if (s.length == 2) {
-					this.values.put(s[0], Boolean.parseBoolean(s[1]));
+				if (value.startsWith("B:")) {
+					String[] s = value.split("=");
+					if (s.length == 2) {
+						this.values.put(s[0].replaceFirst("B:", ""), Boolean.parseBoolean(s[1]));
+					}
+				}
+				else if (value.startsWith("S:")) {
+					String[] s = value.split("=");
+					if (s.length == 2) {
+						this.values.put(s[0].replaceFirst("S:", ""), s[1]);
+					}
+				}
+				else if (value.startsWith("I:")) {
+					String[] s = value.split("=");
+					if (s.length == 2) {
+						this.values.put(s[0].replaceFirst("I:", ""), IntUtils.parseInt(s[1]));
+					}
 				}
 			}
 		}
@@ -47,13 +62,48 @@ public class SquidAPIConfig {
 
 	public boolean get(String name, boolean defaultValue) {
 		if (this.values.containsKey(name)) {
-			return this.values.get(name).booleanValue();
+			return ((boolean) this.values.get(name));
 		}
 		else {
 			String a = Utils.newString(name, "=", defaultValue);
 			this.lines.add(a);
+			this.values.put(name, defaultValue);
 			try {
-				FileUtils.write(this.configFile, Utils.newString(a, Utils.newLine()), true);
+				FileUtils.write(this.configFile, Utils.newString("B:", a, Utils.newLine()), true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return defaultValue;
+		}
+	}
+	
+	public String get(String name, String defaultValue) {
+		if (this.values.containsKey(name)) {
+			return (String) this.values.get(name);
+		}
+		else {
+			String a = Utils.newString(name, "=", defaultValue);
+			this.lines.add(a);
+			this.values.put(name, defaultValue);
+			try {
+				FileUtils.write(this.configFile, Utils.newString("S:", a, Utils.newLine()), true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return defaultValue;
+		}
+	}
+	
+	public int get(String name, int defaultValue) {
+		if (this.values.containsKey(name)) {
+			return (int) this.values.get(name);
+		}
+		else {
+			String a = Utils.newString(name, "=", defaultValue);
+			this.lines.add(a);
+			this.values.put(name, defaultValue);
+			try {
+				FileUtils.write(this.configFile, Utils.newString("I:", a, Utils.newLine()), true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

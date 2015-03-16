@@ -273,4 +273,8 @@ public class Utils {
 	public static String trim(String string, int length) {
 		return string.substring(0, length);
 	}
+
+	public static String newLine() {
+		return System.getProperty("line.separator");
+	}
 }

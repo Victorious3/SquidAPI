@@ -100,4 +100,29 @@ public class FileHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	public static List<String> readFile(File file) {
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			while (true) {
+				String s = r.readLine();
+				if (s == null) {
+					break;
+				}
+				list.add(s);
+			}
+			r.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

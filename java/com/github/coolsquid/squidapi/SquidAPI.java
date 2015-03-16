@@ -158,7 +158,9 @@ public class SquidAPI extends SquidAPIMod {
 		event.registerServerCommand(new CommandSquidAPI());
 		event.registerServerCommand(new CommandDisable());
 		event.registerServerCommand(new CommandEnable());
-		ClientCommandHandler.instance.registerCommand(new CommandAbout());
+		if (Utils.isClient()) {
+			ClientCommandHandler.instance.registerCommand(new CommandAbout());
+		}
 		for (ICommand a: commands) {
 			event.registerServerCommand(a);
 		}

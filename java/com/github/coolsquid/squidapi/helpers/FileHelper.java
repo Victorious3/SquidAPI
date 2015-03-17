@@ -110,4 +110,16 @@ public class FileHelper {
 			return null;
 		}
 	}
+
+	public static void writeLines(File file, List<String> lines) {
+		try {
+			File parentFile = file.getParentFile();
+			if (parentFile != null && !parentFile.exists()) {
+				parentFile.mkdirs();
+			}
+			FileUtils.writeLines(file, lines);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

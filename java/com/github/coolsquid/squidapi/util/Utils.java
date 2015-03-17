@@ -6,6 +6,7 @@ package com.github.coolsquid.squidapi.util;
 
 import java.security.Key;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.crypto.Cipher;
@@ -17,6 +18,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 
+import org.apache.commons.lang3.CharSet;
+
+import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -276,5 +280,21 @@ public class Utils {
 
 	public static String newLine() {
 		return System.getProperty("line.separator");
+	}
+	
+	public static boolean compatibleWithCharset(String string, CharSet... charsets) {
+		for (char a: string.toCharArray()) {
+			for (CharSet charset: charsets) {
+				if (!charset.contains(a)) {
+					LogHelper.info(a);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public static <E, T> Map<E, T> newIterableMap() {
+		return new IterableMap<E, T>();
 	}
 }

@@ -5,19 +5,49 @@
 package com.github.coolsquid.squidapi.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+
+import com.github.coolsquid.squidapi.util.Utils;
 
 public class WorldHelper {
 	
-	public static void setBlock(Block block, World world, int x, int y, int z) {
-		world.setBlock(x, y, z, block, 0, 3);
+	private World world;
+
+	private WorldHelper(World world) {
+		this.world = world;
 	}
 	
-	public static void setHardcore(World world) {
-		world.getWorldInfo().hardcore = true;
+	private static WorldHelper instance;
+	
+	public static WorldHelper instance(World world) {
+		return new WorldHelper(world);
 	}
 	
-	public static boolean isHardcore(World world) {
-		return world.getWorldInfo().hardcore;
+	public static WorldHelper instance() {
+		if (Utils.isClient()) {
+			instance = new WorldHelper(Minecraft.getMinecraft().theWorld);
+		}
+		else {
+			instance = new WorldHelper(MinecraftServer.getServer().worldServerForDimension(0));
+		}
+		return instance;
+	}
+	
+	public void setBlock(Block block, int x, int y, int z) {
+		this.world.setBlock(x, y, z, block, 0, 3);
+	}
+	
+	public void setHardcore() {
+		this.world.getWorldInfo().hardcore = true;
+	}
+	
+	public boolean isHardcore() {
+		return this.world.getWorldInfo().hardcore;
+	}
+	
+	public int getDimensionId() {
+		return this.world.provider.dimensionId;
 	}
 }

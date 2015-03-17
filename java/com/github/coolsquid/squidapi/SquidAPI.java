@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
@@ -155,11 +156,11 @@ public class SquidAPI extends SquidAPIMod {
 	
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandSquidAPI());
-		event.registerServerCommand(new CommandDisable());
-		event.registerServerCommand(new CommandEnable());
 		if (Utils.isClient()) {
+			event.registerServerCommand(new CommandDisable());
+			event.registerServerCommand(new CommandEnable());
 			ClientCommandHandler.instance.registerCommand(new CommandAbout());
+			ClientCommandHandler.instance.registerCommand(new CommandSquidAPI());
 		}
 		for (ICommand a: commands) {
 			event.registerServerCommand(a);
@@ -173,6 +174,7 @@ public class SquidAPI extends SquidAPIMod {
 		for (String message: messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
 		}
+		Minecraft.getMinecraft().gameSettings.saturation = 0.5F;
 	}
 	
 	private static final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");

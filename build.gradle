@@ -32,7 +32,7 @@ resources { srcDirs = ["$projectDir/resources"] }
 }
 }
 
-version = "1.0.8"
+version = "1.0.9"
 group= "com.github.coolsquid"
 archivesBaseName = "SquidAPI"
 minecraft.version = "1.7.10-10.13.2.1272"
@@ -41,7 +41,7 @@ curse {
 apiKey = project.curseAPIKey
 changelog = ''
 projectId = '227345'
-releaseType = 'beta'
+releaseType = 'alpha'
 }
 
 jar {

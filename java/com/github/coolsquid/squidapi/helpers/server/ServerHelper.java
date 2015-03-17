@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Level;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
+import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Lists;
 
@@ -154,7 +155,9 @@ public class ServerHelper {
 	}
 	
 	public static void removeCommand(String name) {
-		getCommands().remove(name);
+		if (!ContentRemover.getBlacklist().isBlacklisted(getCommands().get(name))) {
+			getCommands().remove(name);
+		}
 	}
 	
 	public static void registerCommand(String name, ICommand command) {

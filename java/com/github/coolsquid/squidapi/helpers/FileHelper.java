@@ -15,6 +15,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 public class FileHelper {
 	
 	public static List<File> getFilesInDir(String dir) {
@@ -102,27 +104,10 @@ public class FileHelper {
 	}
 	
 	public static List<String> readFile(File file) {
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		ArrayList<String> list = new ArrayList<String>();
 		try {
-			BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			while (true) {
-				String s = r.readLine();
-				if (s == null) {
-					break;
-				}
-				list.add(s);
-			}
-			r.close();
+			return FileUtils.readLines(file);
 		} catch (IOException e) {
-			e.printStackTrace();
+			return null;
 		}
-		return list;
 	}
 }

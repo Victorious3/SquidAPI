@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 import com.github.coolsquid.squidapi.util.IntUtils;
+import com.github.coolsquid.squidapi.util.IterableMap;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -32,28 +33,35 @@ public class SquidAPIConfig {
 	}
 	
 	private void init() throws IOException {
+		this.configFile.getParentFile().mkdirs();
 		if (!this.configFile.exists()) {
 			this.configFile.createNewFile();
 		}
 		this.lines = FileUtils.readLines(this.configFile);
-		for (String value: this.lines) {
-			if (!value.startsWith("//") && !value.startsWith("#")) {
-				if (value.startsWith("B:")) {
-					String[] s = value.split("=");
+		for (String line: this.lines) {
+			if (!line.startsWith("//") && !line.startsWith("#")) {
+				if (line.startsWith("B:")) {
+					String[] s = line.split("=");
 					if (s.length == 2) {
 						this.values.put(s[0].replaceFirst("B:", ""), Boolean.parseBoolean(s[1]));
 					}
 				}
-				else if (value.startsWith("S:")) {
-					String[] s = value.split("=");
+				else if (line.startsWith("S:")) {
+					String[] s = line.split("=");
 					if (s.length == 2) {
 						this.values.put(s[0].replaceFirst("S:", ""), s[1]);
 					}
 				}
-				else if (value.startsWith("I:")) {
-					String[] s = value.split("=");
+				else if (line.startsWith("I:")) {
+					String[] s = line.split("=");
 					if (s.length == 2) {
 						this.values.put(s[0].replaceFirst("I:", ""), IntUtils.parseInt(s[1]));
+					}
+				}
+				else if (line.startsWith("F:")) {
+					String[] s = line.split("=");
+					if (s.length == 2) {
+						this.values.put(s[0].replaceFirst("F:", ""), Float.parseFloat(s[1]));
 					}
 				}
 			}
@@ -111,8 +119,31 @@ public class SquidAPIConfig {
 		}
 	}
 	
+	public float get(String name, float defaultValue) {
+		if (this.values.containsKey(name)) {
+			return (float) this.values.get(name);
+		}
+		else {
+			String a = Utils.newString(name, "=", defaultValue);
+			this.lines.add(a);
+			this.values.put(name, defaultValue);
+			try {
+				FileUtils.write(this.configFile, Utils.newString("F:", a, Utils.newLine()), true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return defaultValue;
+		}
+	}
+	
+	public IterableMap<String, Object> getEntries() {
+		IterableMap<String, Object> map = new IterableMap<String, Object>();
+		map.putAll(this.values);
+		return map;
+	}
+	
 	public void addHeader(String string) {
-		if (this.lines.isEmpty() || !this.lines.get(0).equals(string)) {
+		if (this.lines != null && (this.lines.isEmpty() || !this.lines.get(0).equals(string))) {
 			try {
 				List<String> lines = Lists.newArrayList(string);
 				lines.addAll(this.lines);

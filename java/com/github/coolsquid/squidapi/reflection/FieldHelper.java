@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import com.github.coolsquid.squidapi.exception.ReflectionException;
+import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.util.Utils;
 
 public class FieldHelper {
@@ -45,6 +46,7 @@ public class FieldHelper {
 				throw new NullPointerException(name);
 			}
 		} catch (NoSuchFieldException | SecurityException e) {
+			LogHelper.info(object.getClass().getName());
 			throw new ReflectionException("Could not find field " + name);
 		}
 		this.isfinal = isfinal;
@@ -56,7 +58,6 @@ public class FieldHelper {
 		try {
 			return (E) this.field.get(this.object);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
 			throw new ReflectionException();
 		}
 	}

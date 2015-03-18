@@ -67,7 +67,9 @@ public class ContentRemover {
 					return;
 				}
 			}
-			Enchantment.enchantmentsList[IntUtils.parseInt(name)] = null;
+			int id = IntUtils.parseInt(name);
+			Enchantment.enchantmentsList[id] = null;
+			new EmptyEnchantment(id);
 		}
 		else if (type == ContentType.POTION) {
 			for (String mod: getBlacklist()) {
@@ -77,7 +79,7 @@ public class ContentRemover {
 					return;
 				}
 			}
-			Potion.potionTypes[IntUtils.parseInt(name)] = null;
+			new EmptyPotion(IntUtils.parseInt(name));
 		}
 		else if (type == ContentType.FISH) {
 			ArrayList<WeightedRandomFishable> fish = FishingHelper.getFish();

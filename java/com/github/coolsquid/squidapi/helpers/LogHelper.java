@@ -38,8 +38,10 @@ public class LogHelper {
 	}
 	
 	public static void bigWarning(Level level, Object... msg) {
-		log(level, "-------------------------------------------------------------------------------------");
-		log(level, Utils.newString(msg));
-		log(level, "-------------------------------------------------------------------------------------");
+		String a = Utils.newString(msg);
+		String b = Utils.repeat('-', a.length());
+		log(level, b);
+		log(level, a);
+		log(level, b);
 	}
 }

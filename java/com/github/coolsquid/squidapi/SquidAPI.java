@@ -19,6 +19,8 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
+import org.apache.logging.log4j.Level;
+
 import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.command.CommandEnable;
@@ -27,6 +29,7 @@ import com.github.coolsquid.squidapi.config.ConfigHandler;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
+import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler.Incompatibility;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
 import com.github.coolsquid.squidapi.helpers.IdHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
@@ -48,7 +51,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -68,14 +70,8 @@ public class SquidAPI extends SquidAPIMod {
 	@Instance
 	private static SquidAPI instance;
 
-	private static ModContainer mod;
-
 	public static SquidAPI instance() {
 		return instance;
-	}
-	
-	public static ModContainer getMod() {
-		return mod;
 	}
 	
 	public static final Logger logger = new Logger("./logs", "./logs/SquidAPI.log");
@@ -83,8 +79,6 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
-		
-		mod = Loader.instance().activeModContainer();
 		
 		CommonHandler.init();
 		
@@ -142,6 +136,13 @@ public class SquidAPI extends SquidAPIMod {
 		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();
+		
+		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
+			for (Incompatibility a: mod.getIncompatibilities()) {
+				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", mod.getMod().getModId(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".");
+			}
+		}
+		
 		LogHelper.info("Finished postinitialization.");
 	}
 	

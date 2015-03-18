@@ -100,8 +100,9 @@ public class Utils {
 	}
 	
 	public static void runVersionCheckerCompat(String id) {
-		NBTTagCompound tag = new NBTTagCompound();
 		String modid = Loader.instance().activeModContainer().getModId();
+		LogHelper.info("Running VersionChecker compatibility for ", modid, ".");
+		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("curseProjectName", newString(id, "-", modid));
 		tag.setString("curseFilenameParser", newString(modid, "-[].jar"));
 		sendModMessage("VersionChecker", "addCurseCheck", tag);
@@ -296,5 +297,13 @@ public class Utils {
 
 	public static <E, T> Map<E, T> newIterableMap() {
 		return new IterableMap<E, T>();
+	}
+
+	public static String repeat(char c, int length) {
+		StringBuilder a = Utils.builder();
+		for (int b = 0; b < length; b++) {
+			a.append("-");
+		}
+		return a.toString();
 	}
 }

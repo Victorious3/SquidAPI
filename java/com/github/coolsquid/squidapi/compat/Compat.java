@@ -20,27 +20,37 @@ public enum Compat {
 	ThaumCraft("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
 	RailCraft("RailCraft", "mods.railcraft.api.crafting", "1.0.0");
 
-	private final boolean loadCompat;
+	private final boolean enabled;
 	private final Package api;
 	private final int version;
 	
 	private Compat(String modid) {
-		this.loadCompat = Loader.isModLoaded(modid);
+		this.enabled = Loader.isModLoaded(modid);
 		this.api = null;
 		this.version = 0;
+		if (this.enabled) {
+			LogHelper.info(modid, " is loaded. Enabling ", modid, " compatibility.");
+		}
+		else {
+			LogHelper.info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
+		}
 	}
 	
 	private Compat(String modid, String api, String version) {
-		this.loadCompat = Loader.isModLoaded(modid);
+		this.enabled = Loader.isModLoaded(modid);
 		this.api = Package.getPackage(api);
 		this.version = IntUtils.parseInt(version);
-		if (this.loadCompat) {
+		if (this.enabled) {
 			this.checkAPI();
+			LogHelper.info(modid, " is loaded. Enabling ", modid, " compatibility.");
+		}
+		else {
+			LogHelper.info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
 		}
 	}
 
-	public boolean loadCompat() {
-		return this.loadCompat;
+	public boolean isEnabled() {
+		return this.enabled;
 	}
 	
 	private void checkAPI() {

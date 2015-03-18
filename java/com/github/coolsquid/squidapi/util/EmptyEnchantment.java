@@ -9,7 +9,13 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 
 public class EmptyEnchantment extends Enchantment {
 
-	protected EmptyEnchantment(int id) {
+	public EmptyEnchantment(int id) {
 		super(id, 0, EnumEnchantmentType.all);
+		this.name = Utils.newString("empty", id);
+	}
+	
+	public static void replaceEnchantment(int id) {
+		Enchantment.enchantmentsList[id] = null;
+		new EmptyEnchantment(id);
 	}
 }

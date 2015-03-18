@@ -136,25 +136,25 @@ public class SquidAPI extends SquidAPIMod {
 		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();
-		
+
 		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
 			for (Incompatibility a: mod.getIncompatibilities()) {
-				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", mod.getMod().getModId(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".");
+				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", mod.getMod().getModId(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", mod.getMetadata().getAuthorList(), " for more information.");
 			}
 		}
-		
+
 		LogHelper.info("Finished postinitialization.");
 	}
-	
+
 	@EventHandler
 	public void finishedLoading(FMLLoadCompleteEvent event) {
 		if (!VillageHelper.professionstoremove.isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(new VillageHelper());
 		}
 	}
-	
+
 	public static final ArrayList<ICommand> commands = new ArrayList<ICommand>();
-	
+
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		if (Utils.isClient()) {
@@ -167,9 +167,9 @@ public class SquidAPI extends SquidAPIMod {
 			event.registerServerCommand(a);
 		}
 	}
-	
+
 	public static final List<String> messages = Lists.newArrayList();
-	
+
 	@SubscribeEvent
 	public void onLogin(PlayerLoggedInEvent event) {
 		for (String message: messages) {
@@ -177,16 +177,16 @@ public class SquidAPI extends SquidAPIMod {
 		}
 		Minecraft.getMinecraft().gameSettings.saturation = 0.5F;
 	}
-	
+
 	private static final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
-	
+
 	@SubscribeEvent
 	public void onOredictRegistration(OreRegisterEvent event) {
 		if (oredictEntriesToRemove.contains(event.Name)) {
 			OreDictionaryHelper.removeEntry(event.Name);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onShutdown(ShutdownEvent event) {
 		logger.save();

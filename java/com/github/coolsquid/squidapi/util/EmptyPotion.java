@@ -10,6 +10,7 @@ public class EmptyPotion extends Potion {
 	
 	protected EmptyPotion(int id) {
 		super(id, false, 0);
+		this.setPotionName(Utils.newString("empty", id));
 	}
 
 	public static void replacePotion(int id) {

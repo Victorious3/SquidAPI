@@ -39,9 +39,11 @@ public class LogHelper {
 	
 	public static void bigWarning(Level level, Object... msg) {
 		String a = Utils.newString(msg);
-		String b = Utils.repeat('-', a.length());
+		String b = Utils.repeat('#', a.length());
 		log(level, b);
-		log(level, a);
+		for (String c: a.split(Utils.newLine())) {
+			log(level, c);
+		}
 		log(level, b);
 	}
 }

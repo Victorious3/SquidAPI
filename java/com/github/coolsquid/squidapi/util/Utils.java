@@ -302,7 +302,7 @@ public class Utils {
 	public static String repeat(char c, int length) {
 		StringBuilder a = Utils.builder();
 		for (int b = 0; b < length; b++) {
-			a.append("-");
+			a.append(c);
 		}
 		return a.toString();
 	}

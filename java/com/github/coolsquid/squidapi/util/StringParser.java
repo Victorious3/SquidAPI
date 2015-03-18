@@ -6,9 +6,11 @@ package com.github.coolsquid.squidapi.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.world.WorldType;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
@@ -73,6 +75,19 @@ public class StringParser {
 		for (Potion potion: Potion.potionTypes) {
 			if (potion.getName().equals(string)) {
 				return potion;
+			}
+		}
+		return null;
+	}
+
+	public static WorldType parseWorldType(String string) {
+		return WorldType.parseWorldType(string);
+	}
+
+	public static Enchantment parseEnchantment(String string) {
+		for (Enchantment a: Enchantment.enchantmentsList) {
+			if (a != null && a.getName().equals(string)) {
+				return a;
 			}
 		}
 		return null;

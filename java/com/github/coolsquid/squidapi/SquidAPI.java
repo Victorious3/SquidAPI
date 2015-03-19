@@ -4,6 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +75,7 @@ public class SquidAPI extends SquidAPIMod {
 		return instance;
 	}
 	
-	public static final Logger logger = new Logger("./logs", "./logs/SquidAPI.log");
+	public static final Logger logger = new Logger(new File("./logs/SquidAPI.log"));
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -189,7 +190,9 @@ public class SquidAPI extends SquidAPIMod {
 
 	@SubscribeEvent
 	public void onShutdown(ShutdownEvent event) {
-		logger.save();
+		if (Utils.getChance(1, 10)) {
+			LogHelper.info("Have a nice day!");
+		}
 	}
 
 	public static void registerCommands(ICommand... commands) {

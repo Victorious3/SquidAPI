@@ -4,44 +4,34 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.registry;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import net.minecraft.util.DamageSource;
 
-public enum DamageSourceRegistry {
-	
-	INFIRE(DamageSource.inFire),
-	ONFIRE(DamageSource.onFire),
-	LAVA(DamageSource.lava),
-	INWALL(DamageSource.inWall),
-	DROWN(DamageSource.drown),
-	STARVE(DamageSource.starve),
-	CACTUS(DamageSource.cactus),
-	FALL(DamageSource.fall),
-	OUTOFWORLD(DamageSource.outOfWorld),
-	GENERIC(DamageSource.generic),
-	MAGIC(DamageSource.magic),
-	WITHER(DamageSource.wither),
-	ANVIL(DamageSource.anvil),
-	FALLINGBLOCK(DamageSource.fallingBlock);
-	
-	private final DamageSource damagesource;
+public class DamageSourceRegistry extends RegistrySimple<DamageSource> {
 
-	private DamageSourceRegistry(DamageSource damagesource) {
-		this.damagesource = damagesource;
+	private static final DamageSourceRegistry instance = new DamageSourceRegistry();
+
+	public static DamageSourceRegistry instance() {
+		return instance;
 	}
 
-	public DamageSource getDamageSource() {
-		return this.damagesource;
+	public void register(DamageSource source) {
+		this.register(source.damageType, source);
 	}
-	
-	public static List<DamageSource> getDamageSources() {
-		List<DamageSource> list = Lists.newArrayList();
-		for (DamageSourceRegistry a: values()) {
-			list.add(a.getDamageSource());
-		}
-		return list;
+
+	static {
+		instance.register(DamageSource.anvil);
+		instance.register(DamageSource.cactus);
+		instance.register(DamageSource.drown);
+		instance.register(DamageSource.fall);
+		instance.register(DamageSource.fallingBlock);
+		instance.register(DamageSource.generic);
+		instance.register(DamageSource.inFire);
+		instance.register(DamageSource.inWall);
+		instance.register(DamageSource.lava);
+		instance.register(DamageSource.magic);
+		instance.register(DamageSource.onFire);
+		instance.register(DamageSource.outOfWorld);
+		instance.register(DamageSource.starve);
+		instance.register(DamageSource.wither);
 	}
 }

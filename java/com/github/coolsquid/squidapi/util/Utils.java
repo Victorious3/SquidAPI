@@ -37,6 +37,8 @@ import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
 	
+	private static final String line = System.getProperty("line.separator");
+
 	public static boolean getChance(int d, int k) {
 		int a = getRandInt(1, k);
 		return a <= d;
@@ -280,7 +282,7 @@ public class Utils {
 	}
 
 	public static String newLine() {
-		return System.getProperty("line.separator");
+		return line;
 	}
 	
 	public static boolean compatibleWithCharset(String string, CharSet... charsets) {

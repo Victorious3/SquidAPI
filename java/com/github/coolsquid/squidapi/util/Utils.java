@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
@@ -301,11 +303,27 @@ public class Utils {
 		return new IterableMap<E, T>();
 	}
 
+	public static String repeat(String string, int length) {
+		StringBuilder a = Utils.builder();
+		for (int b = 0; b < length; b++) {
+			a.append(string);
+		}
+		return a.toString();
+	}
+	
 	public static String repeat(char c, int length) {
 		StringBuilder a = Utils.builder();
 		for (int b = 0; b < length; b++) {
 			a.append(c);
 		}
 		return a.toString();
+	}
+
+	public static URL newURL(String url) {
+		try {
+			return new URL(url);
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 }

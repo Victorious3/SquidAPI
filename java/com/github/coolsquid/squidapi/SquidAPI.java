@@ -20,8 +20,6 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
-import org.apache.logging.log4j.Level;
-
 import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.command.CommandEnable;
@@ -30,12 +28,12 @@ import com.github.coolsquid.squidapi.config.ConfigHandler;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
-import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler.Incompatibility;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
 import com.github.coolsquid.squidapi.helpers.IdHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.OreDictionaryHelper;
 import com.github.coolsquid.squidapi.helpers.VillageHelper;
+import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
@@ -112,6 +110,10 @@ public class SquidAPI extends SquidAPIMod {
 			MinecraftForge.EVENT_BUS.register(this);
 		}
 		
+		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
+			mod.preInit();
+		}
+		
 		LogHelper.info("Finished preinitialization.");
 	}
 	
@@ -128,6 +130,10 @@ public class SquidAPI extends SquidAPIMod {
 		
 		Utils.runVersionCheckerCompat("227345");
 		
+		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
+			mod.init();
+		}
+		
 		LogHelper.info("Finished initialization.");
 	}
 
@@ -139,11 +145,9 @@ public class SquidAPI extends SquidAPIMod {
 		IdHelper.checkForConflicts();
 
 		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
-			for (Incompatibility a: mod.getIncompatibilities()) {
-				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", mod.getMod().getModId(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", mod.getMetadata().getAuthorList(), " for more information.");
-			}
+			mod.postInit();
 		}
-
+		
 		LogHelper.info("Finished postinitialization.");
 	}
 
@@ -159,13 +163,13 @@ public class SquidAPI extends SquidAPIMod {
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		if (Utils.isClient()) {
-			event.registerServerCommand(new CommandDisable());
-			event.registerServerCommand(new CommandEnable());
-			ClientCommandHandler.instance.registerCommand(new CommandAbout());
-			ClientCommandHandler.instance.registerCommand(new CommandSquidAPI());
+			this.registerServerCommand(new CommandDisable());
+			this.registerServerCommand(new CommandEnable());
+			this.registerClientCommand(new CommandAbout());
+			this.registerClientCommand(new CommandSquidAPI());
 		}
 		for (ICommand a: commands) {
-			event.registerServerCommand(a);
+			this.registerServerCommand(a);
 		}
 	}
 
@@ -199,5 +203,15 @@ public class SquidAPI extends SquidAPIMod {
 		for (ICommand command: commands) {
 			SquidAPI.commands.add(command);
 		}
+	}
+
+	private void registerClientCommand(ICommand command) {
+		ClientCommandHandler.instance.registerCommand(command);
+		LogHelper.info("Registering clientside command ", command.getCommandName(), ".");
+	}
+
+	private void registerServerCommand(ICommand command) {
+		ServerHelper.registerCommand(command.getCommandName(), command);
+		LogHelper.info("Registering serverside command ", command.getCommandName(), ".");
 	}
 }

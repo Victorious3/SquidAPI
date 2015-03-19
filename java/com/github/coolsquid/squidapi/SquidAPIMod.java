@@ -6,9 +6,13 @@ package com.github.coolsquid.squidapi;
 
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+
 import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler;
 import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler.Incompatibility;
 import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler.Severity;
+import com.github.coolsquid.squidapi.helpers.LogHelper;
+import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -39,6 +43,8 @@ public class SquidAPIMod {
 		meta.authorList = authors;
 		meta.description = desc;
 		
+		LogHelper.info("Registering SquidAPIMod ", this.mod.getModId(), ".");
+		
 		mods.add(this);
 	}
 	
@@ -64,5 +70,21 @@ public class SquidAPIMod {
 	
 	public final void getIncompatibilities(Severity severity) {
 		IncompatibilityHandler.instance().getIncompatibilities(this, severity);
+	}
+	
+	public final void preInit() {
+		
+	}
+	
+	public final void init() {
+		
+	}
+	
+	public final void postInit() {
+		for (Incompatibility a: this.getIncompatibilities()) {
+			if (Loader.isModLoaded(a.getModid())) {
+				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", this.mod.getModId(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
+			}
+		}
 	}
 }

@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
+import com.github.coolsquid.squidapi.registry.WorldTypeRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -81,7 +83,7 @@ public class StringParser {
 	}
 
 	public static WorldType parseWorldType(String string) {
-		return WorldType.parseWorldType(string);
+		return WorldTypeRegistry.instance().get(string);
 	}
 
 	public static Enchantment parseEnchantment(String string) {

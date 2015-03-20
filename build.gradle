@@ -1,20 +1,18 @@
- buildscript {
-repositories
-{
-mavenCentral()
-maven {
-name = "forge"
-url = "http://files.minecraftforge.net/maven"
-}
-maven {
-name = "sonatype"
-url = "https://oss.sonatype.org/content/repositories/snapshots/"
-}
-}
-dependencies
-{
-classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-}
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+		maven {
+			name = "sonatype"
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
+		}
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+	}
 }
 
 apply plugin: "forge"
@@ -23,13 +21,11 @@ apply plugin: "curseforge"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-sourceSets
-{
-main
-{
-java { srcDirs = ["$projectDir/java"] }
-resources { srcDirs = ["$projectDir/resources"] }
-}
+sourceSets {
+	main {
+		java { srcDirs = ["$projectDir/java"] }
+		resources { srcDirs = ["$projectDir/resources"] }
+	}
 }
 
 version = "1.0.9"
@@ -38,16 +34,16 @@ archivesBaseName = "SquidAPI"
 minecraft.version = "1.7.10-10.13.2.1272"
 
 curse {
-apiKey = project.curseAPIKey
-changelog = ''
-projectId = '227345'
-releaseType = 'alpha'
+	apiKey = project.curseAPIKey
+	changelog = ''
+	projectId = '227345'
+	releaseType = 'alpha'
 }
 
 jar {
-manifest {
-attributes 'FMLAT': 'access_transformer.cfg'
-attributes 'FMLCorePlugin': 'com.github.coolsquid.squidapi.SquidAPI'
-attributes 'FMLCorePluginContainsFMLMod': 'true'
-}
+	manifest {
+		attributes 'FMLAT': 'access_transformer.cfg'
+		attributes 'FMLCorePlugin': 'com.github.coolsquid.squidapi.SquidAPI'
+		attributes 'FMLCorePluginContainsFMLMod': 'true'
+	}
 }

@@ -47,5 +47,7 @@ releaseType = 'alpha'
 jar {
 manifest {
 attributes 'FMLAT': 'access_transformer.cfg'
+attributes 'FMLCorePlugin': 'com.github.coolsquid.squidapi.SquidAPI'
+attributes 'FMLCorePluginContainsFMLMod': 'true'
 }
 }

@@ -8,8 +8,9 @@ import java.util.List;
 
 import org.apache.logging.log4j.Level;
 
+import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
-import com.github.coolsquid.squidapi.registry.LockedRegistry;
+import com.github.coolsquid.squidapi.registry.RegistrySimple;
 import com.github.coolsquid.squidapi.util.Incompatibility;
 import com.github.coolsquid.squidapi.util.Incompatibility.Severity;
 import com.github.coolsquid.squidapi.util.Suggestion;
@@ -23,7 +24,7 @@ import cpw.mods.fml.common.ModMetadata;
 
 public class SquidAPIMod {
 
-	static final LockedRegistry<SquidAPIMod> mods = new LockedRegistry<SquidAPIMod>("mods");
+	static final RegistrySimple<SquidAPIMod> mods = new RegistrySimple<SquidAPIMod>();
 	private static final List<Suggestion> suggestedMods = Lists.newArrayList();
 
 	private final ModContainer mod;
@@ -44,7 +45,7 @@ public class SquidAPIMod {
 
 		LogHelper.info("Registering SquidAPIMod ", this.mod.getModId(), ".");
 
-		mods.register(this.getMod().getModId(), this);
+		mods.register(this);
 	}
 
 	public final ModContainer getMod() {
@@ -76,6 +77,13 @@ public class SquidAPIMod {
 
 	protected final void suggestMod(String suggestion, String reason, String url) {
 		this.suggestMod(new Suggestion(this.getMod().getModId(), suggestion, reason, url));
+	}
+
+	protected void setDisableable() {
+		if (!(this instanceof Disableable)) {
+			throw new IllegalArgumentException();
+		}
+		CommandDisable.disableables.put(this.getMod().getModId(), (Disableable) this);
 	}
 
 	protected final void preInit() {

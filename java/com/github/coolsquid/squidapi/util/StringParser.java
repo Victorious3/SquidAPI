@@ -75,7 +75,7 @@ public class StringParser {
 	
 	public static Potion parsePotion(String string) {
 		for (Potion potion: Potion.potionTypes) {
-			if (potion.getName().equals(string)) {
+			if (potion != null && potion.getName().equals(string)) {
 				return potion;
 			}
 		}

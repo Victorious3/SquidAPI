@@ -9,7 +9,7 @@ import net.minecraft.potion.Potion;
 public class EmptyPotion extends Potion {
 	
 	protected EmptyPotion(int id) {
-		super(id, false, 0);
+		super(id, false, 000000);
 		this.setPotionName(Utils.newString("empty", id));
 	}
 

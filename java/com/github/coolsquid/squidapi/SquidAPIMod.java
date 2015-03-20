@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
+import com.github.coolsquid.squidapi.registry.LockedRegistry;
 import com.github.coolsquid.squidapi.util.Incompatibility;
 import com.github.coolsquid.squidapi.util.Incompatibility.Severity;
 import com.github.coolsquid.squidapi.util.Suggestion;
@@ -22,7 +23,7 @@ import cpw.mods.fml.common.ModMetadata;
 
 public class SquidAPIMod {
 
-	private static final List<SquidAPIMod> mods = Lists.newArrayList();
+	static final LockedRegistry<SquidAPIMod> mods = new LockedRegistry<SquidAPIMod>("mods");
 	private static final List<Suggestion> suggestedMods = Lists.newArrayList();
 
 	private final ModContainer mod;
@@ -43,7 +44,7 @@ public class SquidAPIMod {
 
 		LogHelper.info("Registering SquidAPIMod ", this.mod.getModId(), ".");
 
-		mods.add(this);
+		mods.register(this.getMod().getModId(), this);
 	}
 
 	public final ModContainer getMod() {

@@ -13,8 +13,18 @@ import com.google.common.collect.Maps;
 
 public class Registry<E> extends RegistrySimple<E> {
 	
+	private final String name;
+	
 	private final Map<String, E> map = Maps.newHashMap();
 	private final Map<E, String> map2 = Maps.newHashMap();
+	
+	public Registry() {
+		this.name = null;
+	}
+	
+	public Registry(String name) {
+		this.name = name;
+	}
 	
 	public E get(String name) {
 		return this.map.get(name);
@@ -32,7 +42,12 @@ public class Registry<E> extends RegistrySimple<E> {
 			throw new DuplicateRegistryEntryException();
 		}
 		if (Utils.developmentEnvironment()) {
-			LogHelper.info("Registering ", name, " in ", this.getClass().getSimpleName(), ".");
+			if (this.name == null) {
+				LogHelper.info("Registering ", name, " in ", this.getClass().getSimpleName(), ".");
+			}
+			else {
+				LogHelper.info("Registering ", name, " in ", this.getClass().getSimpleName(), " '", this.name, "'.");
+			}
 		}
 		super.register(e);
 		this.map.put(name, e);

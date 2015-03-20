@@ -85,6 +85,8 @@ public class SquidAPI extends SquidAPIMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
 		
+		SquidAPIMod.mods.lock();
+		
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
 		

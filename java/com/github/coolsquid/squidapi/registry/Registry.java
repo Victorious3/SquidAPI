@@ -7,6 +7,7 @@ package com.github.coolsquid.squidapi.registry;
 import java.util.Map;
 
 import com.github.coolsquid.squidapi.exception.DuplicateRegistryEntryException;
+import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Maps;
 
@@ -24,20 +25,51 @@ public class Registry<E> extends RegistrySimple<E> {
 	}
 	
 	public void register(String name, E e) {
-		super.register(e);
 		if (name == null) {
 			throw new IllegalArgumentException();
 		}
-		name = Utils.newString(Utils.getCurrentMod().getModId(), ":", name);
 		if (this.map.containsKey(name)) {
 			throw new DuplicateRegistryEntryException();
 		}
+		if (Utils.developmentEnvironment()) {
+			LogHelper.info("Registering ", name, " in ", this.getClass().getSimpleName(), ".");
+		}
+		super.register(e);
 		this.map.put(name, e);
 		this.map2.put(e, name);
 	}
 	
 	@Override
+	@Deprecated
 	public void register(E e) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		if (this.map != null) {
+			result = prime * result + ((this.map == null) ? 0 : this.map.hashCode());
+			for (E e: this.map.values()) {
+				if (e != null) {
+					result = prime * result + e.hashCode();
+				}
+			}
+		}
+		if (this.map2 != null) {
+			result = prime * result + ((this.map2 == null) ? 0 : this.map2.hashCode());
+			for (String e: this.map2.values()) {
+				if (e != null) {
+					result = prime * result + e.hashCode();
+				}
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "Registry [hashCode()=" + this.hashCode() + "]";
 	}
 }

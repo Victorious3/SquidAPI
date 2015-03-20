@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.apache.logging.log4j.Level;
 
-import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler;
-import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler.Incompatibility;
-import com.github.coolsquid.squidapi.handlers.IncompatibilityHandler.Severity;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
+import com.github.coolsquid.squidapi.util.Incompatibility;
+import com.github.coolsquid.squidapi.util.Incompatibility.Severity;
+import com.github.coolsquid.squidapi.util.Suggestion;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -23,18 +23,20 @@ import cpw.mods.fml.common.ModMetadata;
 public class SquidAPIMod {
 	
 	private static final List<SquidAPIMod> mods = Lists.newArrayList();
+	private static final List<Suggestion> suggestedMods = Lists.newArrayList();
 	
-	public static List<SquidAPIMod> getMods() {
+	protected static List<SquidAPIMod> getMods() {
 		return ImmutableList.copyOf(mods);
 	}
 
 	private final ModContainer mod;
+	private final List<Incompatibility> incompatibilities = Lists.newArrayList();
 
-	public SquidAPIMod(String desc) {
+	protected SquidAPIMod(String desc) {
 		this(desc, Lists.newArrayList("CoolSquid"), "", "http://coolsquid.wix.com/software");
 	}
 	
-	public SquidAPIMod(String desc, List<String> authors, String credits, String url) {
+	protected SquidAPIMod(String desc, List<String> authors, String credits, String url) {
 		this.mod = Loader.instance().activeModContainer();
 		
 		ModMetadata meta = this.mod.getMetadata();
@@ -57,34 +59,48 @@ public class SquidAPIMod {
 	}
 	
 	public final List<Incompatibility> getIncompatibilities() {
-		return IncompatibilityHandler.instance().getIncompatibilities(this);
+		return ImmutableList.copyOf(this.incompatibilities);
 	}
 	
-	public final void registerIncompatibility(Incompatibility incompatibility) {
-		IncompatibilityHandler.instance().registerIncompatibility(this, incompatibility);
+	protected final void registerIncompatibility(Incompatibility incompatibility) {
+		this.incompatibilities.add(incompatibility);
 	}
 	
-	public final void registerIncompatibility(String modid, String reason, Severity severity) {
-		IncompatibilityHandler.instance().registerIncompatibility(this, new Incompatibility(modid, reason, severity));
+	protected final void registerIncompatibility(String modid, String reason, Severity severity) {
+		this.registerIncompatibility(new Incompatibility(modid, reason, severity));
 	}
 	
-	public final void getIncompatibilities(Severity severity) {
-		IncompatibilityHandler.instance().getIncompatibilities(this, severity);
+	protected final void suggestMod(Suggestion suggestion) {
+		if (!Loader.isModLoaded(suggestion.getSuggestion())) {
+			suggestedMods.add(suggestion);
+		}
 	}
 	
-	public final void preInit() {
+	protected final void suggestMod(String suggestion, String reason) {
+		this.suggestMod(new Suggestion(this.getMod().getModId(), suggestion, reason));
+	}
+
+	protected final void preInit() {
 		
 	}
-	
-	public final void init() {
+
+	protected final void init() {
 		
 	}
-	
-	public final void postInit() {
+
+	protected final void postInit() {
 		for (Incompatibility a: this.getIncompatibilities()) {
 			if (Loader.isModLoaded(a.getModid())) {
-				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", this.mod.getModId(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
+				LogHelper.bigWarning(Level.WARN, "Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
 			}
 		}
+	}
+
+	public static Suggestion getRandomSuggestedMod() {
+		return suggestedMods.get(Utils.getRandInt(0, suggestedMods.size() - 1));
+	}
+
+	public static List<Suggestion> getSuggestions() {
+		return ImmutableList.copyOf(suggestedMods);
 	}
 }

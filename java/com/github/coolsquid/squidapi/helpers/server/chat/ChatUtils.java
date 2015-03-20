@@ -4,12 +4,18 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.helpers.server.chat;
 
+import net.minecraft.command.ICommandSender;
+
 import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 
 public class ChatUtils {
 	
 	public static void sendPrivateMsg(String player, String msg) {
 		ServerHelper.getPlayerFromName(player).addChatMessage(new ChatMessage(msg));
+	}
+	
+	public static void sendPrivateMsg(ICommandSender player, String... msg) {
+		player.addChatMessage(new ChatMessage(msg));
 	}
 	
 	public static void sendPublicMsg(String msg) {

@@ -70,4 +70,9 @@ public class RegistrySimple<E> implements Iterable<E> {
 	public boolean equals(Object obj) {
 		return this.hashCode() == obj.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "RegistrySimple [hashCode()=" + this.hashCode() + "]";
+	}
 }

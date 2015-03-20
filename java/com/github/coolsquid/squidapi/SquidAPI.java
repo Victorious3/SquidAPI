@@ -24,6 +24,7 @@ import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.command.CommandEnable;
 import com.github.coolsquid.squidapi.command.CommandSquidAPI;
+import com.github.coolsquid.squidapi.command.CommandSuggest;
 import com.github.coolsquid.squidapi.config.ConfigHandler;
 import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
@@ -37,6 +38,11 @@ import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
+import com.github.coolsquid.squidapi.registry.DamageSourceRegistry;
+import com.github.coolsquid.squidapi.registry.VanillaBlockRegistry;
+import com.github.coolsquid.squidapi.registry.VanillaItemRegistry;
+import com.github.coolsquid.squidapi.registry.WorldTypeRegistry;
+import com.github.coolsquid.squidapi.util.Charsets;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.ShutdownHandler;
@@ -73,13 +79,16 @@ public class SquidAPI extends SquidAPIMod {
 		return instance;
 	}
 	
-	public static final Logger logger = new Logger(new File("./logs/SquidAPI.log"));
+	public static final Logger logger;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
 		
-		CommonHandler.init();
+		VanillaBlockRegistry.instance();
+		VanillaItemRegistry.instance();
+		
+		CommonHandler.instance().init();
 		
 		Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
 		
@@ -100,20 +109,20 @@ public class SquidAPI extends SquidAPIMod {
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList(ConfigHandler.branding));
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList(ConfigHandler.branding));
 		}
-		
-		if (!Loader.isModLoaded("DragonAPI") && ConfigHandler.maxPotionId != 32) {
-			LogHelper.info("Setting the max potion id to ", ConfigHandler.maxPotionId, ".");
-			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, ConfigHandler.maxPotionId);
+
+		if (!Loader.isModLoaded("DragonAPI")) {
+			LogHelper.info("Setting the max potion id to 256.");
+			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 256);
 		}
-		
+
 		if (Loader.isModLoaded("MineFactoryReloaded|CompatIC2")) {
 			MinecraftForge.EVENT_BUS.register(this);
 		}
-		
+
 		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
 			mod.preInit();
 		}
-		
+
 		LogHelper.info("Finished preinitialization.");
 	}
 	
@@ -127,27 +136,36 @@ public class SquidAPI extends SquidAPIMod {
 		if (Utils.developmentEnvironment()) {
 			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
 		}
-		
+
+		this.suggestMod("SquidUtils", "It provides the user with many customization options, from disabling mobs to creating new biomes.");
+		this.suggestMod("StarStones", "Meteors!");
+		this.suggestMod("FighterMobs", "Gives abilities to certain Vanilla mobs!");
+		this.suggestMod("SafeChat", "Filters swearwords from the chat. Perfect for family servers!");
+
 		Utils.runVersionCheckerCompat("227345");
-		
+
 		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
 			mod.init();
 		}
-		
+
 		LogHelper.info("Finished initialization.");
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing.");
+		
 		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();
 
+		WorldTypeRegistry.instance();
+		DamageSourceRegistry.instance();
+
 		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
 			mod.postInit();
 		}
-		
+
 		LogHelper.info("Finished postinitialization.");
 	}
 
@@ -167,6 +185,7 @@ public class SquidAPI extends SquidAPIMod {
 			this.registerServerCommand(new CommandEnable());
 			this.registerClientCommand(new CommandAbout());
 			this.registerClientCommand(new CommandSquidAPI());
+			this.registerClientCommand(new CommandSuggest());
 		}
 		for (ICommand a: commands) {
 			this.registerServerCommand(a);
@@ -189,6 +208,9 @@ public class SquidAPI extends SquidAPIMod {
 	public void onOredictRegistration(OreRegisterEvent event) {
 		if (oredictEntriesToRemove.contains(event.Name)) {
 			OreDictionaryHelper.removeEntry(event.Name);
+		}
+		else if (Charsets.isRandomLetters(event.Name)) {
+			LogHelper.info("Ordictionary entry ", event.Name, " is very long, and seems to consist of random letters.");
 		}
 	}
 
@@ -213,5 +235,13 @@ public class SquidAPI extends SquidAPIMod {
 	private void registerServerCommand(ICommand command) {
 		ServerHelper.registerCommand(command.getCommandName(), command);
 		LogHelper.info("Registering serverside command ", command.getCommandName(), ".");
+	}
+
+	static {
+		File file = new File("./logs/SquidAPI.log");
+		if (file.exists()) {
+			file.delete();
+		}
+		logger = new Logger(file);
 	}
 }

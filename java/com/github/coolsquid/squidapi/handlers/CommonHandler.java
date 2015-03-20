@@ -16,12 +16,18 @@ import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.util.Utils;
 
 public class CommonHandler {
-	
+
+	private static final CommonHandler instance = new CommonHandler();
+
+	public static CommonHandler instance() {
+		return instance;
+	}
+
 	/**
 	 * Generates a crash reporting info file and starts the environment checks.
 	 */
 	
-	public static void init() {
+	public void init() {
 		if (Utils.isJavaVersionSameOrLower(6)) {
 			LogHelper.bigWarning(Level.WARN, "SquidAPI may not be compatible with your Java version. Please update to Java 7 or higher.");
 		}

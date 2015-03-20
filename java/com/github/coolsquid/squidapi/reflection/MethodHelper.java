@@ -19,7 +19,7 @@ public class MethodHelper {
 			name = deobfname;
 		}
 		try {
-			this.method = clazz.getDeclaredMethod(deobfname, params);
+			this.method = clazz.getDeclaredMethod(name, params);
 		} catch (NoSuchMethodException | SecurityException e) {
 			throw new ReflectionException("Could not find method " + name);
 		}

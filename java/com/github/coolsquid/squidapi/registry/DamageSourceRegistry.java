@@ -6,11 +6,15 @@ package com.github.coolsquid.squidapi.registry;
 
 import net.minecraft.util.DamageSource;
 
-public class DamageSourceRegistry extends Registry<DamageSource> {
+public final class DamageSourceRegistry extends Registry<DamageSource> {
 	
 	private static final DamageSourceRegistry instance = new DamageSourceRegistry();
 	
-	public DamageSourceRegistry() {
+	public static DamageSourceRegistry instance() {
+		return instance;
+	}
+	
+	private DamageSourceRegistry() {
 		this.register(DamageSource.anvil);
 		this.register(DamageSource.cactus);
 		this.register(DamageSource.drown);
@@ -25,10 +29,6 @@ public class DamageSourceRegistry extends Registry<DamageSource> {
 		this.register(DamageSource.outOfWorld);
 		this.register(DamageSource.starve);
 		this.register(DamageSource.wither);
-	}
-
-	public static DamageSourceRegistry instance() {
-		return instance;
 	}
 
 	@Override

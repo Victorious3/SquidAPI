@@ -9,6 +9,7 @@ import org.apache.commons.lang3.CharSet;
 public class Charsets {
 	
 	public static final CharSet vowels = CharSet.getInstance("aeiouAEIOU");
+	public static final CharSet punctuation = CharSet.getInstance(".!?");
 	
 	public static boolean isRandomLetters(String string) {
 		int a = 0;
@@ -29,5 +30,15 @@ public class Charsets {
 			}
 		}
 		return false;
+	}
+	
+	public static String punctuate(String string) {
+		if (string == null || string.isEmpty()) {
+			return ".";
+		}
+		if (!punctuation.contains(string.charAt(string.length() - 1))) {
+			string += ".";
+		}
+		return string;
 	}
 }

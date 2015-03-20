@@ -16,7 +16,7 @@ public enum Compat {
 	Botania("Botania", "vazkii.botania.api", "35"),
 	RotaryCraft("RotaryCraft"),
 	AppliedEnergistics2("appliedenergistics2", "appeng.api", "rv2"),
-	BloodMagic("WayOfTime"),
+	BloodMagic("AWWayofTime"),
 	ThaumCraft("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
 	RailCraft("RailCraft", "mods.railcraft.api.crafting", "1.0.0");
 

@@ -137,10 +137,10 @@ public class SquidAPI extends SquidAPIMod {
 			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
 		}
 
-		this.suggestMod("SquidUtils", "It provides the user with many customization options, from disabling mobs to creating new biomes.");
-		this.suggestMod("StarStones", "Meteors!");
-		this.suggestMod("FighterMobs", "Gives abilities to certain Vanilla mobs!");
-		this.suggestMod("SafeChat", "Filters swearwords from the chat. Perfect for family servers!");
+		this.suggestMod("SquidUtils", "It provides the user with many customization options, from disabling mobs to creating new biomes.", "http://bit.ly/1EB3Y5N");
+		this.suggestMod("StarStones", "Meteors!", "http://bit.ly/1EB3Y5N");
+		this.suggestMod("FighterMobs", "Gives abilities to certain Vanilla mobs!", "http://bit.ly/1EB3Y5N");
+		this.suggestMod("SafeChat", "Filters swearwords from the chat. Perfect for family servers!", "http://bit.ly/1EB3Y5N");
 
 		Utils.runVersionCheckerCompat("227345");
 

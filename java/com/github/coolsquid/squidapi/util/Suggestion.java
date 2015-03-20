@@ -5,16 +5,19 @@
 package com.github.coolsquid.squidapi.util;
 
 
+
 public final class Suggestion {
 	
 	private final String suggestor;
 	private final String suggestion;
 	private final String reason;
+	private final String url;
 
-	public Suggestion(String suggestor, String suggestion, String reason) {
+	public Suggestion(String suggestor, String suggestion, String reason, String url) {
 		this.suggestor = suggestor;
 		this.suggestion = suggestion;
-		this.reason = reason;
+		this.reason = Charsets.punctuate(reason);
+		this.url = url;
 	}
 
 	public String getSuggestor() {
@@ -27,5 +30,9 @@ public final class Suggestion {
 
 	public String getReason() {
 		return this.reason;
+	}
+
+	public String getUrl() {
+		return this.url;
 	}
 }

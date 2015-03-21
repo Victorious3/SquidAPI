@@ -5,6 +5,7 @@
 package com.github.coolsquid.squidapi;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,8 @@ import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
+
+import org.apache.commons.io.FileUtils;
 
 import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
@@ -43,7 +46,6 @@ import com.github.coolsquid.squidapi.registry.DamageSourceRegistry;
 import com.github.coolsquid.squidapi.registry.VanillaBlockRegistry;
 import com.github.coolsquid.squidapi.registry.VanillaItemRegistry;
 import com.github.coolsquid.squidapi.registry.WorldTypeRegistry;
-import com.github.coolsquid.squidapi.util.Charsets;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ModInfo;
 import com.github.coolsquid.squidapi.util.ShutdownHandler;
@@ -72,21 +74,25 @@ public class SquidAPI extends SquidAPIMod {
 	public SquidAPI() {
 		super("An API for all my mods.");
 	}
-	
+
 	@Instance
 	private static SquidAPI instance;
 
 	public static SquidAPI instance() {
 		return instance;
 	}
-	
+
 	public static final Logger logger;
-	
+
 	private final SquidAPIConfig commandConfig = new SquidAPIConfig(new File("./config/SquidAPI/commands.cfg"));
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		LogHelper.info("Preinitializing.");
+		try {
+			LogHelper.info("Preinitializing.", FileUtils.checksumCRC32(new File("./mods/VersionChecker-1.1.8.jar")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
@@ -206,15 +212,12 @@ public class SquidAPI extends SquidAPIMod {
 		Minecraft.getMinecraft().gameSettings.saturation = 0.5F;
 	}
 
-	private static final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
+	private final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
 
 	@SubscribeEvent
 	public void onOredictRegistration(OreRegisterEvent event) {
-		if (oredictEntriesToRemove.contains(event.Name)) {
+		if (this.oredictEntriesToRemove.contains(event.Name)) {
 			OreDictionaryHelper.removeEntry(event.Name);
-		}
-		else if (Charsets.isRandomLetters(event.Name)) {
-			LogHelper.info("Ordictionary entry ", event.Name, " is very long, and seems to consist of random letters.");
 		}
 	}
 

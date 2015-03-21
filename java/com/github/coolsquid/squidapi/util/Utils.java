@@ -4,8 +4,6 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
@@ -317,13 +315,5 @@ public class Utils {
 			a.append(c);
 		}
 		return a.toString();
-	}
-
-	public static URL newURL(String url) {
-		try {
-			return new URL(url);
-		} catch (MalformedURLException e) {
-			return null;
-		}
 	}
 }

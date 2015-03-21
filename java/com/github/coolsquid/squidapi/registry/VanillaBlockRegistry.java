@@ -5,6 +5,7 @@
 package com.github.coolsquid.squidapi.registry;
 
 import net.minecraft.block.Block;
+import cpw.mods.fml.common.registry.GameData;
 
 public final class VanillaBlockRegistry extends LockedRegistry<Block> {
 
@@ -18,13 +19,9 @@ public final class VanillaBlockRegistry extends LockedRegistry<Block> {
 		for (Object a : Block.blockRegistry.getKeys()) {
 			String name = a.toString();
 			if (name.startsWith("minecraft:")) {
-				this.register(name.replace("minecraft:", ""), (Block) Block.blockRegistry.getObject(a));
+				this.register(name.substring(10), (Block) GameData.getBlockRegistry().getObject(a));
 			}
 		}
 		this.lock();
-	}
-	
-	public boolean isVanillaBlock(Block block) {
-		return this.getName(block) != null;
 	}
 }

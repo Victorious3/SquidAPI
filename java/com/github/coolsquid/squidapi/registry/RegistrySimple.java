@@ -45,6 +45,11 @@ public class RegistrySimple<E> implements Iterable<E> {
 	public boolean containsValue(E e) {
 		return this.map.containsKey(e);
 	}
+	
+	protected void clear() {
+		this.list.clear();
+		this.map.clear();
+	}
 
 	@Override
 	public Iterator<E> iterator() {

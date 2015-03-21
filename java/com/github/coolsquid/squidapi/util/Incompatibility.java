@@ -4,19 +4,21 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
-public final class Incompatibility {
-	private final String modid;
+public final class Incompatibility extends ModVersion {
+
 	private final String reason;
 	private final Severity severity;
-	
+
 	public Incompatibility(String modid, String reason, Severity severity) {
-		this.modid = modid;
+		super(modid, 0, Integer.MAX_VALUE);
 		this.reason = reason;
 		this.severity = severity;
 	}
 
-	public String getModid() {
-		return this.modid;
+	public Incompatibility(String modid, String reason, Severity severity, int minVersion, int maxVersion) {
+		super(modid, minVersion, maxVersion);
+		this.reason = reason;
+		this.severity = severity;
 	}
 
 	public String getReason() {

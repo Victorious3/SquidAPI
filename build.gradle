@@ -28,7 +28,7 @@ sourceSets {
 	}
 }
 
-version = "1.0.9"
+version = "1.1.0"
 group= "com.github.coolsquid"
 archivesBaseName = "SquidAPI"
 minecraft.version = "1.7.10-10.13.2.1272"
@@ -37,13 +37,13 @@ curse {
 	apiKey = project.curseAPIKey
 	changelog = ''
 	projectId = '227345'
-	releaseType = 'alpha'
+	releaseType = 'beta'
 }
 
 jar {
 	manifest {
-		attributes 'FMLAT': 'access_transformer.cfg'
-		attributes 'FMLCorePlugin': 'com.github.coolsquid.squidapi.SquidAPI'
+        attributes 'FMLAT': 'SquidAPI_at.cfg'
+		attributes 'FMLCorePlugin': 'com.github.coolsquid.squidapi.SquidAPIPlugin'
 		attributes 'FMLCorePluginContainsFMLMod': 'true'
 	}
 }

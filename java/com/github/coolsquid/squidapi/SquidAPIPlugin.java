@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 CoolSquid, ljfa.
+ * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
 package com.github.coolsquid.squidapi;

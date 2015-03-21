@@ -24,8 +24,4 @@ public final class VanillaItemRegistry extends LockedRegistry<Item> {
 		}
 		this.lock();
 	}
-	
-	public boolean isVanillaItem(Item item) {
-		return this.getName(item) != null;
-	}
 }

@@ -15,6 +15,12 @@ public class ModVersion {
 		this.minVersion = IntUtils.parseInt(minVersion);
 		this.maxVersion = IntUtils.parseInt(maxVersion);
 	}
+	
+	public ModVersion(String modid, int minVersion, int maxVersion) {
+		this.modid = modid;
+		this.minVersion = minVersion;
+		this.maxVersion = maxVersion;
+	}
 
 	public String getModid() {
 		return this.modid;

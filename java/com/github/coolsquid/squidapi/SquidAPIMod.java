@@ -30,11 +30,11 @@ public class SquidAPIMod {
 	private final ModContainer mod;
 	private final List<Incompatibility> incompatibilities = Lists.newArrayList();
 
-	protected SquidAPIMod(String desc) {
+	public SquidAPIMod(String desc) {
 		this(desc, Lists.newArrayList("CoolSquid"), "", "http://coolsquid.wix.com/software");
 	}
 
-	protected SquidAPIMod(String desc, List<String> authors, String credits, String url) {
+	public SquidAPIMod(String desc, List<String> authors, String credits, String url) {
 		this.mod = Loader.instance().activeModContainer();
 
 		ModMetadata meta = this.mod.getMetadata();

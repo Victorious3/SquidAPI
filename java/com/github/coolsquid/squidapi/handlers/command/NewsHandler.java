@@ -9,7 +9,7 @@ import java.net.URL;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
-import com.github.coolsquid.squidapi.util.WebUtils;
+import com.github.coolsquid.squidapi.util.io.WebUtils;
 
 public class NewsHandler extends Thread {
 	

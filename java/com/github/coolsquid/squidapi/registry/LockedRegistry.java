@@ -8,14 +8,6 @@ public class LockedRegistry<E> extends Registry<E> {
 	
 	private boolean locked;
 	
-	public LockedRegistry() {
-		
-	}
-	
-	public LockedRegistry(String name) {
-		super(name);
-	}
-	
 	public void lock() {
 		this.locked = true;
 	}

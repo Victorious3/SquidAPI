@@ -5,6 +5,7 @@
 package com.github.coolsquid.squidapi.util;
 
 import java.security.Key;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -314,6 +315,28 @@ public class Utils {
 		for (int b = 0; b < length; b++) {
 			a.append(c);
 		}
+		return a.toString();
+	}
+	
+	public static byte[] convertToBytes(String string) {
+		byte[] result = new byte[string.length()];
+		int counter = 0;
+		for (byte b: string.getBytes()) {
+			if (counter == result.length) {
+				result = Arrays.copyOf(result, result.length + 4);
+			}
+			result[counter++] = b;
+		}
+		return result;
+	}
+
+	public static String convertToString(byte[] bytes) {
+		StringBuilder a = builder();
+		for (byte b: bytes) {
+			a.append(b);
+			a.append('-');
+		}
+		a.deleteCharAt(a.length() - 1);
 		return a.toString();
 	}
 }

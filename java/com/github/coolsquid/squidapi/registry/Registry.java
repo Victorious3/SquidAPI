@@ -7,24 +7,12 @@ package com.github.coolsquid.squidapi.registry;
 import java.util.Map;
 
 import com.github.coolsquid.squidapi.exception.DuplicateRegistryEntryException;
-import com.github.coolsquid.squidapi.helpers.LogHelper;
-import com.github.coolsquid.squidapi.util.Utils;
 import com.google.common.collect.Maps;
 
 public class Registry<E> extends RegistrySimple<E> {
 	
-	private final String name;
-	
 	private final Map<String, E> map = Maps.newHashMap();
 	private final Map<E, String> map2 = Maps.newHashMap();
-	
-	public Registry() {
-		this.name = null;
-	}
-	
-	public Registry(String name) {
-		this.name = name;
-	}
 	
 	public E get(String name) {
 		return this.map.get(name);
@@ -44,14 +32,6 @@ public class Registry<E> extends RegistrySimple<E> {
 		}
 		if (this.map.containsKey(name)) {
 			throw new DuplicateRegistryEntryException();
-		}
-		if (Utils.developmentEnvironment()) {
-			if (this.name == null) {
-				LogHelper.info("Registering ", name, " in ", this.getClass().getSimpleName(), ".");
-			}
-			else {
-				LogHelper.info("Registering ", name, " in ", this.getClass().getSimpleName(), " '", this.name, "'.");
-			}
 		}
 		super.register(e);
 		this.map.put(name, e);

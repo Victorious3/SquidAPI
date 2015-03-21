@@ -5,7 +5,6 @@
 package com.github.coolsquid.squidapi;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +19,6 @@ import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
-
-import org.apache.commons.io.FileUtils;
 
 import com.github.coolsquid.squidapi.command.CommandAbout;
 import com.github.coolsquid.squidapi.command.CommandDisable;
@@ -88,11 +85,7 @@ public class SquidAPI extends SquidAPIMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		try {
-			LogHelper.info("Preinitializing.", FileUtils.checksumCRC32(new File("./mods/VersionChecker-1.1.8.jar")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		LogHelper.info("Preinitializing.");
 
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
@@ -135,7 +128,7 @@ public class SquidAPI extends SquidAPIMod {
 
 		LogHelper.info("Finished preinitialization.");
 	}
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");

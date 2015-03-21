@@ -2,12 +2,14 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package com.github.coolsquid.squidapi.util;
+package com.github.coolsquid.squidapi.util.io;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
@@ -18,6 +20,9 @@ import com.google.common.collect.Lists;
 public class WebUtils {
 	
 	public static URL newURL(String url) {
+		if (!url.contains("://")) {
+			url = "http://" + url;
+		}
 		try {
 			return new URL(url);
 		} catch (MalformedURLException e) {
@@ -103,7 +108,27 @@ public class WebUtils {
 		}
 		return null;
 	}
+
+	public static URLReader newReader(String url) {
+		return new URLReader(newURL(url));
+	}
+
+	public static URLReader newReader(URL url) {
+		return new URLReader(url);
+	}
 	
+	public static void openBrowser(String url) {
+		openBrowser(newURL(url));
+	}
+	
+	public static void openBrowser(URL url) {
+		try {
+			Desktop.getDesktop().browse(url.toURI());
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static class URLReader implements Iterable<String> {
 
 		private final URL url;

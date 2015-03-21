@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package com.github.coolsquid.squidapi.util;
+package com.github.coolsquid.squidapi.util.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,6 +17,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
+
+import scala.actors.threadpool.Arrays;
 
 import com.google.common.collect.Lists;
 
@@ -113,6 +115,25 @@ public class IOUtils {
 			result += 31;
 		}
 		return result;
+	}
+	
+	public static byte[] convertToBytes(File file) {
+		byte[] result = new byte[256];
+		int counter = 0;
+		for (String a: newReader(file)) {
+			for (byte b: a.getBytes()) {
+				try {
+					result[counter++] = b;
+				} catch (Exception e) {
+					result = Arrays.copyOf(result, result.length + 256);
+				}
+			}
+		}
+		return result;
+	}
+
+	public static FileReader newReader(File file) {
+		return new FileReader(file);
 	}
 
 	public static class FileReader implements Iterable<String> {

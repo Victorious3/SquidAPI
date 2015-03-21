@@ -133,4 +133,12 @@ public class IntUtils {
 	public static int percentOf(int a, int b) {
 		return a * 100 / b;
 	}
+
+	public static int byteArrayToInteger(byte[] bytes) {
+		int result = 0;
+		for (byte a: bytes) {
+			result += a;
+		}
+		return result;
+	}
 }

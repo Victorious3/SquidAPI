@@ -6,7 +6,7 @@ package com.github.coolsquid.squidapi.registry;
 
 import java.io.File;
 
-import com.github.coolsquid.squidapi.util.IOUtils.FileReader;
+import com.github.coolsquid.squidapi.util.io.IOUtils.FileReader;
 
 public class FileRegistry extends LockedRegistrySimple<String> {
 

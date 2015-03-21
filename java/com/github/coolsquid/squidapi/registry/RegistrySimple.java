@@ -37,6 +37,14 @@ public class RegistrySimple<E> implements Iterable<E> {
 	public int getId(E e) {
 		return this.map.get(e);
 	}
+	
+	public boolean containsId(int id) {
+		return this.get(id) != null;
+	}
+	
+	public boolean containsValue(E e) {
+		return this.map.containsKey(e);
+	}
 
 	@Override
 	public Iterator<E> iterator() {

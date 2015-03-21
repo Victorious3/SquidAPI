@@ -16,12 +16,16 @@ public final class VanillaItemRegistry extends LockedRegistry<Item> {
 	}
 
 	private VanillaItemRegistry() {
-		for (Object o : GameData.getItemRegistry().getKeys()) {
-			String key = o.toString();
-			if (key.startsWith("minecraft:")) {
-				this.register(key.substring(10), GameData.getItemRegistry().getObject(key));
+		for (Object a: GameData.getItemRegistry().getKeys()) {
+			String name = a.toString();
+			if (name.startsWith("minecraft:")) {
+				this.register(name.substring(10), GameData.getItemRegistry().getObject(name));
 			}
 		}
 		this.lock();
+	}
+	
+	public boolean isVanillaItem(Item item) {
+		return this.getName(item) != null;
 	}
 }

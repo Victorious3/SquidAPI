@@ -71,7 +71,6 @@ public class SquidAPIMod {
 	protected final void suggestMod(Suggestion suggestion) {
 		if (!Loader.isModLoaded(suggestion.getSuggestion())) {
 			suggestedMods.add(suggestion);
-			LogHelper.info(suggestion.getSuggestor(), " suggested that you install: ", suggestion.getSuggestion(), ". Reason: ", suggestion.getReason());
 		}
 	}
 

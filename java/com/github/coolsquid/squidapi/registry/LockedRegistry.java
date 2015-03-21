@@ -27,4 +27,8 @@ public class LockedRegistry<E> extends Registry<E> {
 		}
 		super.register(name, e);
 	}
+	
+	public static <T> LockedRegistry<T> newInstance() {
+		return new LockedRegistry<T>();
+	}
 }

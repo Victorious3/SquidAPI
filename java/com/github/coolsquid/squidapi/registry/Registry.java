@@ -34,6 +34,10 @@ public class Registry<E> extends RegistrySimple<E> {
 		return this.map2.get(e);
 	}
 	
+	public boolean containsName(String name) {
+		return this.map.containsKey(name);
+	}
+	
 	public void register(String name, E e) {
 		if (name == null) {
 			throw new IllegalArgumentException();

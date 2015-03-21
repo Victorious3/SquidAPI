@@ -93,6 +93,9 @@ public class CommandBase implements ICommand {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
+		if (args.length == 0) {
+			return;
+		}
 		if (this.subcommands.containsKey(args[0])) {
 			List<String> args2 = Lists.newArrayList();
 			for (int a = 1; a < args.length; a++) {

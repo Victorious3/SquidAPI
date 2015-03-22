@@ -24,7 +24,8 @@ import cpw.mods.fml.common.ModMetadata;
 
 public class SquidAPIMod {
 
-	static final RegistrySimple<SquidAPIMod> mods = new RegistrySimple<SquidAPIMod>();
+	private static final RegistrySimple<SquidAPIMod> mods = new RegistrySimple<SquidAPIMod>();
+	private static final RegistrySimple<String> modids = new RegistrySimple<String>();
 	private static final List<Suggestion> suggestedMods = Lists.newArrayList();
 
 	private final ModContainer mod;
@@ -46,6 +47,7 @@ public class SquidAPIMod {
 		LogHelper.info("Registering SquidAPIMod ", this.mod.getModId(), ".");
 
 		mods.register(this);
+		modids.register(this.getMod().getModId());
 	}
 
 	public final ModContainer getMod() {
@@ -103,6 +105,10 @@ public class SquidAPIMod {
 
 	public static List<SquidAPIMod> getMods() {
 		return ImmutableList.copyOf(mods);
+	}
+	
+	public static List<String> getModids() {
+		return ImmutableList.copyOf(modids);
 	}
 
 	public static Suggestion getRandomSuggestedMod() {

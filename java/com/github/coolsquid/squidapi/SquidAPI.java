@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,6 +30,7 @@ import com.github.coolsquid.squidapi.handlers.CommonHandler;
 import com.github.coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import com.github.coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import com.github.coolsquid.squidapi.handlers.ModEventHandler;
+import com.github.coolsquid.squidapi.handlers.MonetizationHandler;
 import com.github.coolsquid.squidapi.helpers.IdHelper;
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.OreDictionaryHelper;
@@ -139,6 +139,9 @@ public class SquidAPI extends SquidAPIMod {
 		if (Utils.developmentEnvironment()) {
 			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
 		}
+		if (!Utils.isClient()) {
+			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(SquidAPIMod.getModids()));
+		}
 
 		this.suggestMod("SquidUtils", "It provides the user with many customization options, from disabling mobs to creating new biomes.", "http://bit.ly/1EB3Y5N");
 		this.suggestMod("StarStones", "Meteors!", "http://bit.ly/1EB3Y5N");
@@ -202,7 +205,6 @@ public class SquidAPI extends SquidAPIMod {
 		for (String message: messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
 		}
-		Minecraft.getMinecraft().gameSettings.saturation = 0.5F;
 	}
 
 	private final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");

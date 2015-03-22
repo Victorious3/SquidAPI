@@ -49,6 +49,11 @@ public final class Blacklist<E> implements Iterable<E> {
 		return new Blacklist<T>(values);
 	}
 	
+	@Override
+	public int hashCode() {
+		return this.list.hashCode();
+	}
+
 	public static class Builder<T> {
 		
 		private final ImmutableSet.Builder<T> builder = ImmutableSet.builder();
@@ -68,5 +73,13 @@ public final class Blacklist<E> implements Iterable<E> {
 	
 	public static <T> Builder<T> builder() {
 		return new Builder<T>();
+	}
+
+	public static <T> Blacklist<T> copyOf(Iterable<T> content) {
+		Builder<T> a = builder();
+		for (T b: content) {
+			a.add(b);
+		}
+		return a.build();
 	}
 }

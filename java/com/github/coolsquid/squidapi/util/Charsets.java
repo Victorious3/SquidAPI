@@ -16,6 +16,7 @@ public class Charsets {
 		int b = 0;
 		for (char c: string.toCharArray()) {
 			if (vowels.contains(c)) {
+				b = 0;
 				a++;
 				if (a > 3) {
 					return true;

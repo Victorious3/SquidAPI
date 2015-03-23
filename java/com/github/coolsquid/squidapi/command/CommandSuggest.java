@@ -12,15 +12,17 @@ import com.github.coolsquid.squidapi.util.Suggestion;
 
 public class CommandSuggest extends CommandBase {
 
+	private Suggestion suggestion;
+
 	public CommandSuggest() {
 		super("suggest", "");
 	}
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		Suggestion a = SquidAPIMod.getRandomSuggestedMod();
+		this.suggestion = SquidAPIMod.getRandomSuggestedModEnsureNotSame(this.suggestion);
 		ChatMessage b = new ChatMessage("<SquidAPI> ");
-		b.appendSibling(new ChatMessage("Check out ", a.getSuggestion(), ". ", a.getReason()).setUrl(a.getUrl()));
+		b.appendSibling(new ChatMessage("Check out ", this.suggestion.getSuggestion(), ". ", this.suggestion.getReason()).setUrl(this.suggestion.getUrl()));
 		sender.addChatMessage(b);
 	}
 }

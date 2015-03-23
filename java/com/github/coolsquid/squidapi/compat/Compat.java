@@ -18,7 +18,8 @@ public enum Compat {
 	AppliedEnergistics2("appliedenergistics2", "appeng.api", "rv2"),
 	BloodMagic("AWWayofTime"),
 	ThaumCraft("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
-	RailCraft("RailCraft", "mods.railcraft.api.crafting", "1.0.0");
+	RailCraft("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
+	EnviroMine("enviromine");
 
 	private final boolean enabled;
 	private final Package api;

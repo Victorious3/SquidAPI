@@ -70,6 +70,9 @@ public class IOUtils {
 	}
 
 	public static void writeLines(File file, Iterable<String> lines) {
+		if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+			throw new IllegalArgumentException();
+		}
 		BufferedWriter a = newWriter(newOutputStream(file));
 		try {
 			for (String b: lines) {
@@ -83,6 +86,9 @@ public class IOUtils {
 	}
 
 	public static void writeLines(File file, Object... lines) {
+		if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+			throw new IllegalArgumentException();
+		}
 		BufferedWriter a = newWriter(newOutputStream(file));
 		try {
 			for (Object b: lines) {
@@ -94,8 +100,22 @@ public class IOUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static List<String> readLines(File file) {
+		if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+			throw new IllegalArgumentException();
+		}
+		List<String> a = Lists.newArrayList();
+		for (String b: newReader(file)) {
+			a.add(b);
+		}
+		return a;
+	}
 
 	public static List<String> readAllFilesInFolder(File folder) {
+		if (folder == null || !folder.isDirectory()) {
+			throw new IllegalArgumentException();
+		}
 		List<String> list = Lists.newArrayList();
 		for (File file: folder.listFiles()) {
 			for (String a: new FileReader(file)) {
@@ -107,7 +127,7 @@ public class IOUtils {
 
 	public static int hash(File file) {
 		int result = 0;
-		for (String a: new FileReader(file)) {
+		for (String a: newReader(file)) {
 			for (char b: a.toCharArray()) {
 				result += (b * 31);
 			}
@@ -131,6 +151,26 @@ public class IOUtils {
 		}
 		return result;
 	}
+	
+	public static void copy(File file, File newfile) {
+		if (file == null || newfile == null || !file.exists() || newfile.exists()) {
+			throw new IllegalArgumentException();
+		}
+		
+		InputStream a = newInputStream(file);
+		OutputStream b = newOutputStream(newfile);
+		
+		int c;
+		try {
+			c = a.read();
+			while (c != -1) {
+				b.write(c);
+				c = a.read();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static FileReader newReader(File file) {
 		return new FileReader(file);
@@ -141,6 +181,9 @@ public class IOUtils {
 		private final File file;
 
 		public FileReader(File file) {
+			if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+				throw new IllegalArgumentException();
+			}
 			if (!file.exists()) {
 				try {
 					file.createNewFile();

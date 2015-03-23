@@ -118,4 +118,12 @@ public class SquidAPIMod {
 	public static List<Suggestion> getSuggestions() {
 		return ImmutableList.copyOf(suggestedMods);
 	}
+
+	public static Suggestion getRandomSuggestedModEnsureNotSame(Suggestion a) {
+		Suggestion b = getRandomSuggestedMod();
+		while (b == a) {
+			b = getRandomSuggestedMod();
+		}
+		return b;
+	}
 }

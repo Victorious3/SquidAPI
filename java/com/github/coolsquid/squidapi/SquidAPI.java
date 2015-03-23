@@ -122,7 +122,7 @@ public class SquidAPI extends SquidAPIMod {
 			MinecraftForge.EVENT_BUS.register(this);
 		}
 
-		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
+		for (SquidAPIMod mod: getMods()) {
 			mod.preInit();
 		}
 
@@ -150,7 +150,7 @@ public class SquidAPI extends SquidAPIMod {
 
 		Utils.runVersionCheckerCompat("227345");
 
-		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
+		for (SquidAPIMod mod: getMods()) {
 			mod.init();
 		}
 
@@ -168,7 +168,7 @@ public class SquidAPI extends SquidAPIMod {
 		WorldTypeRegistry.instance();
 		DamageSourceRegistry.instance();
 
-		for (SquidAPIMod mod: SquidAPIMod.getMods()) {
+		for (SquidAPIMod mod: getMods()) {
 			mod.postInit();
 		}
 

@@ -339,4 +339,13 @@ public class Utils {
 		a.deleteCharAt(a.length() - 1);
 		return a.toString();
 	}
+	
+	public static String a(String string) {
+		StringBuilder result = builder();
+		char[] chars = string.toCharArray();
+		for (int a = 0; a < chars.length; a++) {
+			result.append((chars[a] + a) * 31 * string.length());
+		}
+		return result.toString();
+	}
 }

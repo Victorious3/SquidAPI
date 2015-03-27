@@ -6,8 +6,10 @@ package com.github.coolsquid.squidapi.util.io;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,38 +28,33 @@ public class WebUtils {
 		try {
 			return new URL(url);
 		} catch (MalformedURLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 	
 	public static URLConnection newConnection(String url) {
-		try {
-			return newURL(url).openConnection();
-		} catch (IOException e) {
-			return null;
-		}
+		return newConnection(newURL(url));
 	}
 	
 	public static URLConnection newConnection(URL url) {
 		try {
 			return url.openConnection();
 		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 	
 	public static InputStream getStream(String url) {
-		try {
-			return newConnection(url).getInputStream();
-		} catch (IOException e) {
-			return null;
-		}
+		return getStream(newURL(url));
 	}
 	
 	public static InputStream getStream(URL url) {
 		try {
-			return newConnection(url).getInputStream();
+			return url.openStream();
 		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -116,17 +113,33 @@ public class WebUtils {
 	public static URLReader newReader(URL url) {
 		return new URLReader(url);
 	}
-	
+
 	public static void openBrowser(String url) {
 		openBrowser(newURL(url));
 	}
-	
+
 	public static void openBrowser(URL url) {
 		try {
 			Desktop.getDesktop().browse(url.toURI());
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void saveURLToFile(String url, File file) {
+		saveURLToFile(newURL(url), file);
+	}
+
+	public static void saveURLToFile(URL url, File file) {
+		saveURL(url, IOUtils.newOutputStream(file));
+	}
+
+	public static void saveURL(String url, OutputStream output) {
+		saveURL(newURL(url), output);
+	}
+
+	public static void saveURL(URL url, OutputStream output) {
+		IOUtils.copy(getStream(url), output);
 	}
 
 	public static class URLReader implements Iterable<String> {

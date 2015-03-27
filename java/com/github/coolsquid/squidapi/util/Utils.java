@@ -4,6 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.util;
 
+import java.io.File;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.List;
@@ -18,11 +19,13 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.util.RegistryNamespaced;
 
 import org.apache.commons.lang3.CharSet;
 
 import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import com.github.coolsquid.squidapi.util.io.IOUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
@@ -38,7 +41,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
 	
-	private static final String line = System.getProperty("line.separator");
+	public static final String LINE = System.getProperty("line.separator");
 
 	public static boolean getChance(int d, int k) {
 		int a = getRandInt(1, k);
@@ -283,7 +286,7 @@ public class Utils {
 	}
 
 	public static String newLine() {
-		return line;
+		return LINE;
 	}
 	
 	public static boolean compatibleWithCharset(String string, CharSet... charsets) {
@@ -347,5 +350,23 @@ public class Utils {
 			result.append((chars[a] + a) * 31 * string.length());
 		}
 		return result.toString();
+	}
+	
+	public static void dump(String modid, File file, RegistryNamespaced registry) {
+		List<String> a = Lists.newArrayList();
+		if (modid == null) {
+			for (Object b: registry) {
+				a.add(registry.getNameForObject(b));
+			}
+		}
+		else {
+			for (Object b: registry) {
+				String c = registry.getNameForObject(b);
+				if (c.startsWith(modid)) {
+					a.add(c);
+				}
+			}
+		}
+		IOUtils.writeLines(file, a);
 	}
 }

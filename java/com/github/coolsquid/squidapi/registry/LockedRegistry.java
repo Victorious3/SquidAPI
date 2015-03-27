@@ -4,6 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidapi.registry;
 
+
 public class LockedRegistry<E> extends Registry<E> {
 	
 	private boolean locked;

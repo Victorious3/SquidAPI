@@ -37,6 +37,10 @@ public class Registry<E> extends RegistrySimple<E> {
 		this.map.put(name, e);
 		this.map2.put(e, name);
 	}
+
+	public Iterable<String> names() {
+		return this.map.keySet();
+	}
 	
 	@Override
 	@Deprecated

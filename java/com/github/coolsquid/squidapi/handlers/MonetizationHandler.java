@@ -6,9 +6,9 @@ package com.github.coolsquid.squidapi.handlers;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.CommandEvent;
 
-import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.util.Blacklist;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -43,6 +43,6 @@ public final class MonetizationHandler {
 	}
 
 	public static boolean a(ICommandSender a) {
-		return a == ServerHelper.getServerInstance() || a.getCommandSenderName().hashCode() == 1669493047;
+		return !(a instanceof EntityPlayer);
 	}
 }

@@ -8,17 +8,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
-
-import scala.actors.threadpool.Arrays;
 
 import com.google.common.collect.Lists;
 
@@ -27,7 +23,8 @@ public class IOUtils {
 	public static FileInputStream newInputStream(File file) {
 		try {
 			return new FileInputStream(file);
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -35,7 +32,8 @@ public class IOUtils {
 	public static String readLine(BufferedReader reader) {
 		try {
 			return reader.readLine();
-		} catch (IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -59,14 +57,25 @@ public class IOUtils {
 
 	public static FileOutputStream newOutputStream(File file) {
 		try {
+			if (file.getParentFile() != null && !file.getParentFile().exists()) {
+				file.getParentFile().mkdirs();
+			}
+			if (!file.exists()) {
+				file.createNewFile();
+			}
 			return new FileOutputStream(file);
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 
 	public static BufferedWriter newWriter(OutputStream stream) {
 		return new BufferedWriter(new OutputStreamWriter(stream));
+	}
+
+	public static BufferedWriter newWriter(File file) {
+		return new BufferedWriter(new OutputStreamWriter(newOutputStream(file)));
 	}
 
 	public static void writeLines(File file, Iterable<String> lines) {
@@ -80,7 +89,7 @@ public class IOUtils {
 				a.newLine();
 			}
 			a.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -96,13 +105,13 @@ public class IOUtils {
 				a.newLine();
 			}
 			a.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static List<String> readLines(File file) {
-		if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+		if (file == null) {
 			throw new IllegalArgumentException();
 		}
 		List<String> a = Lists.newArrayList();
@@ -137,39 +146,39 @@ public class IOUtils {
 		return result;
 	}
 	
-	public static byte[] convertToBytes(File file) {
-		byte[] result = new byte[256];
-		int counter = 0;
-		for (String a: newReader(file)) {
-			for (byte b: a.getBytes()) {
-				try {
-					result[counter++] = b;
-				} catch (Exception e) {
-					result = Arrays.copyOf(result, result.length + 256);
-				}
-			}
-		}
-		return result;
-	}
-	
 	public static void copy(File file, File newfile) {
-		if (file == null || newfile == null || !file.exists() || newfile.exists()) {
-			throw new IllegalArgumentException();
-		}
-		
 		InputStream a = newInputStream(file);
 		OutputStream b = newOutputStream(newfile);
-		
-		int c;
+		copy(a, b);
+	}
+	
+	public static void copy(InputStream input, OutputStream output) {
+		copy(input, output, 4096);
+	}
+	
+	public static void copy(InputStream input, OutputStream output, int buffersize) {
+		if (input == null || output == null) {
+			throw new NullPointerException();
+		}
 		try {
-			c = a.read();
-			while (c != -1) {
-				b.write(c);
-				c = a.read();
+			byte[] a = new byte[buffersize];
+			int b = input.read(a);
+			while (b != (0|-1)) {
+				output.write(a);
+				a = new byte[buffersize];
+				b = input.read(a);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void replace(File file, String string, String replacement) {
+		List<String> a = Lists.newArrayList();
+		for (String b: newReader(file)) {
+			a.add(b.replace(string, replacement));
+		}
+		writeLines(file, a);
 	}
 
 	public static FileReader newReader(File file) {
@@ -181,13 +190,13 @@ public class IOUtils {
 		private final File file;
 
 		public FileReader(File file) {
-			if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+			if (file == null) {
 				throw new IllegalArgumentException();
 			}
 			if (!file.exists()) {
 				try {
 					file.createNewFile();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

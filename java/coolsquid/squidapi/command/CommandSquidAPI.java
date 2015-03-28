@@ -10,9 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.Item;
 import net.minecraft.util.ChatComponentText;
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import coolsquid.squidapi.handlers.command.NewsHandler;
-import coolsquid.squidapi.helpers.LogHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.registry.DamageSourceRegistry;
 import coolsquid.squidapi.registry.WorldTypeRegistry;
@@ -81,7 +81,7 @@ public class CommandSquidAPI extends CommandBase {
 				a = false;
 			}
 			if (a) {
-				LogHelper.info("The requested information was dumped into a file in /dumps.");
+				SquidAPI.instance().info("The requested information was dumped into a file in /dumps.");
 			}
 		}
 		else if (subcommand.equals("togglesuperspeed")) {

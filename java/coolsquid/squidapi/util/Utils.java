@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
 
-import coolsquid.squidapi.helpers.LogHelper;
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.util.io.IOUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -107,7 +107,7 @@ public class Utils {
 	
 	public static void runVersionCheckerCompat(String id) {
 		String modid = Loader.instance().activeModContainer().getModId();
-		LogHelper.info("Running VersionChecker compatibility for ", modid, ".");
+		SquidAPI.instance().info("Running VersionChecker compatibility for ", modid, ".");
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("curseProjectName", newString(id, "-", modid));
 		tag.setString("curseFilenameParser", newString(modid, "-[].jar"));
@@ -293,7 +293,7 @@ public class Utils {
 		for (char a: string.toCharArray()) {
 			for (CharSet charset: charsets) {
 				if (!charset.contains(a)) {
-					LogHelper.info(a);
+					SquidAPI.instance().info(a);
 					return false;
 				}
 			}

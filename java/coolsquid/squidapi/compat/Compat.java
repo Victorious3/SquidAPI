@@ -4,7 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidapi.compat;
 
-import coolsquid.squidapi.helpers.LogHelper;
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.util.IntUtils;
 import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.Loader;
@@ -29,10 +29,10 @@ public enum Compat {
 		this.api = null;
 		this.version = 0;
 		if (this.enabled) {
-			LogHelper.info(modid, " is loaded. Enabling ", modid, " compatibility.");
+			SquidAPI.instance().info(modid, " is loaded. Enabling ", modid, " compatibility.");
 		}
 		else {
-			LogHelper.info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
+			SquidAPI.instance().info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
 		}
 	}
 	
@@ -42,10 +42,10 @@ public enum Compat {
 		this.version = IntUtils.parseInt(version);
 		if (this.enabled) {
 			this.checkAPI();
-			LogHelper.info(modid, " is loaded. Enabling ", modid, " compatibility.");
+			SquidAPI.instance().info(modid, " is loaded. Enabling ", modid, " compatibility.");
 		}
 		else {
-			LogHelper.info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
+			SquidAPI.instance().info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
 		}
 	}
 
@@ -57,10 +57,10 @@ public enum Compat {
 		try {
 			int versionnumber = IntUtils.parseInt(this.api.getAnnotation(API.class).apiVersion());
 			if (versionnumber > this.version) {
-				LogHelper.warn("The version of ", this.toString(), " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
+				SquidAPI.instance().warn("The version of ", this.toString(), " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
 			}
 			else if (versionnumber < this.version) {
-				LogHelper.warn("The version of ", this.toString(), " loaded is older than the version SquidAPI was made with. Problems may occur. Please update ", this.toString(), ".");
+				SquidAPI.instance().warn("The version of ", this.toString(), " loaded is older than the version SquidAPI was made with. Problems may occur. Please update ", this.toString(), ".");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

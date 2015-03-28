@@ -24,8 +24,8 @@ import net.minecraftforge.common.DungeonHooks;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.FishingHelper;
-import coolsquid.squidapi.helpers.LogHelper;
 import coolsquid.squidapi.helpers.VillageHelper;
 import cpw.mods.fml.common.Loader;
 
@@ -52,7 +52,7 @@ public class ContentRemover {
 		for (String mod: getBlacklist()) {
 			if (name.startsWith(mod + ":")) {
 				String content = type.toString() + " " + name;
-				LogHelper.warn(Utils.newString(mod, " has requested to be blacklisted from content removal. ", content, " will not be removed."));
+				SquidAPI.instance().warn(Utils.newString(mod, " has requested to be blacklisted from content removal. ", content, " will not be removed."));
 				return;
 			}
 		}
@@ -63,7 +63,7 @@ public class ContentRemover {
 			for (String mod: getBlacklist()) {
 				Enchantment e = Enchantment.enchantmentsList[IntUtils.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
-					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Enchantment ", name, " will not be removed.");
+					SquidAPI.instance().warn(mod + " has requested to be blacklisted from content removal. Enchantment ", name, " will not be removed.");
 					return;
 				}
 			}
@@ -75,7 +75,7 @@ public class ContentRemover {
 			for (String mod: getBlacklist()) {
 				Potion e = Potion.potionTypes[IntUtils.parseInt(name)];
 				if (e != null && e.getClass().getName().contains(mod)) {
-					LogHelper.warn(mod + " has requested to be blacklisted from content removal. Potion ", name, " will not be removed.");
+					SquidAPI.instance().warn(mod + " has requested to be blacklisted from content removal. Potion ", name, " will not be removed.");
 					return;
 				}
 			}
@@ -122,7 +122,7 @@ public class ContentRemover {
 			furnaceRecipesToRemove.add((Item) Item.itemRegistry.getObject(name));
 		}
 		
-		LogHelper.info("Removed ", type, " ", name, ".");
+		SquidAPI.instance().info("Removed ", type, " ", name, ".");
 	}
 	
 	public enum ContentType {

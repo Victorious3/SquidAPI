@@ -17,11 +17,9 @@ import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListBansEntry;
 
-import org.apache.logging.log4j.Level;
-
 import com.google.common.collect.Lists;
 
-import coolsquid.squidapi.helpers.LogHelper;
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.ContentRemover;
@@ -41,8 +39,8 @@ public class ServerHelper {
 			int line = s.getLineNumber();
 			LoadController loader = ReflectionHelper.in(Loader.instance()).field("modController", "modController").get();
 			LoaderState state = ReflectionHelper.in(loader).field("state", "state").get();
-			LogHelper.bigWarning(Level.FATAL, Utils.newString("LoaderState: ", state.toString()));
-			LogHelper.fatal("The error occured in: ", clazz, ".", method, ":", line, ".");
+			SquidAPI.instance().fatal(Utils.newString("LoaderState: ", state.toString()));
+			SquidAPI.instance().fatal("The error occured in: ", clazz, ".", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}
 		return server;

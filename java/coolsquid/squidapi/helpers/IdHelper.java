@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.Maps;
 
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.exception.IdException;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -87,7 +88,7 @@ public class IdHelper {
 	
 	public static void checkBiomeId(int id) {
 		if (BiomeGenBase.getBiomeGenArray()[id] != null) {
-			LogHelper.bigWarning(Level.WARN, "Found biome id conflict!");
+			SquidAPI.instance().bigWarning(Level.WARN, "Found biome id conflict!");
 			FMLCommonHandler.instance().exitJava(44, false);
 		}
 	}

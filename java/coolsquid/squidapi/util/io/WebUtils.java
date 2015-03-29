@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -18,6 +19,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+
+import coolsquid.squidapi.util.ModInfo;
+import coolsquid.squidapi.util.Utils;
 
 public class WebUtils {
 	
@@ -140,6 +144,25 @@ public class WebUtils {
 
 	public static void saveURL(URL url, OutputStream output) {
 		IOUtils.copy(getStream(url), output);
+	}
+	
+	public static String sendGetRequest(URL url) {
+		try {
+			HttpURLConnection a = (HttpURLConnection) url.openConnection();
+			a.setRequestMethod("GET");
+			a.setRequestProperty("User-Agent", ModInfo.modid + ModInfo.version);
+			BufferedReader b = IOUtils.newReader(a.getInputStream());
+			StringBuilder d = Utils.builder();
+			String c = b.readLine();
+			while (c != null) {
+				d.append(c);
+				c = b.readLine();
+			}
+			return d.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static class URLReader implements Iterable<String> {

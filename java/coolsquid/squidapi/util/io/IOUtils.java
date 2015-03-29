@@ -29,6 +29,10 @@ public class IOUtils {
 		}
 	}
 
+	public static String readLine(File file) {
+		return readLine(newReader(newInputStream(file)));
+	}
+
 	public static String readLine(BufferedReader reader) {
 		try {
 			return reader.readLine();
@@ -79,7 +83,7 @@ public class IOUtils {
 	}
 
 	public static void writeLines(File file, Iterable<String> lines) {
-		if (file == null || !FileFilters.TEXT_FILES.accept(file)) {
+		if (file == null) {
 			throw new IllegalArgumentException();
 		}
 		BufferedWriter a = newWriter(newOutputStream(file));
@@ -88,6 +92,20 @@ public class IOUtils {
 				a.write(b);
 				a.newLine();
 			}
+			a.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeLine(File file, String line) {
+		if (file == null) {
+			throw new IllegalArgumentException();
+		}
+		BufferedWriter a = newWriter(newOutputStream(file));
+		try {
+			a.write(line);
+			a.newLine();
 			a.close();
 		} catch (Exception e) {
 			e.printStackTrace();

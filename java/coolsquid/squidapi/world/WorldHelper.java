@@ -11,19 +11,19 @@ import net.minecraft.world.World;
 import coolsquid.squidapi.util.Utils;
 
 public class WorldHelper {
-	
+
 	private World world;
 
 	private WorldHelper(World world) {
 		this.world = world;
 	}
-	
+
 	private static WorldHelper instance;
-	
+
 	public static WorldHelper instance(World world) {
 		return new WorldHelper(world);
 	}
-	
+
 	public static WorldHelper instance() {
 		if (Utils.isClient()) {
 			instance = new WorldHelper(Minecraft.getMinecraft().theWorld);
@@ -33,19 +33,19 @@ public class WorldHelper {
 		}
 		return instance;
 	}
-	
+
 	public void setBlock(Block block, int x, int y, int z) {
 		this.world.setBlock(x, y, z, block, 0, 3);
 	}
-	
+
 	public void setHardcore() {
 		this.world.getWorldInfo().hardcore = true;
 	}
-	
+
 	public boolean isHardcore() {
 		return this.world.getWorldInfo().hardcore;
 	}
-	
+
 	public int getDimensionId() {
 		return this.world.provider.dimensionId;
 	}

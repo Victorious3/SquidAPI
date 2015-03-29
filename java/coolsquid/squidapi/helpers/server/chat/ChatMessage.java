@@ -4,6 +4,8 @@
  *******************************************************************************/
 package coolsquid.squidapi.helpers.server.chat;
 
+import java.net.URL;
+
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
@@ -14,7 +16,6 @@ public class ChatMessage extends ChatComponentText {
 
 	public ChatMessage(String... msg) {
 		super(Utils.newString2(msg));
-		this.getChatStyle().setColor(EnumChatFormatting.BLUE);
 	}
 	
 	public ChatMessage setColor(EnumChatFormatting color) {
@@ -39,6 +40,11 @@ public class ChatMessage extends ChatComponentText {
 	
 	public ChatMessage setUrl(String url) {
 		this.getChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, url));
+		return this;
+	}
+
+	public ChatMessage setUrl(URL url) {
+		this.getChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, url.toString()));
 		return this;
 	}
 	

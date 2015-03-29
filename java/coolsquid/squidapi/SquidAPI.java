@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
@@ -46,16 +47,20 @@ import coolsquid.squidapi.registry.VanillaBlockRegistry;
 import coolsquid.squidapi.registry.VanillaItemRegistry;
 import coolsquid.squidapi.registry.WorldTypeRegistry;
 import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.ShutdownHandler;
 import coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
+import coolsquid.squidapi.util.io.WebUtils;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.VersionChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -69,11 +74,7 @@ public class SquidAPI extends SquidAPIMod {
 
 	public SquidAPI() {
 		super("An API for all my mods.");
-		File file = new File("./logs/SquidAPI.log");
-		if (file.exists()) {
-			file.delete();
-		}
-		this.logger = new Logger(file);
+		this.setCurseUrl(WebUtils.newURL("http://bit.ly/1BHlHW1"));
 	}
 
 	@Instance
@@ -83,14 +84,16 @@ public class SquidAPI extends SquidAPIMod {
 		return instance;
 	}
 
-	public final Logger logger;
+	public final Logger logger = MiscLib.LOGGER;
 
 	private final SquidAPIConfig commandConfig = new SquidAPIConfig(new File("./config/SquidAPI/commands.cfg"));
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
-		this.info("Version id: ", this.hashCode());
+		this.info("Version id: ", this.hash());
+
+		versions.save();
 
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
@@ -108,14 +111,15 @@ public class SquidAPI extends SquidAPIMod {
 		mcmeta.authorList.add("Mojang");
 		mcmeta.description = "A game about breaking and placing blocks.";
 
-		if (Utils.developmentEnvironment() || ConfigHandler.cleanMenu) {
+		if (Utils.developmentEnvironment() || MiscLib.SETTINGS.getBoolean("cleanMenu")) {
 			ReflectionHelper.in(ForgeVersion.class).field("status", "status").set(Status.UP_TO_DATE);
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList());
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList());
 		}
-		if (!ConfigHandler.branding.equals("")) {
-			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList(ConfigHandler.branding));
-			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList(ConfigHandler.branding));
+		String branding = MiscLib.SETTINGS.getProperty("branding");
+		if (!branding.equals("")) {
+			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList(branding));
+			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList(branding));
 		}
 
 		if (!Loader.isModLoaded("DragonAPI")) {
@@ -123,9 +127,7 @@ public class SquidAPI extends SquidAPIMod {
 			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 256);
 		}
 
-		if (Loader.isModLoaded("MineFactoryReloaded|CompatIC2")) {
-			MinecraftForge.EVENT_BUS.register(this);
-		}
+		MinecraftForge.EVENT_BUS.register(this);
 
 		for (SquidAPIMod mod: getMods()) {
 			mod.preInit();
@@ -207,6 +209,7 @@ public class SquidAPI extends SquidAPIMod {
 
 	@SubscribeEvent
 	public void onLogin(PlayerLoggedInEvent event) {
+		VersionChecker.INSTANCE.onLogin(event.player);
 		for (String message: this.messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
 		}
@@ -214,6 +217,7 @@ public class SquidAPI extends SquidAPIMod {
 
 	private final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
 
+	@Optional.Method(modid = "MineFactoryReloaded|CompatIC2")
 	@SubscribeEvent
 	public void onOredictRegistration(OreRegisterEvent event) {
 		if (this.oredictEntriesToRemove.contains(event.Name)) {
@@ -225,6 +229,9 @@ public class SquidAPI extends SquidAPIMod {
 	public void onShutdown(ShutdownEvent event) {
 		if (Utils.getChance(1, 10)) {
 			this.info("Have a nice day!");
+		}
+		if (Utils.isClient() && Minecraft.getMinecraft().getSession().getUsername().equalsIgnoreCase("Eyamaz")) {
+			this.info("Bye," + MiscLib.NICKNAMES.getProperty("Eyamaz") + "!");
 		}
 	}
 

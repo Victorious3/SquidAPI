@@ -4,37 +4,44 @@
  *******************************************************************************/
 package coolsquid.squidapi.logging;
 
+import java.util.Map;
 
-public enum Level {
+import com.google.common.collect.Maps;
+
+
+public class Level {
+	
+	private static final Map<String, Level> levels = Maps.newHashMap();
 	
 	/**
 	 * Indicates that the message is printed for information purposes.
 	 */
 	
-	INFO("INFO"),
+	public static final Level INFO = new Level("INFO");
 	
 	/**
 	 * Indicates that something might fail.
 	 */
 	
-	WARN("WARN"),
+	public static final Level WARN = new Level("WARN");
 	
 	/**
 	 * Indicates that an error has occured.
 	 */
 	
-	ERROR("ERROR"),
+	public static final Level ERROR = new Level("ERROR");
 	
 	/**
 	 * Indicates that a fatal error has occured, and that the program will exit.
 	 */
 	
-	FATAL("FATAL");
-	
+	public static final Level FATAL = new Level("FATAL");
+
 	private final String name;
 	
 	private Level(String name) {
 		this.name = name;
+		levels.put(name, this);
 	}
 	
 	public String getName() {
@@ -42,11 +49,6 @@ public enum Level {
 	}
 	
 	public static Level getLevel(String name) {
-		for (Level a: values()) {
-			if (a.getName().equals(name)) {
-				return a;
-			}
-		}
-		return null;
+		return levels.get(name);
 	}
 }

@@ -8,8 +8,6 @@ import org.apache.commons.lang3.CharSet;
 
 public class Charsets {
 
-	public static final String LINE = System.getProperty("line.separator");
-
 	public static final CharSet vowels = CharSet.getInstance("aeiouAEIOU");
 	public static final CharSet punctuation = CharSet.getInstance(".!?");
 

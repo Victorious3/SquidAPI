@@ -75,6 +75,14 @@ public final class Blacklist<E> implements Iterable<E> {
 		return new Builder<T>();
 	}
 
+	public static <T> Blacklist<T> copyOf(T[] content) {
+		Builder<T> a = builder();
+		for (T b: content) {
+			a.add(b);
+		}
+		return a.build();
+	}
+
 	public static <T> Blacklist<T> copyOf(Iterable<T> content) {
 		Builder<T> a = builder();
 		for (T b: content) {

@@ -17,6 +17,7 @@ import com.google.common.collect.Maps;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.IterableMap;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.io.IOUtils;
 
 public class SquidAPIConfig {
 	
@@ -63,6 +64,12 @@ public class SquidAPIConfig {
 					String[] s = line.split("=");
 					if (s.length == 2) {
 						this.values.put(s[0].replaceFirst("F:", ""), Float.parseFloat(s[1]));
+					}
+				}
+				else if (line.startsWith("L:")) {
+					String[] s = line.split("=");
+					if (s.length == 2) {
+						this.values.put(s[0].replaceFirst("L:", ""), Long.parseLong(s[1]));
 					}
 				}
 			}
@@ -135,6 +142,61 @@ public class SquidAPIConfig {
 			}
 			return defaultValue;
 		}
+	}
+	
+	public float get(String name, long defaultValue) {
+		if (this.values.containsKey(name)) {
+			return (long) this.values.get(name);
+		}
+		else {
+			String a = Utils.newString("L:", name, "=", defaultValue);
+			this.lines.add(a);
+			this.values.put(name, defaultValue);
+			try {
+				FileUtils.write(this.configFile, Utils.newString(a, Utils.newLine()), true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return defaultValue;
+		}
+	}
+	
+	public void set(String name, int defaultValue) {
+		String b = "I:" + name + "=";
+		for (int a = 0; a < this.lines.size(); a++) {
+			if (this.lines.get(a).startsWith(b)) {
+				this.lines.remove(a);
+			}
+		}
+		this.lines.add(b + defaultValue);
+		this.values.put(name, defaultValue);
+	}
+	
+	public void set(String name, long defaultValue) {
+		String b = "L:" + name + "=";
+		for (int a = 0; a < this.lines.size(); a++) {
+			if (this.lines.get(a).startsWith(b)) {
+				this.lines.remove(a);
+			}
+		}
+		this.lines.add(b + defaultValue);
+		this.values.put(name, defaultValue);
+	}
+	
+	public void set(String name, String defaultValue) {
+		String b = "S:" + name + "=";
+		for (int a = 0; a < this.lines.size(); a++) {
+			if (this.lines.get(a).startsWith(b)) {
+				this.lines.remove(a);
+			}
+		}
+		this.lines.add(b + defaultValue);
+		this.values.put(name, defaultValue);
+	}
+	
+	public void save() {
+		this.configFile.delete();
+		IOUtils.writeLines(this.configFile, this.lines);
 	}
 	
 	public IterableMap<String, Object> getEntries() {

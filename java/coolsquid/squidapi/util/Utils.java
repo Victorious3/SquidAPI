@@ -5,6 +5,7 @@
 package coolsquid.squidapi.util;
 
 import java.io.File;
+import java.net.URL;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,7 @@ import com.google.common.hash.Hashing;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import coolsquid.squidapi.util.formatting.SWTFParser;
 import coolsquid.squidapi.util.io.IOUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -72,12 +74,7 @@ public class Utils {
 	}
 	
 	public static boolean isJavaVersionSameOrLower(int version) {
-		for (int a = version; a > 0; a--) {
-			if (System.getProperty("java.version").contains(newString("1.", a, ".0_"))) {
-				return true;
-			}
-		}
-		return false;
+		return IntUtils.parseInt(System.getProperty("java.version").charAt(2)) <= version;
 	}
 	
 	public static boolean wrongVersion() {
@@ -368,5 +365,29 @@ public class Utils {
 			}
 		}
 		IOUtils.writeLines(file, a);
+	}
+
+	public static <E, T> int hash(Map<E, T> map) {
+		int result = 1;
+		for (E a: map.keySet()) {
+			result += (map.get(a).hashCode() * a.hashCode());
+		}
+		return result;
+	}
+
+	public static List<ChatMessage> parseSWNI(URL url) {
+		return new SWTFParser(url).get();
+	}
+
+	public static void logPackName() {
+		String dir = System.getProperty("user.dir").replace("\\", "/");
+		if (dir.contains("/.technic/")) {
+			SquidAPI.instance().info("Modpack: " + parseTechnicModpackName(dir));
+		}
+	}
+
+	private static String parseTechnicModpackName(String dir) {
+		String[] a = dir.split("/");
+		return a[a.length - 1];
 	}
 }

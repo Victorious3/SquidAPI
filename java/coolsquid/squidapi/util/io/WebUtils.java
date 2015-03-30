@@ -24,7 +24,7 @@ import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.Utils;
 
 public class WebUtils {
-	
+
 	public static URL newURL(String url) {
 		if (!url.contains("://")) {
 			url = "http://" + url;
@@ -36,11 +36,11 @@ public class WebUtils {
 			return null;
 		}
 	}
-	
+
 	public static URLConnection newConnection(String url) {
 		return newConnection(newURL(url));
 	}
-	
+
 	public static URLConnection newConnection(URL url) {
 		try {
 			return url.openConnection();
@@ -49,11 +49,11 @@ public class WebUtils {
 			return null;
 		}
 	}
-	
+
 	public static InputStream getStream(String url) {
 		return getStream(newURL(url));
 	}
-	
+
 	public static InputStream getStream(URL url) {
 		try {
 			return url.openStream();
@@ -108,6 +108,20 @@ public class WebUtils {
 			a++;
 		}
 		return null;
+	}
+
+	public static List<String> getLines(URL url, String key) {
+		List<String> list = Lists.newArrayList();
+		for (String string: new URLReader(url)) {
+			if (string.contains(key)) {
+				list.add(string);
+			}
+		}
+		return list;
+	}
+
+	public static List<String> getLines(String url, String key) {
+		return getLines(newURL(url), key);
 	}
 
 	public static URLReader newReader(String url) {

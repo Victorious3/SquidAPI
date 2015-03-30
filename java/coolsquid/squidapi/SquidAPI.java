@@ -40,7 +40,6 @@ import coolsquid.squidapi.helpers.OreDictionaryHelper;
 import coolsquid.squidapi.helpers.VillageHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
-import coolsquid.squidapi.logging.Logger;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.registry.DamageSourceRegistry;
 import coolsquid.squidapi.registry.VanillaBlockRegistry;
@@ -51,9 +50,9 @@ import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.ShutdownHandler;
 import coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
-import coolsquid.squidapi.util.io.WebUtils;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.VersionChecker;
+import coolsquid.squidapi.util.formatting.SWTFParser;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -73,8 +72,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 public class SquidAPI extends SquidAPIMod {
 
 	public SquidAPI() {
-		super("An API for all my mods.");
-		this.setCurseUrl(WebUtils.newURL("http://bit.ly/1BHlHW1"));
+		super("An API for all my mods.", "227345");
 	}
 
 	@Instance
@@ -83,8 +81,6 @@ public class SquidAPI extends SquidAPIMod {
 	public static SquidAPI instance() {
 		return instance;
 	}
-
-	public final Logger logger = MiscLib.LOGGER;
 
 	private final SquidAPIConfig commandConfig = new SquidAPIConfig(new File("./config/SquidAPI/commands.cfg"));
 
@@ -213,6 +209,9 @@ public class SquidAPI extends SquidAPIMod {
 		for (String message: this.messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
 		}
+		for (ChatMessage msg: new SWTFParser("http://pastebin.com/raw.php?i=1SPG27Pz").get()) {
+			event.player.addChatMessage(msg);
+		}
 	}
 
 	private final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
@@ -230,8 +229,11 @@ public class SquidAPI extends SquidAPIMod {
 		if (Utils.getChance(1, 10)) {
 			this.info("Have a nice day!");
 		}
-		if (Utils.isClient() && Minecraft.getMinecraft().getSession().getUsername().equalsIgnoreCase("Eyamaz")) {
-			this.info("Bye," + MiscLib.NICKNAMES.getProperty("Eyamaz") + "!");
+		if (Utils.isClient()) {
+			String user = Minecraft.getMinecraft().getSession().getUsername();
+			if (MiscLib.NICKNAMES.containsKey(user) && MiscLib.SETTINGS.getBoolean("easterEggs")) {
+				this.info("Bye, " + MiscLib.NICKNAMES.getProperty(user) + "!");
+			}
 		}
 	}
 

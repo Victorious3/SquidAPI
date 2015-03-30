@@ -10,8 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import org.apache.logging.log4j.Level;
-
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.util.Utils;
 
@@ -29,11 +27,11 @@ public class CommonHandler {
 	
 	public void init() {
 		if (Utils.isJavaVersionSameOrLower(6)) {
-			SquidAPI.instance().bigWarning(Level.WARN, "SquidAPI may not be compatible with your Java version. Please update to Java 7 or higher.");
+			SquidAPI.instance().bigWarning("SquidAPI may not be compatible with your Java version. Please update to Java 7 or higher.");
 		}
 		if (Utils.isClient()) {
 			if (Utils.wrongVersion()) {
-				SquidAPI.instance().bigWarning(Level.WARN, "MC is not running 1.7.10! Problems may occur. Do not report any errors.");
+				SquidAPI.instance().bigWarning("You are not using the correct MC version! Problems may occur. Do not report any errors.");
 			}
 		}
 		if (Utils.isBukkit()) {
@@ -59,7 +57,8 @@ public class CommonHandler {
 			}
 			file.setReadOnly();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
+		Utils.logPackName();
 	}
 }

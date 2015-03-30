@@ -37,5 +37,6 @@ public class MiscLib {
 		NICKNAMES.set("Eyamaz", "Eyamapple");
 		NICKNAMES.set("CoolSquid", "Squiddy");
 		NICKNAMES.set("MyLittleSquiddy", "Squiddy");
+		NICKNAMES.set("VictiniX888", "ToiletSeatLover");
 	}
 }

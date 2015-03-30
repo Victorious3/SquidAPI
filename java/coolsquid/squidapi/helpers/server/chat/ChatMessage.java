@@ -8,14 +8,17 @@ import java.net.URL;
 
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import coolsquid.squidapi.util.Utils;
 
-public class ChatMessage extends ChatComponentText {
+public class ChatMessage extends ChatComponentStyle {
+
+	private String text;
 
 	public ChatMessage(String... msg) {
-		super(Utils.newString2(msg));
+		this.text = Utils.newString2(msg);
 	}
 	
 	public ChatMessage setColor(EnumChatFormatting color) {
@@ -32,7 +35,12 @@ public class ChatMessage extends ChatComponentText {
 		this.getChatStyle().setBold(true);
 		return this;
 	}
-	
+
+	public ChatMessage setItalic() {
+		this.getChatStyle().setItalic(true);
+		return this;
+	}
+
 	public ChatMessage setUnderlined() {
 		this.getChatStyle().setUnderlined(true);
 		return this;
@@ -47,7 +55,12 @@ public class ChatMessage extends ChatComponentText {
 		this.getChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, url.toString()));
 		return this;
 	}
-	
+
+	public ChatMessage setText(String text) {
+		this.text = text;
+		return this;
+	}
+
 	public ChatMessage append(String msg) {
 		ChatMessage a = new ChatMessage(msg);
 		this.appendSibling(a);
@@ -81,5 +94,15 @@ public class ChatMessage extends ChatComponentText {
 		public EnumChatFormatting getColor() {
 			return this.color;
 		}
+	}
+
+	@Override
+	public String getUnformattedTextForChat() {
+		return this.text;
+	}
+
+	@Override
+	public IChatComponent createCopy() {
+		return new ChatMessage(this.text).setChatStyle(this.getChatStyle());
 	}
 }

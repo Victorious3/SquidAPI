@@ -255,6 +255,6 @@ public class SquidAPIMod {
 	}
 
 	static {
-		versions.addHeader("Please do not change any values.");
+		versions.addHeader("//Please do not change any values.");
 	}
 }

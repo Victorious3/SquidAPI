@@ -4,11 +4,9 @@
  *******************************************************************************/
 package coolsquid.squidapi.handlers.command;
 
-import java.net.URL;
-
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-import coolsquid.squidapi.util.io.WebUtils;
+import coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import coolsquid.squidapi.util.formatting.SWTFParser;
 
 public class NewsHandler extends Thread {
 	
@@ -20,7 +18,8 @@ public class NewsHandler extends Thread {
 
 	@Override
 	public void run() {
-		URL url = WebUtils.newURL("http://pastebin.com/raw.php?i=z20CbwVE");
-		this.sender.addChatMessage(new ChatComponentText("§4<" + WebUtils.getLine(url, 0) + ">§r " + WebUtils.getLine(url, 1)));
+		for (ChatMessage msg: new SWTFParser("http://pastebin.com/raw.php?i=z20CbwVE").get()) {
+			this.sender.addChatMessage(msg);
+		}
 	}
 }

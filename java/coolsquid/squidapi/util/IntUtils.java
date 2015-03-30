@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 public class IntUtils {
 	
 	public static String trim(String string) {
-		StringBuilder builder = new StringBuilder();
+		StringBuilder builder = Utils.builder();
 		if (string.startsWith("-")) {
 			builder.append("-");
 		}
@@ -24,9 +24,21 @@ public class IntUtils {
 		}
 		return builder.toString();
 	}
+
+	public static String trim(char c) {
+		StringBuilder builder = Utils.builder();
+		if (CharSet.ASCII_NUMERIC.contains(c)) {
+			builder.append(c);
+		}
+		return builder.toString();
+	}
 	
 	public static int parseInt(String string) {
 		return Integer.parseInt(trim(string));
+	}
+
+	public static int parseInt(char c) {
+		return Integer.parseInt(trim(c));
 	}
 	
 	public static int averageOf(int... ints) {

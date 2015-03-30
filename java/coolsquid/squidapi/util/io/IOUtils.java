@@ -59,6 +59,16 @@ public class IOUtils {
 		return key;
 	}
 
+	public static List<String> getLines(File file, String key) {
+		List<String> list = Lists.newArrayList();
+		for (String string: new FileReader(file)) {
+			if (string.contains(key)) {
+				list.add(string);
+			}
+		}
+		return list;
+	}
+
 	public static FileOutputStream newOutputStream(File file) {
 		try {
 			if (file.getParentFile() != null && !file.getParentFile().exists()) {

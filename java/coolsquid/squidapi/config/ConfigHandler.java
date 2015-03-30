@@ -32,6 +32,7 @@ public class ConfigHandler {
 		MiscLib.SETTINGS.set("cleanMenu", this.config.getBoolean("cleanMenu", this.CATEGORY_GENERAL, false, "Cleans up the main menu a bit."));
 		MiscLib.SETTINGS.set("branding", this.config.getString("branding", this.CATEGORY_GENERAL, "", "Will show up besides the Forge branding on the main menu. Not affected by \"cleanMenu\"."));
 		MiscLib.SETTINGS.set("updateChecker", this.config.getBoolean("updateChecker", this.CATEGORY_GENERAL, true, "Enables the update checker."));
+		MiscLib.SETTINGS.set("easterEggs", this.config.getBoolean("easterEggs", this.CATEGORY_GENERAL, true, "Enables all easter eggs."));
 
 		if (this.config.hasChanged()) {
 			this.config.save();

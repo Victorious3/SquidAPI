@@ -52,7 +52,6 @@ import coolsquid.squidapi.util.ShutdownHandler;
 import coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.VersionChecker;
-import coolsquid.squidapi.util.formatting.SWTFParser;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -208,9 +207,6 @@ public class SquidAPI extends SquidAPIMod {
 		VersionChecker.INSTANCE.onLogin(event.player);
 		for (String message: this.messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
-		}
-		for (ChatMessage msg: new SWTFParser("http://pastebin.com/raw.php?i=1SPG27Pz").get()) {
-			event.player.addChatMessage(msg);
 		}
 	}
 

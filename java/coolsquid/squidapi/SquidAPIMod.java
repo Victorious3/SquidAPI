@@ -7,13 +7,16 @@ package coolsquid.squidapi;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
 
 import coolsquid.squidapi.command.CommandDisable;
@@ -40,12 +43,13 @@ public class SquidAPIMod {
 	protected static final SquidAPIConfig versions = new SquidAPIConfig(new File("./config/SquidAPI/versions.txt"));
 
 	private final ModContainer mod;
-	private final List<Incompatibility> incompatibilities = Lists.newArrayList();
+	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
 	private final File configFile;
 	public final Logger logger;
 	private final long hashCode;
 	private final boolean versionChanged;
 	private URL curseUrl;
+	private final String curseId;
 
 	public SquidAPIMod(String desc) {
 		this(desc, Lists.newArrayList("CoolSquid"), "", "http://coolsquid.wix.com/software", null);
@@ -79,6 +83,7 @@ public class SquidAPIMod {
 		this.configFile = new File("./config/" + this.getModid() + ".cfg");
 		this.logger = LogManager.getLogger(this.getName());
 
+		this.curseId = curseId;
 		if (curseId != null) {
 			this.curseUrl = WebUtils.newURL("http://minecraft.curseforge.com/mc-mods/" + curseId + "-" + this.mod.getName() + "/files");
 		}
@@ -122,12 +127,14 @@ public class SquidAPIMod {
 		return IntUtils.parseInt(this.getVersion());
 	}
 
-	public final List<Incompatibility> getIncompatibilities() {
-		return ImmutableList.copyOf(this.incompatibilities);
+	public final Set<Incompatibility> getIncompatibilities() {
+		return ImmutableSet.copyOf(this.incompatibilities);
 	}
 
 	protected final void registerIncompatibility(Incompatibility incompatibility) {
-		this.incompatibilities.add(incompatibility);
+		if (Loader.isModLoaded(incompatibility.getModid())) {
+			this.incompatibilities.add(incompatibility);
+		}
 	}
 
 	protected final void registerIncompatibility(String modid, String reason, Severity severity) {
@@ -163,6 +170,10 @@ public class SquidAPIMod {
 		return this.versionChanged;
 	}
 
+	public String getCurseId() {
+		return this.curseId;
+	}
+
 	public URL getCurseUrl() {
 		return this.curseUrl;
 	}
@@ -196,7 +207,9 @@ public class SquidAPIMod {
 		String a = Utils.newString(msg);
 		String b = Utils.repeat('#', a.length());
 		this.log(Level.FATAL, b);
-		this.log(Level.FATAL, a);
+		for (String c: a.split(MiscLib.LINE)) {
+			this.log(Level.FATAL, c);
+		}
 		this.log(Level.FATAL, b);
 	}
 
@@ -210,9 +223,7 @@ public class SquidAPIMod {
 
 	protected final void postInit() {
 		for (Incompatibility a: this.getIncompatibilities()) {
-			if (Loader.isModLoaded(a.getModid())) {
-				this.bigWarning(Level.WARN, "Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
-			}
+			this.bigWarning("Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
 		}
 	}
 

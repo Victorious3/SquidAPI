@@ -53,7 +53,8 @@ public class VersionChecker {
 		for (SquidAPIMod mod: this.outdatedMods) {
 			player.addChatMessage(new ChatMessage("The following mod is outdated: " + mod.getName()).setColor(EnumChatFormatting.RED));
 			player.addChatMessage(new ChatMessage("Download the latest version here:"));
-			player.addChatMessage(new ChatMessage(mod.getCurseUrl().toString()).setUrl(mod.getCurseUrl()).setColor(EnumChatFormatting.BLUE));
+			String url = "http://www.curse.com/mc-mods/minecraft/" + mod.getCurseId() + "-" + mod.getName();
+			player.addChatMessage(new ChatMessage(url).setUrl(WebUtils.newURL(url)).setColor(EnumChatFormatting.BLUE));
 		}
 	}
 }

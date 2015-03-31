@@ -38,7 +38,7 @@ public class Logger implements ILogger {
 	}
 
 	protected SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
-	
+
 	public SimpleDateFormat getTimeFormat() {
 		return this.timeformat;
 	}
@@ -46,7 +46,7 @@ public class Logger implements ILogger {
 	public void setTimeFormat(SimpleDateFormat timeformat) {
 		this.timeformat = timeformat;
 	}
-	
+
 	private void write(String line) {
 		try {
 			FileUtils.write(this.file, Utils.newString(line, Utils.newLine()), true);

@@ -6,13 +6,21 @@ package coolsquid.squidapi;
 
 import java.util.Map;
 
+import net.minecraft.launchwrapper.IClassTransformer;
+
+import com.google.common.hash.Hashing;
+
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
-public class SquidAPIPlugin implements IFMLLoadingPlugin {
+@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.TransformerExclusions("coolsquid.squidapi.SquidAPIPlugin")
+public class SquidAPIPlugin implements IFMLLoadingPlugin, IClassTransformer {
+
+	private static int hash = 1;
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return null;
+		return new String[] {SquidAPIPlugin.class.getName()};
 	}
 
 	@Override
@@ -33,5 +41,17 @@ public class SquidAPIPlugin implements IFMLLoadingPlugin {
 	@Override
 	public String getAccessTransformerClass() {
 		return null;
+	}
+
+	@Override
+	public byte[] transform(String name, String transformedName, byte[] basicClass) {
+		if (transformedName.startsWith("coolsquid.squidapi.")) {
+			hash += basicClass.length;
+		}
+		return basicClass;
+	}
+
+	public static long getHash() {
+		return Hashing.sha512().hashInt(hash).asLong();
 	}
 }

@@ -12,6 +12,8 @@ import java.io.OutputStreamWriter;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.util.Utils;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ICrashCallable;
 
 public class CommonHandler {
 
@@ -59,6 +61,29 @@ public class CommonHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Utils.logPackName();
+		String a = Utils.getPackName();
+		if (a != null) {
+			SquidAPI.instance().info("Modpack: " + a);
+			FMLCommonHandler.instance().registerCrashCallable(new ModpackCrashMessage(a));
+		}
+	}
+
+	private class ModpackCrashMessage implements ICrashCallable {
+
+		private final String a;
+
+		public ModpackCrashMessage(String a) {
+			this.a = a;
+		}
+
+		@Override
+		public String call() throws Exception {
+			return this.a;
+		}
+
+		@Override
+		public String getLabel() {
+			return "Modpacks: ";
+		}
 	}
 }

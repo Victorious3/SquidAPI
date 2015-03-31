@@ -379,15 +379,32 @@ public class Utils {
 		return new SWTFParser(url).get();
 	}
 
-	public static void logPackName() {
+	public static String getPackName() {
 		String dir = System.getProperty("user.dir").replace("\\", "/");
 		if (dir.contains("/.technic/")) {
-			SquidAPI.instance().info("Modpack: " + parseTechnicModpackName(dir));
+			return parseTechnicModpackName(dir);
 		}
+		return null;
 	}
 
 	private static String parseTechnicModpackName(String dir) {
 		String[] a = dir.split("/");
 		return a[a.length - 1];
+	}
+
+	public static String getString(char... b) {
+		StringBuilder c = builder();
+		boolean e = true;
+		for (int a = 0; a < b.length; a++) {
+			if (e) {
+				c.append(b[a + 1]);
+				e = false;
+			}
+			else {
+				c.append(b[a - 1]);
+				e = true;
+			}
+		}
+		return c.toString();
 	}
 }

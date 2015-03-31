@@ -87,6 +87,7 @@ public class SquidAPI extends SquidAPIMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
+		this.info("Hash: ", SquidAPIPlugin.getHash());
 
 		versions.save();
 

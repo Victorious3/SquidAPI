@@ -14,17 +14,13 @@ import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 
 public class STFCodes {
 
-	private static final Map<String, STFCodes> map = Maps.newHashMap();
-
-	public static final STFCodes ITALIC = new STFCodes("**", EnumChatFormatting.ITALIC);
-	public static final STFCodes BOLD = new STFCodes("***", EnumChatFormatting.BOLD);
-	public static final STFCodes BOLD_AND_ITALIC = new STFCodes("****", EnumChatFormatting.BOLD, EnumChatFormatting.ITALIC);
+	private static final Map<Character, STFCodes> map = Maps.newHashMap();
 
 	private final String key;
 	private final EnumChatFormatting[] formatting;
 
-	public STFCodes(String key, EnumChatFormatting... formatting) {
-		this.key = key;
+	public STFCodes(char key, EnumChatFormatting... formatting) {
+		this.key = key + "";
 		this.formatting = formatting;
 		map.put(key, this);
 	}
@@ -54,16 +50,17 @@ public class STFCodes {
 				input.setColor(formatting);
 			}
 		}
+		input.setText(input.getUnformattedTextForChat().replaceFirst(this.key, ""));
 		return input;
 	}
 
-	public static STFCodes getCode(String key) {
+	public static STFCodes getCode(char key) {
 		return map.get(key);
 	}
 
 	static {
 		for (EnumChatFormatting a: EnumChatFormatting.values()) {
-			new STFCodes(a.getFormattingCode() + "", a);
+			new STFCodes(a.getFormattingCode(), a);
 		}
 	}
 }

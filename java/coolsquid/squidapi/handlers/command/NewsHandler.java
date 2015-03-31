@@ -6,7 +6,7 @@ package coolsquid.squidapi.handlers.command;
 
 import net.minecraft.command.ICommandSender;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
-import coolsquid.squidapi.util.formatting.SWTFParser;
+import coolsquid.squidapi.util.formatting.WebSCFParser;
 
 public class NewsHandler extends Thread {
 	
@@ -18,7 +18,7 @@ public class NewsHandler extends Thread {
 
 	@Override
 	public void run() {
-		for (ChatMessage msg: new SWTFParser("http://pastebin.com/raw.php?i=z20CbwVE").get()) {
+		for (ChatMessage msg: new WebSCFParser("http://pastebin.com/raw.php?i=z20CbwVE").get()) {
 			this.sender.addChatMessage(msg);
 		}
 	}

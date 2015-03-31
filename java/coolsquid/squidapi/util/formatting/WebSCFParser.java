@@ -11,13 +11,13 @@ import coolsquid.squidapi.util.io.WebUtils;
 /**
  * Simple Web Text Formatting Parser.
  */
-public class SWTFParser extends STFParser {
+public class WebSCFParser extends SCFParser {
 
-	public SWTFParser(String url) {
+	public WebSCFParser(String url) {
 		this(WebUtils.newURL(url));
 	}
 
-	public SWTFParser(URL url) {
+	public WebSCFParser(URL url) {
 		super(WebUtils.newReader(url));
 	}
 }

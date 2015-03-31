@@ -33,7 +33,7 @@ import com.google.common.hash.Hashing;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
-import coolsquid.squidapi.util.formatting.SWTFParser;
+import coolsquid.squidapi.util.formatting.WebSCFParser;
 import coolsquid.squidapi.util.io.IOUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -376,7 +376,7 @@ public class Utils {
 	}
 
 	public static List<ChatMessage> parseSWNI(URL url) {
-		return new SWTFParser(url).get();
+		return new WebSCFParser(url).get();
 	}
 
 	public static String getPackName() {

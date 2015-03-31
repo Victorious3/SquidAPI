@@ -13,11 +13,11 @@ import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 /**
  * Simple Text Formatting Parser.
  */
-public class STFParser {
+public class SCFParser {
 
 	private final List<ChatMessage> list = Lists.newArrayList();
 
-	public STFParser(Iterable<String> lines) {
+	public SCFParser(Iterable<String> lines) {
 		for (String line: lines) {
 			this.list.add(this.format(line));
 		}
@@ -29,12 +29,16 @@ public class STFParser {
 
 	private ChatMessage format(String line) {
 		ChatMessage msg = new ChatMessage();
-		if (line.contains("--")) {
-			String code = line.split("--")[0];
-			STFCodes.getCode(code).apply(msg);
-			line = line.substring(code.length() + 2);
+		if (line.contains(">--")) {
+			msg.setText(line.replaceFirst(">--", ""));
+			String code = line.split(">--")[0];
+			for (char c: code.toCharArray()) {
+				STFCodes.getCode(c).apply(msg);
+			}
 		}
-		msg.setText(line);
+		else {
+			msg.setText(line);
+		}
 		return msg;
 	}
 }

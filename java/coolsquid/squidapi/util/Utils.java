@@ -407,4 +407,8 @@ public class Utils {
 		}
 		return c.toString();
 	}
+
+	public static String ensureNotNull(String string) {
+		return string != null ? string : "";
+	}
 }

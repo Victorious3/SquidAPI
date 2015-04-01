@@ -18,7 +18,7 @@ import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class BlockBasic extends Block {
+public class BlockBase extends Block {
 	
 	private static final Material material = new Material(MapColor.stoneColor);
 
@@ -30,19 +30,19 @@ public class BlockBasic extends Block {
 
 	public boolean isFireSource;
 	
-	public BlockBasic(String name) {
+	public BlockBase(String name) {
 		super(material);
 		this.setBlockTextureName(Utils.newString(Loader.instance().activeModContainer().getModId(), ":", name));
 		this.initBlock(name);
 	}
 	
-	public BlockBasic(String name, String textureName) {
+	public BlockBase(String name, String textureName) {
 		super(material);
 		this.setBlockTextureName(Utils.newString(Loader.instance().activeModContainer().getModId(), ":", textureName));
 		this.initBlock(name);
 	}
 	
-	public BlockBasic initBlock(String name) {
+	public BlockBase initBlock(String name) {
 		this.setBlockName(name);
 		GameRegistry.registerBlock(this, name);
 		this.setHardness(1.5F);

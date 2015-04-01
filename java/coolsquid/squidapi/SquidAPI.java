@@ -46,6 +46,7 @@ import coolsquid.squidapi.registry.VanillaBlockRegistry;
 import coolsquid.squidapi.registry.VanillaItemRegistry;
 import coolsquid.squidapi.registry.WorldTypeRegistry;
 import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.EasterEggUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.ShutdownHandler;
@@ -57,6 +58,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -155,6 +157,19 @@ public class SquidAPI extends SquidAPIMod {
 
 		for (SquidAPIMod mod: getMods()) {
 			mod.init();
+		}
+
+		if (EasterEggUtils.APRIL_FOOLS) {
+			List<String> descs = Lists.newArrayList();
+			for (ModContainer mod: Loader.instance().getModList()) {
+				String desc = mod.getMetadata().description;
+				if (desc != null) {
+					descs.add(desc);
+				}
+			}
+			for (ModContainer mod: Loader.instance().getModList()) {
+				mod.getMetadata().description = descs.remove(Utils.getRandInt(0, descs.size() - 1));
+			}
 		}
 
 		this.info("Finished initialization.");

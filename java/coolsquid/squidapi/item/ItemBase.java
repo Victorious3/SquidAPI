@@ -9,11 +9,11 @@ import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class ItemBasic extends Item {
+public class ItemBase extends Item {
 	
 	public boolean isRepairable = false;
 	
-	public ItemBasic(String name) {
+	public ItemBase(String name) {
 		String modid = Utils.getCurrentMod().getModId();
 		SquidAPI.instance().info("Registering item ", name, " from ", modid, ".");
 		this.setUnlocalizedName(name);

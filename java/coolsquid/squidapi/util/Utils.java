@@ -411,4 +411,13 @@ public class Utils {
 	public static String ensureNotNull(String string) {
 		return string != null ? string : "";
 	}
+
+	public static Class<?> getCaller() {
+		try {
+			return Class.forName(new Throwable().getStackTrace()[2].getClassName());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

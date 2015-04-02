@@ -26,6 +26,7 @@ import com.google.common.collect.Lists;
 import coolsquid.squidapi.command.CommandAbout;
 import coolsquid.squidapi.command.CommandDisable;
 import coolsquid.squidapi.command.CommandEnable;
+import coolsquid.squidapi.command.CommandLightningStrike;
 import coolsquid.squidapi.command.CommandSquidAPI;
 import coolsquid.squidapi.command.CommandSuggest;
 import coolsquid.squidapi.config.ConfigHandler;
@@ -49,6 +50,7 @@ import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.EasterEggUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModInfo;
+import coolsquid.squidapi.util.PatreonController;
 import coolsquid.squidapi.util.ShutdownHandler;
 import coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
 import coolsquid.squidapi.util.Utils;
@@ -190,6 +192,17 @@ public class SquidAPI extends SquidAPIMod {
 			mod.postInit();
 		}
 
+		if (Utils.isClient()) {
+			this.registerClientCommand(new CommandDisable());
+			this.registerClientCommand(new CommandEnable());
+			this.registerClientCommand(new CommandAbout());
+			this.registerClientCommand(new CommandSquidAPI());
+			this.registerClientCommand(new CommandSuggest());
+			if (PatreonController.INSTANCE.isPatreon(Minecraft.getMinecraft().thePlayer)) {
+				this.registerClientCommand(new CommandLightningStrike());
+			}
+		}
+
 		this.info("Finished postinitialization.");
 	}
 
@@ -204,13 +217,6 @@ public class SquidAPI extends SquidAPIMod {
 
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
-		if (Utils.isClient()) {
-			this.registerClientCommand(new CommandDisable());
-			this.registerClientCommand(new CommandEnable());
-			this.registerClientCommand(new CommandAbout());
-			this.registerClientCommand(new CommandSquidAPI());
-			this.registerClientCommand(new CommandSuggest());
-		}
 		for (ICommand a: this.commands) {
 			this.registerServerCommand(a);
 		}

@@ -8,6 +8,7 @@ import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ChatComponentText;
 import coolsquid.squidapi.SquidAPI;
@@ -35,60 +36,62 @@ public class CommandSquidAPI extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		String subcommand = args[0];
-		if (subcommand.equals("news")) {
-			NewsHandler thread = new NewsHandler(sender);
-			thread.start();
-		}
-		else if (subcommand.equals("help")) {
-			this.sendMsg(sender, "Available commands:");
-			this.sendHelp(sender, "help");
-			this.sendHelp(sender, "news");
-			this.sendHelp(sender, "dump items (modid)");
-			this.sendHelp(sender, "dump blocks (modid)");
-			this.sendHelp(sender, "dump commands");
-			this.sendHelp(sender, "dump worldtypes");
-			this.sendHelp(sender, "dump damagesources");
-		}
-		else if (subcommand.equals("dump")) {
-			boolean a = true;
-			if (args[1].equals("items")) {
-				if (args.length > 2) {
-					Utils.dump(args[2], new File("./dumps/items.txt"), Item.itemRegistry);
+		if (sender instanceof EntityPlayer) {
+			String subcommand = args[0];
+			if (subcommand.equals("news")) {
+				NewsHandler thread = new NewsHandler(sender);
+				thread.start();
+			}
+			else if (subcommand.equals("help")) {
+				this.sendMsg(sender, "Available commands:");
+				this.sendHelp(sender, "help");
+				this.sendHelp(sender, "news");
+				this.sendHelp(sender, "dump items (modid)");
+				this.sendHelp(sender, "dump blocks (modid)");
+				this.sendHelp(sender, "dump commands");
+				this.sendHelp(sender, "dump worldtypes");
+				this.sendHelp(sender, "dump damagesources");
+			}
+			else if (subcommand.equals("dump")) {
+				boolean a = true;
+				if (args[1].equals("items")) {
+					if (args.length > 2) {
+						Utils.dump(args[2], new File("./dumps/items.txt"), Item.itemRegistry);
+					}
+					else {
+						Utils.dump(null, new File("./dumps/items.txt"), Item.itemRegistry);
+					}
+				}
+				else if (args[1].equals("blocks")) {
+					if (args.length > 2) {
+						Utils.dump(args[2], new File("./dumps/blocks.txt"), Block.blockRegistry);
+					}
+					else {
+						Utils.dump(null, new File("./dumps/blocks.txt"), Block.blockRegistry);
+					}
+				}
+				else if (args[1].equals("commands")) {
+					IOUtils.writeLines(new File("./dumps/commands.txt"), ServerHelper.getCommands().keySet());
+				}
+				else if (args[1].equals("worldtypes")) {
+					IOUtils.writeLines(new File("./dumps/worldtypes.txt"), WorldTypeRegistry.instance().names());
+				}
+				else if (args[1].equals("damagesources")) {
+					IOUtils.writeLines(new File("./dumps/damagesources.txt"), DamageSourceRegistry.instance().names());
 				}
 				else {
-					Utils.dump(null, new File("./dumps/items.txt"), Item.itemRegistry);
+					a = false;
+				}
+				if (a) {
+					SquidAPI.instance().info("The requested information was dumped into a file in /dumps.");
 				}
 			}
-			else if (args[1].equals("blocks")) {
-				if (args.length > 2) {
-					Utils.dump(args[2], new File("./dumps/blocks.txt"), Block.blockRegistry);
-				}
-				else {
-					Utils.dump(null, new File("./dumps/blocks.txt"), Block.blockRegistry);
-				}
-			}
-			else if (args[1].equals("commands")) {
-				IOUtils.writeLines(new File("./dumps/commands.txt"), ServerHelper.getCommands().keySet());
-			}
-			else if (args[1].equals("worldtypes")) {
-				IOUtils.writeLines(new File("./dumps/worldtypes.txt"), WorldTypeRegistry.instance().names());
-			}
-			else if (args[1].equals("damagesources")) {
-				IOUtils.writeLines(new File("./dumps/damagesources.txt"), DamageSourceRegistry.instance().names());
+			else if (subcommand.equals("togglesuperspeed")) {
+				DevEnvironmentEventHandler.speedy = !DevEnvironmentEventHandler.speedy;
 			}
 			else {
-				a = false;
+				this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");
 			}
-			if (a) {
-				SquidAPI.instance().info("The requested information was dumped into a file in /dumps.");
-			}
-		}
-		else if (subcommand.equals("togglesuperspeed")) {
-			DevEnvironmentEventHandler.speedy = !DevEnvironmentEventHandler.speedy;
-		}
-		else {
-			this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");
 		}
 	}
 }

@@ -22,6 +22,11 @@ public class SquidAPIProperties implements IValueContainer {
 		return (E) this.map.get(key);
 	}
 
+	@SuppressWarnings("unchecked")
+	public <E> E getProperty(String key, Class<E> type) {
+		return (E) this.map.get(key);
+	}
+
 	@Override
 	public boolean getBoolean(String key) {
 		return (boolean) this.map.get(key);

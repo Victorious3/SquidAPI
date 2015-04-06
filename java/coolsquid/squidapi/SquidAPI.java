@@ -29,7 +29,7 @@ import coolsquid.squidapi.command.CommandEnable;
 import coolsquid.squidapi.command.CommandLightningStrike;
 import coolsquid.squidapi.command.CommandSquidAPI;
 import coolsquid.squidapi.command.CommandSuggest;
-import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.ModConfigHandler;
 import coolsquid.squidapi.config.SquidAPIConfig;
 import coolsquid.squidapi.handlers.CommonHandler;
 import coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
@@ -50,6 +50,7 @@ import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.EasterEggUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModInfo;
+import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.PatreonController;
 import coolsquid.squidapi.util.ShutdownHandler;
 import coolsquid.squidapi.util.ShutdownHandler.ShutdownEvent;
@@ -70,6 +71,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidAPI extends SquidAPIMod {
@@ -85,15 +88,14 @@ public class SquidAPI extends SquidAPIMod {
 		return instance;
 	}
 
+	@Deprecated
 	private final SquidAPIConfig commandConfig = new SquidAPIConfig(new File("./config/SquidAPI/commands.cfg"));
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
-		this.info("Hash: ", SquidAPIPlugin.getHash());
-
-		versions.save();
+		this.info("File hash: ", SquidAPIPlugin.getHash());
 
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
@@ -102,7 +104,7 @@ public class SquidAPI extends SquidAPIMod {
 
 		Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
 
-		new ConfigHandler(event.getSuggestedConfigurationFile()).preInit();
+		new ModConfigHandler(event.getSuggestedConfigurationFile()).preInit();
 		this.commandConfig.addHeader("//Disable any commands by setting their value to false.");
 
 		ModMetadata mcmeta = Loader.instance().getMinecraftModContainer().getMetadata();
@@ -111,7 +113,7 @@ public class SquidAPI extends SquidAPIMod {
 		mcmeta.authorList.add("Mojang");
 		mcmeta.description = "A game about breaking and placing blocks.";
 
-		if (Utils.developmentEnvironment() || MiscLib.SETTINGS.getBoolean("cleanMenu")) {
+		if (MiscLib.DEV_ENVIRONMENT || MiscLib.SETTINGS.getBoolean("cleanMenu")) {
 			ReflectionHelper.in(ForgeVersion.class).field("status", "status").set(Status.UP_TO_DATE);
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandings", "brandings").set(Lists.newArrayList());
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList());
@@ -129,7 +131,7 @@ public class SquidAPI extends SquidAPIMod {
 
 		MinecraftForge.EVENT_BUS.register(this);
 
-		for (SquidAPIMod mod: getMods()) {
+		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.preInit();
 		}
 
@@ -143,11 +145,11 @@ public class SquidAPI extends SquidAPIMod {
 		FMLCommonHandler.instance().bus().register(this);
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
-		if (Utils.developmentEnvironment()) {
+		if (MiscLib.DEV_ENVIRONMENT) {
 			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
 		}
-		if (!Utils.isClient()) {
-			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(SquidAPIMod.getModids()));
+		if (!MiscLib.CLIENT) {
+			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(ModManager.INSTANCE.getModids()));
 		}
 
 		this.suggestMod("SquidUtils", "It provides the user with many customization options, from disabling mobs to creating new biomes.", "http://bit.ly/1EB3Y5N");
@@ -157,7 +159,7 @@ public class SquidAPI extends SquidAPIMod {
 
 		Utils.runVersionCheckerCompat("227345");
 
-		for (SquidAPIMod mod: getMods()) {
+		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.init();
 		}
 
@@ -172,6 +174,13 @@ public class SquidAPI extends SquidAPIMod {
 			for (ModContainer mod: Loader.instance().getModList()) {
 				mod.getMetadata().description = descs.remove(Utils.getRandInt(0, descs.size() - 1));
 			}
+		}
+		else if (EasterEggUtils.EASTER) {
+			this.getMetadata().credits = "The Easter Bunny <3";
+		}
+		else if (EasterEggUtils.HALLOWEEN) {
+			this.info("Happy halloween... >:)");
+			this.info("If you want to experience a halloween filled with horror, try out BloodNBones by Eyamapple (Eyamaz)!");
 		}
 
 		this.info("Finished initialization.");
@@ -188,19 +197,8 @@ public class SquidAPI extends SquidAPIMod {
 		WorldTypeRegistry.instance();
 		DamageSourceRegistry.instance();
 
-		for (SquidAPIMod mod: getMods()) {
+		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.postInit();
-		}
-
-		if (Utils.isClient()) {
-			this.registerClientCommand(new CommandDisable());
-			this.registerClientCommand(new CommandEnable());
-			this.registerClientCommand(new CommandAbout());
-			this.registerClientCommand(new CommandSquidAPI());
-			this.registerClientCommand(new CommandSuggest());
-			if (PatreonController.INSTANCE.isPatreon(Minecraft.getMinecraft().thePlayer)) {
-				this.registerClientCommand(new CommandLightningStrike());
-			}
 		}
 
 		this.info("Finished postinitialization.");
@@ -210,6 +208,13 @@ public class SquidAPI extends SquidAPIMod {
 	public void finishedLoading(FMLLoadCompleteEvent event) {
 		if (!VillageHelper.professionstoremove.isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(new VillageHelper());
+		}
+		if (MiscLib.CLIENT) {
+			this.registerClientCommand(new CommandDisable());
+			this.registerClientCommand(new CommandEnable());
+			this.registerClientCommand(new CommandAbout());
+			this.registerClientCommand(new CommandSquidAPI());
+			this.registerClientCommand(new CommandSuggest());
 		}
 	}
 
@@ -224,11 +229,15 @@ public class SquidAPI extends SquidAPIMod {
 
 	public final List<String> messages = Lists.newArrayList();
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLogin(PlayerLoggedInEvent event) {
 		VersionChecker.INSTANCE.onLogin(event.player);
 		for (String message: this.messages) {
 			event.player.addChatMessage(new ChatMessage("<SquidAPI> ").setColor(EnumChatFormatting.RED).appendSibling(new ChatMessage(message)));
+		}
+		if (MiscLib.DEV_ENVIRONMENT || PatreonController.INSTANCE.isPatreon(event.player.getGameProfile().getId())) {
+			this.registerClientCommand(new CommandLightningStrike());
 		}
 	}
 
@@ -242,16 +251,15 @@ public class SquidAPI extends SquidAPIMod {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onShutdown(ShutdownEvent event) {
 		if (Utils.getChance(1, 10)) {
 			this.info("Have a nice day!");
 		}
-		if (Utils.isClient()) {
-			String user = Minecraft.getMinecraft().getSession().getUsername();
-			if (MiscLib.NICKNAMES.containsKey(user) && MiscLib.SETTINGS.getBoolean("easterEggs")) {
-				this.info("Bye, " + MiscLib.NICKNAMES.getProperty(user) + "!");
-			}
+		String user = Minecraft.getMinecraft().getSession().getUsername();
+		if (MiscLib.NICKNAMES.containsKey(user) && MiscLib.SETTINGS.getBoolean("easterEggs")) {
+			this.info("Bye, " + MiscLib.NICKNAMES.getProperty(user) + "!");
 		}
 	}
 
@@ -272,7 +280,7 @@ public class SquidAPI extends SquidAPIMod {
 	private void registerServerCommand(ICommand command) {
 		String name = command.getCommandName();
 		if (name != null && this.commandConfig.get(name, true)) {
-			ServerHelper.registerCommand(name, command);
+			ServerHelper.registerCommand(command);
 			this.info("Registering serverside command ", name, ".");
 		}
 	}

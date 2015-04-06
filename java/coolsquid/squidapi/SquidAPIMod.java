@@ -13,21 +13,18 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.hash.Hashing;
 
 import coolsquid.squidapi.command.CommandDisable;
-import coolsquid.squidapi.config.SquidAPIConfig;
-import coolsquid.squidapi.registry.Registry;
-import coolsquid.squidapi.registry.RegistrySimple;
 import coolsquid.squidapi.util.Incompatibility;
 import coolsquid.squidapi.util.Incompatibility.Severity;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.Suggestion;
+import coolsquid.squidapi.util.SuggestionManager;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.VersionChecker;
 import coolsquid.squidapi.util.io.WebUtils;
@@ -37,17 +34,11 @@ import cpw.mods.fml.common.ModMetadata;
 
 public class SquidAPIMod {
 
-	private static final Registry<SquidAPIMod> mods = new Registry<SquidAPIMod>();
-	private static final RegistrySimple<String> modids = new RegistrySimple<String>();
-	private static final List<Suggestion> suggestedMods = Lists.newArrayList();
-	protected static final SquidAPIConfig versions = new SquidAPIConfig(new File("./config/SquidAPI/versions.txt"));
-
 	private final ModContainer mod;
 	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
 	private final File configFile;
 	public final Logger logger;
-	private final long hashCode;
-	private final boolean versionChanged;
+	private final int hashCode;
 	private URL curseUrl;
 	private final String curseId;
 
@@ -67,18 +58,10 @@ public class SquidAPIMod {
 		this.mod = Loader.instance().activeModContainer();
 
 		final int prime = 31;
-		long result = 1;
-		result = prime * result + Hashing.sha512().hashBytes(this.getModid().getBytes()).asLong();
-		result = prime * result + Hashing.sha512().hashBytes(this.getVersion().getBytes()).asLong();
+		int result = 1;
+		result = prime * result + this.getModid().hashCode();
+		result = prime * result + this.getVersion().hashCode();
 		this.hashCode = result;
-		
-		if (this.hashCode != versions.get(this.getModid(), this.hashCode)) {
-			this.versionChanged = true;
-			versions.set(this.getModid(), this.hashCode);
-		}
-		else {
-			this.versionChanged = false;
-		}
 
 		this.configFile = new File("./config/" + this.getModid() + ".cfg");
 		this.logger = LogManager.getLogger(this.getName());
@@ -99,8 +82,7 @@ public class SquidAPIMod {
 
 		this.info("Registering SquidAPIMod ", this.getModid(), ".");
 
-		mods.register(this.getModid(), this);
-		modids.register(this.getModid());
+		ModManager.INSTANCE.registerMod(this.getModid(), this);
 	}
 
 	public final ModContainer getMod() {
@@ -142,9 +124,7 @@ public class SquidAPIMod {
 	}
 
 	protected final void suggestMod(Suggestion suggestion) {
-		if (!Loader.isModLoaded(suggestion.getSuggestion())) {
-			suggestedMods.add(suggestion);
-		}
+		SuggestionManager.INSTANCE.suggestMod(suggestion);
 	}
 
 	protected final void suggestMod(String suggestion, String reason, String url) {
@@ -155,7 +135,7 @@ public class SquidAPIMod {
 		this.suggestMod(new Suggestion(this.getMod().getModId(), suggestion, modid, reason, url));
 	}
 
-	protected void setDisableable() {
+	protected final void setDisableable() {
 		if (!(this instanceof Disableable)) {
 			throw new IllegalArgumentException();
 		}
@@ -164,10 +144,6 @@ public class SquidAPIMod {
 
 	public File getConfigFile() {
 		return this.configFile;
-	}
-	
-	public boolean hasVersionChanged() {
-		return this.versionChanged;
 	}
 
 	public String getCurseId() {
@@ -241,31 +217,8 @@ public class SquidAPIMod {
 		return "SquidAPIMod [modid=" + this.getModid() + ", version=" + this.getVersion() + "]";
 	}
 
-	public static List<SquidAPIMod> getMods() {
-		return ImmutableList.copyOf(mods);
-	}
-	
-	public static List<String> getModids() {
-		return ImmutableList.copyOf(modids);
-	}
-
-	public static Suggestion getRandomSuggestedMod() {
-		return suggestedMods.get(Utils.getRandInt(0, suggestedMods.size() - 1));
-	}
-
-	public static List<Suggestion> getSuggestions() {
-		return ImmutableList.copyOf(suggestedMods);
-	}
-
-	public static Suggestion getRandomSuggestedModEnsureNotSame(Suggestion a) {
-		Suggestion b = getRandomSuggestedMod();
-		while (b == a) {
-			b = getRandomSuggestedMod();
-		}
-		return b;
-	}
-
-	static {
-		versions.addHeader("//Please do not change any values.");
+	@Override
+	public int hashCode() {
+		return this.hashCode;
 	}
 }

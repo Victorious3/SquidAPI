@@ -4,7 +4,6 @@
  *******************************************************************************/
 package coolsquid.squidapi.util;
 
-import coolsquid.squidapi.registry.WorldTypeRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -12,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.WorldType;
+import coolsquid.squidapi.registry.WorldTypeRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 

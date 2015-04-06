@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.MiscLib;
 
 public class WorldHelper {
 
@@ -25,7 +25,7 @@ public class WorldHelper {
 	}
 
 	public static WorldHelper instance() {
-		if (Utils.isClient()) {
+		if (MiscLib.CLIENT) {
 			instance = new WorldHelper(Minecraft.getMinecraft().theWorld);
 		}
 		else {

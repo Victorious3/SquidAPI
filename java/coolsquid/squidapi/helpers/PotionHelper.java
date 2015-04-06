@@ -7,9 +7,11 @@ package coolsquid.squidapi.helpers;
 import java.util.List;
 
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 
 import com.google.common.collect.Lists;
 
+import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.Utils;
 
 public class PotionHelper {
@@ -27,5 +29,9 @@ public class PotionHelper {
 				badPotions.add(potion.id);
 			}
 		}
+	}
+
+	public static PotionEffect newEffect(EffectInfo info) {
+		return new PotionEffect(info.getId(), info.getDuration(), info.getAmplifier());
 	}
 }

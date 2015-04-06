@@ -17,11 +17,11 @@ public final class Blacklist<E> implements Iterable<E> {
 	private Blacklist(E... values) {
 		this.list = ImmutableSet.copyOf(values);
 	}
-	
+
 	private Blacklist(ImmutableSet<E> values) {
 		this.list = ImmutableSet.copyOf(values);
 	}
-	
+
 	public ImmutableSet<E> getBlacklist() {
 		return ImmutableSet.copyOf(this.list);
 	}
@@ -43,15 +43,20 @@ public final class Blacklist<E> implements Iterable<E> {
 	public Iterator<E> iterator() {
 		return this.list.iterator();
 	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> Blacklist<T> newInstance(T... values) {
-		return new Blacklist<T>(values);
-	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.list.hashCode();
+	}
+
+	@Override
+	public Blacklist<E> clone() {
+		return new Blacklist<E>(this.list);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Blacklist<T> newInstance(T... values) {
+		return new Blacklist<T>(values);
 	}
 
 	public static class Builder<T> {

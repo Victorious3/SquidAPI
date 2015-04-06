@@ -28,7 +28,7 @@ sourceSets {
 	}
 }
 
-version = "1.1.2"
+version = "1.1.4"
 group= "com.github.coolsquid"
 archivesBaseName = "SquidAPI"
 minecraft.version = "1.7.10-10.13.2.1272"

@@ -5,9 +5,9 @@
 package coolsquid.squidapi.command;
 
 import net.minecraft.command.ICommandSender;
-import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.util.Suggestion;
+import coolsquid.squidapi.util.SuggestionManager;
 
 public class CommandSuggest extends CommandBase {
 
@@ -19,9 +19,9 @@ public class CommandSuggest extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		this.suggestion = SquidAPIMod.getRandomSuggestedModEnsureNotSame(this.suggestion);
+		this.suggestion = SuggestionManager.INSTANCE.getRandomSuggestedModEnsureNotSame(this.suggestion);
 		ChatMessage b = new ChatMessage("<SquidAPI> ");
-		b.appendSibling(new ChatMessage("Check out ", this.suggestion.getSuggestion(), ". ", this.suggestion.getReason()).setUrl(this.suggestion.getUrl()));
+		b.appendSibling(new ChatMessage("Check out ", this.suggestion.getName(), ". ", this.suggestion.getDescription()).setUrl(this.suggestion.getUrl()));
 		sender.addChatMessage(b);
 	}
 }

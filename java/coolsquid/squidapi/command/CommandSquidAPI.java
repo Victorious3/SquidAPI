@@ -15,6 +15,7 @@ import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import coolsquid.squidapi.handlers.command.NewsHandler;
 import coolsquid.squidapi.helpers.server.ServerHelper;
+import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.registry.DamageSourceRegistry;
 import coolsquid.squidapi.registry.WorldTypeRegistry;
 import coolsquid.squidapi.util.Utils;
@@ -25,18 +26,19 @@ public class CommandSquidAPI extends CommandBase {
 	public CommandSquidAPI() {
 		super("SquidAPI", "", false);
 	}
-	
+
 	private void sendMsg(ICommandSender sender, String msg) {
 		sender.addChatMessage(new ChatComponentText("§4<SquidAPI>§r " + msg));
 	}
-	
+
 	private void sendHelp(ICommandSender sender, String msg) {
 		this.sendMsg(sender, "/" + this.getCommandName() + " " + msg);
 	}
-	
+
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		if (sender instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) sender;
 			String subcommand = args[0];
 			if (subcommand.equals("news")) {
 				NewsHandler thread = new NewsHandler(sender);
@@ -88,6 +90,10 @@ public class CommandSquidAPI extends CommandBase {
 			}
 			else if (subcommand.equals("togglesuperspeed")) {
 				DevEnvironmentEventHandler.speedy = !DevEnvironmentEventHandler.speedy;
+			}
+			else if (subcommand.equals("getuuid")) {
+				SquidAPI.instance().info("UUID: ", player.getGameProfile().getId().toString());
+				sender.addChatMessage(new ChatMessage("<SquidAPI> Successfully printed your UUID to the log!"));
 			}
 			else {
 				this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");

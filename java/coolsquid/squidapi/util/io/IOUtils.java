@@ -261,4 +261,8 @@ public class IOUtils {
 			}
 		}
 	}
+
+	public static SquidAPIFile newFile(String name) {
+		return new SquidAPIFile(name);
+	}
 }

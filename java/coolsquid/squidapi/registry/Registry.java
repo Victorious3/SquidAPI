@@ -5,6 +5,7 @@
 package coolsquid.squidapi.registry;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.Maps;
 
@@ -12,9 +13,19 @@ import coolsquid.squidapi.exception.DuplicateRegistryEntryException;
 
 public class Registry<E> extends RegistrySimple<E> {
 	
-	private final Map<String, E> map = Maps.newHashMap();
-	private final Map<E, String> map2 = Maps.newHashMap();
-	
+	private final Map<String, E> map;
+	private final Map<E, String> map2;
+
+	public Registry() {
+		this.map = Maps.newHashMap();
+		this.map2 = Maps.newHashMap();
+	}
+
+	private Registry(Map<String, E> map, Map<E, String> map2) {
+		this.map = map;
+		this.map2 = map2;
+	}
+
 	public E get(String name) {
 		return this.map.get(name);
 	}
@@ -39,7 +50,7 @@ public class Registry<E> extends RegistrySimple<E> {
 		this.map2.put(e, name);
 	}
 
-	public Iterable<String> names() {
+	public Set<String> names() {
 		return this.map.keySet();
 	}
 	
@@ -75,5 +86,10 @@ public class Registry<E> extends RegistrySimple<E> {
 	@Override
 	public String toString() {
 		return "Registry [hashCode()=" + this.hashCode() + "]";
+	}
+
+	@Override
+	public Registry<E> clone() {
+		return new Registry<E>(this.map, this.map2);
 	}
 }

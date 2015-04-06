@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.util.CrashCallable;
+import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.PatreonController;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ICrashCallable;
@@ -23,23 +26,19 @@ public class CommonHandler {
 		return instance;
 	}
 
-	/**
-	 * Generates a crash reporting info file and starts the environment checks.
-	 */
-	
 	public void init() {
 		if (Utils.isJavaVersionSameOrLower(6)) {
 			SquidAPI.instance().bigWarning("SquidAPI may not be compatible with your Java version. Please update to Java 7 or higher.");
 		}
-		if (Utils.isClient()) {
+		if (MiscLib.CLIENT) {
 			if (Utils.wrongVersion()) {
 				SquidAPI.instance().bigWarning("You are not using the correct MC version! Problems may occur. Do not report any errors.");
 			}
 		}
-		if (Utils.isBukkit()) {
+		if (MiscLib.BUKKIT) {
 			SquidAPI.instance().warn("Running on Bukkit! No support will be given.");
 		}
-		if (Utils.developmentEnvironment()) {
+		if (MiscLib.DEV_ENVIRONMENT) {
 			SquidAPI.instance().info("Running in a dev environment.");
 		}
 		File file = new File("./crash-reports/README-I-AM-VERY-IMPORTANT.txt");
@@ -64,26 +63,18 @@ public class CommonHandler {
 		String a = Utils.getPackName();
 		if (a != null) {
 			SquidAPI.instance().info("Modpack: " + a);
-			FMLCommonHandler.instance().registerCrashCallable(new ModpackCrashMessage(a));
+			this.registerCallable(new CrashCallable("Modpack: ", a));
+		}
+		if (MiscLib.CLIENT) {
+			PatreonController.INSTANCE.addPatreons("03a42a75-223a-4307-99c1-b69162ad6a6f", "c46c08f3-f004-443d-b8ce-340d2223a332");
 		}
 	}
 
-	private class ModpackCrashMessage implements ICrashCallable {
+	public void registerCallable(String label, String message) {
+		this.registerCallable(new CrashCallable(label, message));
+	}
 
-		private final String a;
-
-		public ModpackCrashMessage(String a) {
-			this.a = a;
-		}
-
-		@Override
-		public String call() throws Exception {
-			return this.a;
-		}
-
-		@Override
-		public String getLabel() {
-			return "Modpacks: ";
-		}
+	public void registerCallable(ICrashCallable callable) {
+		FMLCommonHandler.instance().registerCrashCallable(callable);
 	}
 }

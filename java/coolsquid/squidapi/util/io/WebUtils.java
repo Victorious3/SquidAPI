@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -137,9 +138,13 @@ public class WebUtils {
 	}
 
 	public static void openBrowser(URL url) {
+		openBrowser(newURI(url));
+	}
+
+	public static void openBrowser(URI uri) {
 		try {
-			Desktop.getDesktop().browse(url.toURI());
-		} catch (IOException | URISyntaxException e) {
+			Desktop.getDesktop().browse(uri);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -211,6 +216,24 @@ public class WebUtils {
 			public String next() {
 				return this.line;
 			}
+		}
+	}
+
+	public static URI newURI(String url) {
+		try {
+			return new URI(url);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static URI newURI(URL url) {
+		try {
+			return url.toURI();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.reflection.ReflectionHelper;
-import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
@@ -153,13 +153,13 @@ public class ServerHelper {
 	}
 	
 	public static void removeCommand(String name) {
-		if (!ContentRemover.getBlacklist().isBlacklisted(getCommands().get(name))) {
+		if (!MiscLib.getBlacklist().contains(name)) {
 			getCommands().remove(name);
 		}
 	}
 	
-	public static void registerCommand(String name, ICommand command) {
-		getCommands().put(name, command);
+	public static void registerCommand(ICommand command) {
+		getCommands().put(command.getCommandName(), command);
 	}
 	
 	public static void clearCommands() {

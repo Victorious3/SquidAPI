@@ -7,39 +7,29 @@ package coolsquid.squidapi.util;
 import java.util.Set;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Sets;
 
+public class ModPack implements IContent {
 
-
-public final class Suggestion implements IContent {
-	
-	private final String suggestor;
 	private final String name;
-	private final String modid;
 	private final String description;
-	private final String url;
 	private final Set<String> authors;
+	private final String url;
 
-	public Suggestion(String suggestor, String name, String modid, String description, String url, String... authors) {
-		this.suggestor = suggestor;
+	public ModPack(String name, String description, String author) {
+		this(name, description, "N/A", author);
+	}
+
+	public ModPack(String name, String description, String url, String... authors) {
 		this.name = name;
-		this.modid = modid;
-		this.description = Charsets.punctuate(description);
+		this.description = description;
+		this.authors = new OneWaySet<String>(authors);
 		this.url = url;
-		this.authors = Sets.newHashSet(authors);
 	}
 
-	public String getSuggestor() {
-		return suggestor;
-	}
-
-	public String getModid() {
-		return this.modid;
-	}
-
-	@Override
-	public String getUrl() {
-		return this.url;
+	public void addAuthors(String... authors) {
+		for (String author: authors) {
+			this.authors.add(author);
+		}
 	}
 
 	@Override
@@ -55,5 +45,10 @@ public final class Suggestion implements IContent {
 	@Override
 	public String getDescription() {
 		return this.description;
+	}
+
+	@Override
+	public String getUrl() {
+		return this.url;
 	}
 }

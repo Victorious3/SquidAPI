@@ -15,8 +15,8 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
@@ -32,18 +32,15 @@ import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.util.formatting.WebSCFParser;
 import coolsquid.squidapi.util.io.IOUtils;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.relauncher.Side;
 
 public class Utils {
-	
-	public static final String LINE = System.getProperty("line.separator");
 
 	public static boolean getChance(int d, int k) {
 		int a = getRandInt(1, k);
@@ -53,38 +50,35 @@ public class Utils {
 	public static int getRandInt(int min, int max) {
 		return min + r.nextInt(max - min + 1);
 	}
-	
+
+	@Deprecated
 	public static boolean isBukkit() {
-		if (isClient()) {
-			return false;
-		}
-		try {
-			return Class.forName("org.bukkit.Bukkit") != null;
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
+		return MiscLib.BUKKIT;
 	}
-	
+
+	@Deprecated
 	public static boolean isClient() {
-		return FMLCommonHandler.instance().getSide().equals(Side.CLIENT);
+		return MiscLib.CLIENT;
 	}
-	
+
+	@Deprecated
 	public static boolean isJava8() {
-		return System.getProperty("java.version").contains("1.8.0_");
+		return MiscLib.JAVA_VERSION.contains("1.8.0_");
 	}
-	
+
 	public static boolean isJavaVersionSameOrLower(int version) {
 		return IntUtils.parseInt(System.getProperty("java.version").charAt(2)) <= version;
 	}
-	
+
 	public static boolean wrongVersion() {
 		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
 	}
-	
+
 	private static Random r = new Random();
 	
+	@Deprecated
 	public static boolean developmentEnvironment() {
-		return (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+		return MiscLib.DEV_ENVIRONMENT;
 	}
 	
 	public static Class<?> getClass(String name) {
@@ -190,16 +184,12 @@ public class Utils {
 		}
 	}
 	
-	public static String hash(String input) {
+	public static long hash(String input) {
 		return hash(input.getBytes());
 	}
 	
-	public static String hash(byte[] input) {
-		StringBuilder builder = new StringBuilder();
-		for (byte b: Hashing.sha512().hashBytes(input).asBytes()) {
-			builder.append(b);
-		}
-		return builder.toString();
+	public static long hash(byte[] input) {
+		return Hashing.sha512().hashBytes(input).asLong();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -283,7 +273,7 @@ public class Utils {
 	}
 
 	public static String newLine() {
-		return LINE;
+		return MiscLib.LINE;
 	}
 	
 	public static boolean compatibleWithCharset(String string, CharSet... charsets) {
@@ -414,10 +404,43 @@ public class Utils {
 
 	public static Class<?> getCaller() {
 		try {
-			return Class.forName(new Throwable().getStackTrace()[2].getClassName());
+			return Class.forName(getTrace()[3].getClassName());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static void printTrace() {
+		printTrace(SquidAPI.instance());
+	}
+
+	public static void printTrace(SquidAPIMod mod) {
+		StackTraceElement[] a = getTrace();
+		for (int b = 2; b < a.length; b++) {
+			StackTraceElement c = a[b];
+			mod.info(c.toString());
+		}
+	}
+
+	public static StackTraceElement[] getTrace() {
+		return new Throwable().getStackTrace();
+	}
+
+	@SafeVarargs
+	public static <E> OneWaySet<E> newOneWaySet(E... content) {
+		return new OneWaySet<E>(content);
+	}
+
+	public static <E> OneWaySet<E> newOneWaySet(Class<E> type) {
+		return new OneWaySet<E>();
+	}
+
+	public static String[] newBlockNameArray(Iterable<Block> blocks) {
+		List<String> result = Lists.newArrayList();
+		for (Block b: blocks) {
+			result.add(Block.blockRegistry.getNameForObject(b));
+		}
+		return result.toArray(new String[] {});
 	}
 }

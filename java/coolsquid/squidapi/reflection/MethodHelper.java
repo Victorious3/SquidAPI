@@ -7,7 +7,7 @@ package coolsquid.squidapi.reflection;
 import java.lang.reflect.Method;
 
 import coolsquid.squidapi.exception.ReflectionException;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.MiscLib;
 
 public class MethodHelper {
 	
@@ -15,7 +15,7 @@ public class MethodHelper {
 
 	MethodHelper(Class<?> clazz, String deobfname, String obfname, Class<?>... params) {
 		String name = obfname;
-		if (Utils.developmentEnvironment()) {
+		if (MiscLib.DEV_ENVIRONMENT) {
 			name = deobfname;
 		}
 		try {

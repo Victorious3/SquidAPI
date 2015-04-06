@@ -11,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.Sets;
 
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.util.io.WebUtils;
@@ -40,11 +41,15 @@ public class VersionChecker {
 
 		@Override
 		public void run() {
-			String a = WebUtils.getLine(this.mod.getCurseUrl(), ".jar</a>");
-			String b = a.split(this.mod.getModid() + "-")[1].replace(".jar</a>", "");
-			if (!this.mod.getVersion().equals(b)) {
-				VersionChecker.this.outdatedMods.add(this.mod);
-				this.mod.info(b);
+			try {
+				String a = WebUtils.getLine(this.mod.getCurseUrl(), ".jar</a>");
+				String b = a.split(this.mod.getModid() + "-")[1].replace(".jar</a>", "");
+				if (!this.mod.getVersion().equals(b)) {
+					VersionChecker.this.outdatedMods.add(this.mod);
+					this.mod.info(b);
+				}
+			} catch (Exception e) {
+				SquidAPI.instance().error("Version checking failed!");
 			}
 		}
 	}

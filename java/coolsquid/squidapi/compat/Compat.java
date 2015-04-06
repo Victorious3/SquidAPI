@@ -11,14 +11,15 @@ import cpw.mods.fml.common.Loader;
 
 public enum Compat {
 	
-	ThermalExpansion("ThermalExpansion"),
-	Botania("Botania", "vazkii.botania.api", "35"),
-	RotaryCraft("RotaryCraft"),
-	AppliedEnergistics2("appliedenergistics2", "appeng.api", "rv2"),
-	BloodMagic("AWWayofTime"),
-	ThaumCraft("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
-	RailCraft("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
-	EnviroMine("enviromine");
+	THERMALEXPANSION("ThermalExpansion"),
+	BOTANIA("Botania", "vazkii.botania.api", "35"),
+	ROTARYCRAFT("RotaryCraft"),
+	APPLIEDENERGISTICS2("appliedenergistics2", "appeng.api", "rv2"),
+	BLOODMAGIC("AWWayofTime"),
+	THAUMCRAFT("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
+	RAILCRAFT("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
+	ENVIROMINE("enviromine"),
+	MINECRAFT("minecraft");
 
 	private final boolean enabled;
 	private final Package api;

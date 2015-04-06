@@ -22,7 +22,7 @@ public class ModInfo {
 	 * The version.
 	 */
 
-	public static final String version = "1.1.2";
+	public static final String version = "1.1.3";
 
 	/**
 	 * The MC version to use this mod with.

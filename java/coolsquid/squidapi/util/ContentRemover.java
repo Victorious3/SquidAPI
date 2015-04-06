@@ -10,13 +10,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DungeonHooks;
@@ -32,9 +30,10 @@ import cpw.mods.fml.common.Loader;
 public class ContentRemover {
 
 	private static final List<Item> recipesToRemove = new ArrayList<Item>();
-	private static final Blacklist<String> blacklist = Blacklist.newInstance("RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
+	private static final Blacklist<String> blacklist = MiscLib.getBlacklist();
 	private static final Set<Item> furnaceRecipesToRemove = Sets.newHashSet();
 	
+	@Deprecated
 	public static Blacklist<String> getBlacklist() {
 		return blacklist;
 	}
@@ -58,28 +57,6 @@ public class ContentRemover {
 		}
 		if (type == ContentType.RECIPE) {
 			recipesToRemove.add((Item) Item.itemRegistry.getObject(name));
-		}
-		else if (type == ContentType.ENCHANTMENT) {
-			for (String mod: getBlacklist()) {
-				Enchantment e = Enchantment.enchantmentsList[IntUtils.parseInt(name)];
-				if (e != null && e.getClass().getName().contains(mod)) {
-					SquidAPI.instance().warn(mod + " has requested to be blacklisted from content removal. Enchantment ", name, " will not be removed.");
-					return;
-				}
-			}
-			int id = IntUtils.parseInt(name);
-			Enchantment.enchantmentsList[id] = null;
-			new EmptyEnchantment(id);
-		}
-		else if (type == ContentType.POTION) {
-			for (String mod: getBlacklist()) {
-				Potion e = Potion.potionTypes[IntUtils.parseInt(name)];
-				if (e != null && e.getClass().getName().contains(mod)) {
-					SquidAPI.instance().warn(mod + " has requested to be blacklisted from content removal. Potion ", name, " will not be removed.");
-					return;
-				}
-			}
-			new EmptyPotion(IntUtils.parseInt(name));
 		}
 		else if (type == ContentType.FISH) {
 			ArrayList<WeightedRandomFishable> fish = FishingHelper.getFish();
@@ -127,8 +104,6 @@ public class ContentRemover {
 	
 	public enum ContentType {
 		RECIPE,
-		ENCHANTMENT,
-		POTION,
 		FISH,
 		JUNK,
 		TREASURE,

@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import coolsquid.squidapi.exception.ReflectionException;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.MiscLib;
 
 public class FieldHelper {
 	
@@ -19,7 +19,7 @@ public class FieldHelper {
 	FieldHelper(Class<?> clazz, String deobfname, String obfname, boolean isfinal) {
 		this.object = null;
 		String name = obfname;
-		if (Utils.developmentEnvironment()) {
+		if (MiscLib.DEV_ENVIRONMENT) {
 			name = deobfname;
 		}
 		try {
@@ -34,7 +34,7 @@ public class FieldHelper {
 	FieldHelper(Object object, String deobfname, String obfname, boolean isfinal) {
 		this.object = object;
 		String name = obfname;
-		if (Utils.developmentEnvironment()) {
+		if (MiscLib.DEV_ENVIRONMENT) {
 			name = deobfname;
 		}
 		Field f = null;

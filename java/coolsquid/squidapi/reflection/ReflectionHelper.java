@@ -37,7 +37,7 @@ public class ReflectionHelper {
 	public static ReflectionHelper in(Object object) {
 		if (object == null) {
 			String mod = Utils.getCurrentMod().getModId();
-			throw new NullPointerException(Utils.newString("The parameter \"clazz\" can't be null! Contact the author of ", mod, "."));
+			throw new NullPointerException(Utils.newString("The parameter \"object\" can't be null! Contact the author of ", mod, "."));
 		}
 		return new ReflectionHelper(object);
 	}

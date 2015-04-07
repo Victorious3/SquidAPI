@@ -19,6 +19,10 @@ public final class MonetizationHandler {
 		this.a = Blacklist.copyOf(a);
 	}
 
+	public MonetizationHandler(String... a) {
+		this.a = Blacklist.copyOf(a);
+	}
+
 	private boolean a(String a) {
 		return this.a.contains(a.split(":")[0]);
 	}

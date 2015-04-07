@@ -16,7 +16,7 @@ public abstract class ConfigHandler {
 		this.config = new Configuration(file);
 	}
 
-	public final void init() {
+	public void init() {
 		this.config.load();
 		this.loadConfig();
 		if (this.config.hasChanged()) {
@@ -25,4 +25,8 @@ public abstract class ConfigHandler {
 	}
 
 	public abstract void loadConfig();
+
+	public Configuration getConfig() {
+		return this.config;
+	}
 }

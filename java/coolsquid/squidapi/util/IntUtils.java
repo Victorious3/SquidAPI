@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 public class IntUtils {
 	
 	public static String trim(String string) {
-		StringBuilder builder = Utils.builder();
+		StringBuilder builder = StringUtils.builder();
 		if (string.startsWith("-")) {
 			builder.append("-");
 		}
@@ -26,7 +26,7 @@ public class IntUtils {
 	}
 
 	public static String trim(char c) {
-		StringBuilder builder = Utils.builder();
+		StringBuilder builder = StringUtils.builder();
 		if (CharSet.ASCII_NUMERIC.contains(c)) {
 			builder.append(c);
 		}

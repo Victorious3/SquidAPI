@@ -6,7 +6,7 @@ package coolsquid.squidapi.handlers;
 
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.passive.EntitySquid;
-import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import coolsquid.squidapi.registry.DamageSourceRegistry;
@@ -20,18 +20,18 @@ public class ModEventHandler {
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void onGuiOpen(GuiOpenEvent event) {
+	public void onGuiOpen(GuiScreenEvent.InitGuiEvent event) {
 		if (event.gui instanceof GuiMainMenu && MiscLib.SETTINGS.getBoolean("easterEggs")) {
-			/*if (Utils.getChance(1, 50)) {
+			if (Utils.getChance(1, 50)) {
 				((GuiMainMenu) event.gui).splashText = "The squids will take over!";
-			}*/
+			}
 		}
 	}
 
 	@SubscribeEvent
 	public void onHurt(LivingHurtEvent event) {
-		if (!DamageSourceRegistry.instance().containsName(event.source.damageType)) {
-			DamageSourceRegistry.instance().register(event.source);
+		if (!DamageSourceRegistry.INSTANCE.containsName(event.source.damageType)) {
+			DamageSourceRegistry.INSTANCE.register(event.source);
 		}
 	}
 

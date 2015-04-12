@@ -15,7 +15,7 @@ import com.google.common.collect.Sets;
 import coolsquid.squidapi.Disableable;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 
 public class CommandDisable extends CommandBase {
 
@@ -40,10 +40,10 @@ public class CommandDisable extends CommandBase {
 		try {
 			mod.disable();
 			disabledmods.add(mod);
-			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Disabled ", args[0], ".")));
+			sender.addChatMessage(new ChatMessage(StringUtils.newString("<SquidAPI> Disabled ", args[0], ".")));
 		} catch (Exception e) {
 			e.printStackTrace();
-			sender.addChatMessage(new ChatMessage(Utils.newString("<SquidAPI> Could not disable ", args[0], ".")).setColor(Color.RED));
+			sender.addChatMessage(new ChatMessage(StringUtils.newString("<SquidAPI> Could not disable ", args[0], ".")).setColor(Color.RED));
 		}
 	}
 }

@@ -70,7 +70,7 @@ public class FieldHelper {
 		}
 	}
 	
-	public void set(Object replacement) {
+	public FieldHelper set(Object replacement) {
 		try {
 			if (this.isfinal) {
 				Field m = Field.class.getDeclaredField("modifiers");
@@ -81,5 +81,6 @@ public class FieldHelper {
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
+		return this;
 	}
 }

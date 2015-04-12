@@ -18,21 +18,23 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.command.CommandDisable;
+import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.util.Incompatibility;
 import coolsquid.squidapi.util.Incompatibility.Severity;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModManager;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.Suggestion;
 import coolsquid.squidapi.util.SuggestionManager;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.TimedClass;
 import coolsquid.squidapi.util.VersionChecker;
 import coolsquid.squidapi.util.io.WebUtils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 
-public class SquidAPIMod {
+public class SquidAPIMod extends TimedClass implements ILogger {
 
 	private final ModContainer mod;
 	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
@@ -158,30 +160,36 @@ public class SquidAPIMod {
 		this.curseUrl = url;
 	}
 
-	public void log(Level level, String msg) {
-		this.logger.log(level, msg);
-		MiscLib.LOGGER.log(this.getName(), coolsquid.squidapi.logging.Level.getLevel(level.toString()), msg, false);
+	@Override
+	public void log(Level level, Object... msg) {
+		String a = StringUtils.newString(msg);
+		this.logger.log(level, a);
+		MiscLib.LOGGER.log(this.getName(), level, a, false);
 	}
 	
+	@Override
 	public void info(Object... msg) {
-		this.log(Level.INFO, Utils.newString(msg));
+		this.log(Level.INFO, msg);
 	}
 	
+	@Override
 	public void warn(Object... msg) {
-		this.log(Level.WARN, Utils.newString(msg));
+		this.log(Level.WARN, msg);
 	}
 	
+	@Override
 	public void error(Object... msg) {
-		this.log(Level.ERROR, Utils.newString(msg));
+		this.log(Level.ERROR, msg);
 	}
 	
+	@Override
 	public void fatal(Object... msg) {
-		this.log(Level.FATAL, Utils.newString(msg));
+		this.log(Level.FATAL, msg);
 	}
 
 	public void bigWarning(Object... msg) {
-		String a = Utils.newString(msg);
-		String b = Utils.repeat('#', a.length());
+		String a = StringUtils.newString(msg);
+		String b = StringUtils.repeat('#', a.length());
 		this.log(Level.FATAL, b);
 		for (String c: a.split(MiscLib.LINE)) {
 			this.log(Level.FATAL, c);
@@ -199,7 +207,7 @@ public class SquidAPIMod {
 
 	protected final void postInit() {
 		for (Incompatibility a: this.getIncompatibilities()) {
-			this.bigWarning("Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", Utils.newLine(), "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
+			this.bigWarning("Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", MiscLib.LINE, "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
 		}
 	}
 
@@ -220,5 +228,11 @@ public class SquidAPIMod {
 	@Override
 	public int hashCode() {
 		return this.hashCode;
+	}
+
+	@Deprecated
+	@Override
+	public void log(String msg) {
+		throw new UnsupportedOperationException();
 	}
 }

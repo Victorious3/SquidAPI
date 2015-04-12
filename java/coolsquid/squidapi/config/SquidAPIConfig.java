@@ -16,9 +16,11 @@ import com.google.common.collect.Maps;
 
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.IterableMap;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.IOUtils;
 
+@Deprecated
 public class SquidAPIConfig {
 	
 	private final File configFile;
@@ -85,7 +87,7 @@ public class SquidAPIConfig {
 			this.lines.add(a);
 			this.values.put(name, defaultValue);
 			try {
-				FileUtils.write(this.configFile, Utils.newString("B:", a, Utils.newLine()), true);
+				FileUtils.write(this.configFile, Utils.newString("B:", a, MiscLib.LINE), true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -102,7 +104,7 @@ public class SquidAPIConfig {
 			this.lines.add(a);
 			this.values.put(name, defaultValue);
 			try {
-				FileUtils.write(this.configFile, Utils.newString("S:", a, Utils.newLine()), true);
+				FileUtils.write(this.configFile, Utils.newString("S:", a, MiscLib.LINE), true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -119,7 +121,7 @@ public class SquidAPIConfig {
 			this.lines.add(a);
 			this.values.put(name, defaultValue);
 			try {
-				FileUtils.write(this.configFile, Utils.newString("I:", a, Utils.newLine()), true);
+				FileUtils.write(this.configFile, Utils.newString("I:", a, MiscLib.LINE), true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -136,7 +138,7 @@ public class SquidAPIConfig {
 			this.lines.add(a);
 			this.values.put(name, defaultValue);
 			try {
-				FileUtils.write(this.configFile, Utils.newString("F:", a, Utils.newLine()), true);
+				FileUtils.write(this.configFile, Utils.newString("F:", a, MiscLib.LINE), true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -153,7 +155,7 @@ public class SquidAPIConfig {
 			this.lines.add(a);
 			this.values.put(name, defaultValue);
 			try {
-				FileUtils.write(this.configFile, Utils.newString(a, Utils.newLine()), true);
+				FileUtils.write(this.configFile, Utils.newString(a, MiscLib.LINE), true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

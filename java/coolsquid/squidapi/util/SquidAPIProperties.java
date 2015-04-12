@@ -70,7 +70,7 @@ public class SquidAPIProperties implements IValueContainer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Utils.hash(this.map);
+		result = prime * result + HashUtils.hash(this.map);
 		return result;
 	}
 
@@ -82,7 +82,7 @@ public class SquidAPIProperties implements IValueContainer {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (SquidAPIProperties.class != obj.getClass()) {
 			return false;
 		}
 		SquidAPIProperties other = (SquidAPIProperties) obj;

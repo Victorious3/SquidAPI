@@ -89,4 +89,17 @@ public class RegistrySimple<E> implements Iterable<E> {
 	public String toString() {
 		return "RegistrySimple [hashCode()=" + this.hashCode() + "]";
 	}
+
+	public void init() {
+		
+	}
+
+	@SafeVarargs
+	public static <T> RegistrySimple<T> create(T... content) {
+		RegistrySimple<T> r = new RegistrySimple<T>();
+		for (T t: content) {
+			r.register(t);
+		}
+		return r;
+	}
 }

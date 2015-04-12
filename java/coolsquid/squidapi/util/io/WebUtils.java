@@ -22,7 +22,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.util.ModInfo;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 
 public class WebUtils {
 
@@ -171,7 +171,7 @@ public class WebUtils {
 			a.setRequestMethod("GET");
 			a.setRequestProperty("User-Agent", ModInfo.modid + ModInfo.version);
 			BufferedReader b = IOUtils.newReader(a.getInputStream());
-			StringBuilder d = Utils.builder();
+			StringBuilder d = StringUtils.builder();
 			String c = b.readLine();
 			while (c != null) {
 				d.append(c);

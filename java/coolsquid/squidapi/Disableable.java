@@ -5,6 +5,6 @@
 package coolsquid.squidapi;
 
 public interface Disableable {
-	void disable() throws Exception;
-	void enable() throws Exception;
+	public abstract void disable() throws Exception;
+	public abstract void enable() throws Exception;
 }

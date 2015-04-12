@@ -8,10 +8,11 @@ import net.minecraft.util.DamageSource;
 
 public final class DamageSourceRegistry extends Registry<DamageSource> {
 	
-	private static final DamageSourceRegistry instance = new DamageSourceRegistry();
-	
+	public static final DamageSourceRegistry INSTANCE = new DamageSourceRegistry();
+
+	@Deprecated
 	public static DamageSourceRegistry instance() {
-		return instance;
+		return INSTANCE;
 	}
 	
 	private DamageSourceRegistry() {

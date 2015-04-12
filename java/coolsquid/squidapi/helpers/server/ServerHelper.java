@@ -23,7 +23,7 @@ import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
@@ -39,7 +39,7 @@ public class ServerHelper {
 			int line = s.getLineNumber();
 			LoadController loader = ReflectionHelper.in(Loader.instance()).field("modController", "modController").get();
 			LoaderState state = ReflectionHelper.in(loader).field("state", "state").get();
-			SquidAPI.instance().fatal(Utils.newString("LoaderState: ", state.toString()));
+			SquidAPI.instance().fatal(StringUtils.newString("LoaderState: ", state.toString()));
 			SquidAPI.instance().fatal("The error occured in: ", clazz, ".", method, ":", line, ".");
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}

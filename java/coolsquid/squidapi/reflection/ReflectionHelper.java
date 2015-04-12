@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.Utils;
 
 @SuppressWarnings("unchecked")
@@ -29,7 +30,7 @@ public class ReflectionHelper {
 	public static ReflectionHelper in(Class<?> clazz) {
 		if (clazz == null) {
 			String mod = Utils.getCurrentMod().getModId();
-			throw new NullPointerException(Utils.newString("The parameter \"clazz\" can't be null! Contact the author of ", mod, "."));
+			throw new NullPointerException(StringUtils.newString("The parameter \"clazz\" can't be null! Contact the author of ", mod, "."));
 		}
 		return new ReflectionHelper(clazz);
 	}
@@ -37,7 +38,7 @@ public class ReflectionHelper {
 	public static ReflectionHelper in(Object object) {
 		if (object == null) {
 			String mod = Utils.getCurrentMod().getModId();
-			throw new NullPointerException(Utils.newString("The parameter \"object\" can't be null! Contact the author of ", mod, "."));
+			throw new NullPointerException(StringUtils.newString("The parameter \"object\" can't be null! Contact the author of ", mod, "."));
 		}
 		return new ReflectionHelper(object);
 	}
@@ -45,7 +46,7 @@ public class ReflectionHelper {
 	public static PackageHelper in(String pakkage) {
 		if (pakkage == null || pakkage.isEmpty()) {
 			String mod = Utils.getCurrentMod().getModId();
-			throw new NullPointerException(Utils.newString("The parameter \"pakkage\" can't be null! Contact the author of ", mod, "."));
+			throw new NullPointerException(StringUtils.newString("The parameter \"pakkage\" can't be null! Contact the author of ", mod, "."));
 		}
 		return new PackageHelper(Package.getPackage(pakkage));
 	}

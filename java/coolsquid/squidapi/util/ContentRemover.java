@@ -30,16 +30,10 @@ import cpw.mods.fml.common.Loader;
 public class ContentRemover {
 
 	private static final List<Item> recipesToRemove = new ArrayList<Item>();
-	private static final Blacklist<String> blacklist = MiscLib.getBlacklist();
 	private static final Set<Item> furnaceRecipesToRemove = Sets.newHashSet();
 	
-	@Deprecated
-	public static Blacklist<String> getBlacklist() {
-		return blacklist;
-	}
-	
 	public static boolean isBlacklistedModLoaded() {
-		for (String mod: getBlacklist()) {
+		for (String mod: MiscLib.getBlacklist()) {
 			if (Loader.isModLoaded(mod)) {
 				return true;
 			}
@@ -48,10 +42,10 @@ public class ContentRemover {
 	}
 	
 	public static void remove(String name, ContentType type) {
-		for (String mod: getBlacklist()) {
+		for (String mod: MiscLib.getBlacklist()) {
 			if (name.startsWith(mod + ":")) {
 				String content = type.toString() + " " + name;
-				SquidAPI.instance().warn(Utils.newString(mod, " has requested to be blacklisted from content removal. ", content, " will not be removed."));
+				SquidAPI.instance().warn(mod + " has requested to be blacklisted from content removal. " + content + " will not be removed.");
 				return;
 			}
 		}

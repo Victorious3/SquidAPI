@@ -11,7 +11,6 @@ import com.google.common.collect.Maps;
 import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.OneWaySet;
-import coolsquid.squidapi.util.Utils;
 
 public class ConfigurationManager {
 
@@ -22,7 +21,7 @@ public class ConfigurationManager {
 	public void registerHandlers(ConfigHandler... handlers) {
 		SquidAPIMod mod = ModManager.INSTANCE.activeMod();
 		if (!this.handlers.containsKey(mod)) {
-			this.handlers.put(mod, Utils.newOneWaySet(ConfigHandler.class));
+			this.handlers.put(mod, OneWaySet.newInstance(ConfigHandler.class));
 		}
 		for (ConfigHandler handler: handlers) {
 			this.handlers.get(mod).add(handler);

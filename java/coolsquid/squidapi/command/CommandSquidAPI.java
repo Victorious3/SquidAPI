@@ -79,7 +79,7 @@ public class CommandSquidAPI extends CommandBase {
 					IOUtils.writeLines(new File("./dumps/worldtypes.txt"), WorldTypeRegistry.instance().names());
 				}
 				else if (args[1].equals("damagesources")) {
-					IOUtils.writeLines(new File("./dumps/damagesources.txt"), DamageSourceRegistry.instance().names());
+					IOUtils.writeLines(new File("./dumps/damagesources.txt"), DamageSourceRegistry.INSTANCE.names());
 				}
 				else {
 					a = false;

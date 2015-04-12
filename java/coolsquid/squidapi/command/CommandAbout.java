@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.EnumChatFormatting;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -39,13 +40,13 @@ public class CommandAbout extends CommandBase {
 			sender.addChatMessage(new ChatMessage(modid).setBold());
 			
 			if (!description.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(Utils.newString("Description: ", description)));
+				sender.addChatMessage(new ChatMessage(StringUtils.newString("Description: ", description)));
 			}
 			if (!version.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(Utils.newString("Version: ", version)));
+				sender.addChatMessage(new ChatMessage(StringUtils.newString("Version: ", version)));
 			}
 			if (!authors.isEmpty()) {
-				sender.addChatMessage(new ChatMessage(Utils.newString("Authors: ", authors)));
+				sender.addChatMessage(new ChatMessage(StringUtils.newString("Authors: ", authors)));
 			}
 			if (!url.isEmpty()) {
 				sender.addChatMessage(new ChatMessage("URL: ").appendSibling(new ChatMessage(url).setUrl(url)));

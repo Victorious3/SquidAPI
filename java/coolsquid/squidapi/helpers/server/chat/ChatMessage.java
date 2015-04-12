@@ -11,14 +11,14 @@ import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 
 public class ChatMessage extends ChatComponentStyle {
 
 	private String text;
 
 	public ChatMessage(String... msg) {
-		this.text = Utils.newString2(msg);
+		this.text = StringUtils.newString2(msg);
 	}
 	
 	public ChatMessage setColor(EnumChatFormatting color) {

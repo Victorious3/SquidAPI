@@ -7,9 +7,6 @@ package coolsquid.squidapi;
 import java.util.Map;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-
-import com.google.common.hash.Hashing;
-
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
@@ -52,6 +49,6 @@ public class SquidAPIPlugin implements IFMLLoadingPlugin, IClassTransformer {
 	}
 
 	public static long getHash() {
-		return Hashing.sha512().hashInt(hash).asLong();
+		return hash;
 	}
 }

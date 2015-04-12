@@ -41,4 +41,13 @@ public class OneWaySet<E> extends HashSet<E> {
 	public boolean removeAll(Collection<?> arg0) {
 		throw new UnsupportedOperationException();
 	}
+
+	@SafeVarargs
+	public static <E> OneWaySet<E> newInstance(E... content) {
+		return new OneWaySet<E>(content);
+	}
+
+	public static <E> OneWaySet<E> newInstance(Class<E> type) {
+		return new OneWaySet<E>();
+	}
 }

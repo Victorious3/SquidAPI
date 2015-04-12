@@ -7,6 +7,7 @@ package coolsquid.squidapi.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
+import coolsquid.squidapi.helpers.ExceptionHelper;
 
 public abstract class ConfigHandler {
 
@@ -18,7 +19,11 @@ public abstract class ConfigHandler {
 
 	public void init() {
 		this.config.load();
-		this.loadConfig();
+		try {
+			this.loadConfig();
+		} catch (Exception e) {
+			ExceptionHelper.getInstance().log(e);
+		}
 		if (this.config.hasChanged()) {
 			this.config.save();
 		}

@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.exception.LoadingException;
 import coolsquid.squidapi.util.CrashCallable;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.PatreonController;
+import coolsquid.squidapi.util.RewardManager;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ICrashCallable;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CommonHandler {
 
@@ -34,9 +37,6 @@ public class CommonHandler {
 			if (Utils.wrongVersion()) {
 				SquidAPI.instance().bigWarning("You are not using the correct MC version! Problems may occur. Do not report any errors.");
 			}
-		}
-		if (MiscLib.BUKKIT) {
-			SquidAPI.instance().warn("Running on Bukkit! No support will be given.");
 		}
 		if (MiscLib.DEV_ENVIRONMENT) {
 			SquidAPI.instance().info("Running in a dev environment.");
@@ -66,7 +66,7 @@ public class CommonHandler {
 			this.registerCallable(new CrashCallable("Modpack: ", a));
 		}
 		if (MiscLib.CLIENT) {
-			PatreonController.INSTANCE.addPatreons("03a42a75-223a-4307-99c1-b69162ad6a6f", "c46c08f3-f004-443d-b8ce-340d2223a332");
+			RewardManager.INSTANCE.addPatreons("03a42a75-223a-4307-99c1-b69162ad6a6f", "c46c08f3-f004-443d-b8ce-340d2223a332");
 		}
 	}
 
@@ -76,5 +76,11 @@ public class CommonHandler {
 
 	public void registerCallable(ICrashCallable callable) {
 		FMLCommonHandler.instance().registerCrashCallable(callable);
+	}
+
+	/** Clientside only!!! */
+	@SideOnly(Side.CLIENT)
+	public void throwNewLoadingException() {
+		throw new LoadingException("There was a severe error during mod loading. Erroring mod: " + Utils.getCurrentMod().getName() + ".");
 	}
 }

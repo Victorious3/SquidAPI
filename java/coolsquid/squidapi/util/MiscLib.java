@@ -9,7 +9,6 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
-import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.logging.Logger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -27,18 +26,15 @@ public class MiscLib {
 	public static final SquidAPIProperties SETTINGS = new SquidAPIProperties();
 	public static final SquidAPIProperties NICKNAMES = new SquidAPIProperties();
 
-	public static final OneWaySet<ModPack> MODPACKS = new OneWaySet<ModPack>();
 	public static final boolean DEV_ENVIRONMENT = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
 	public static final boolean CLIENT = FMLCommonHandler.instance().getSide().equals(Side.CLIENT);
 	public static final boolean SERVER = FMLCommonHandler.instance().getSide().equals(Side.SERVER);
 	public static final Side SIDE = FMLCommonHandler.instance().getSide();
 
-	public static final boolean BUKKIT;
-
-	public static final SquidAPI SQUIDAPI;
-
 	private static final Blacklist<String> BLACKLIST = Blacklist.newInstance("Reika", "RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
+
+	public static final boolean DEBUG = false;
 
 	public static boolean updateChecker() {
 		return CLIENT && !Loader.isModLoaded("VersionChecker") && SETTINGS.getBoolean("updateChecker");
@@ -74,23 +70,9 @@ public class MiscLib {
 		LOGGER = new Logger(file);
 
 		NICKNAMES.set("Eyamaz", "Eyamapple");
-		NICKNAMES.set("CoolSquid", "Squiddy");
+		NICKNAMES.set("CoolSquid", "Squidly");
 		NICKNAMES.set("MyLittleSquiddy", "Squiddy");
 		NICKNAMES.set("VictiniX888", "ToiletSeatLover");
 		NICKNAMES.set("ZeldoKavira", "Zeldo");
-
-		MODPACKS.add(new ModPack("BloodNBones", "HAAAAAAAAAAAAAAALP!", "Eyamapple"));
-		MODPACKS.add(new ModPack("MagicFarm 3", "Did that chicken just kill me!?!", "Jadedcat"));
-
-		boolean bukkit = false;
-		if (SERVER) {
-			try {
-				Class.forName("org.bukkit.Bukkit");
-				bukkit = true;
-			} catch (ClassNotFoundException e) {}
-		}
-		BUKKIT = bukkit;
-
-		SQUIDAPI = (SquidAPI) Loader.instance().getIndexedModList().get("SquidAPI").getMod();
 	}
 }

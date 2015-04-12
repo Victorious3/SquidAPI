@@ -4,32 +4,35 @@
  *******************************************************************************/
 package coolsquid.squidapi.exception;
 
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
+
 
 
 public class SquidAPIException extends RuntimeException {
-	
-	private static final long serialVersionUID = -6117434239809129613L;
-	private Throwable t = this.getCause();
-	private String s;
-	
-	public SquidAPIException() {}
-	
-	public SquidAPIException(Object... comment) {
-		this.s = Utils.newString2(comment);
+
+	private static final long serialVersionUID = 8368735654861876572L;
+
+	public SquidAPIException() {
+		
 	}
-	
-	public SquidAPIException(Throwable cause) {
-		this.t = cause;
+
+	public SquidAPIException(Object... arg0) {
+		super(StringUtils.newString(arg0));
 	}
-	
-	@Override
-	public String getMessage() {
-		return this.s;
+
+	public SquidAPIException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
+		super(arg0, arg1, arg2, arg3);
 	}
-	
-	@Override
-	public Throwable getCause() {
-		return this.t;
+
+	public SquidAPIException(String arg0, Throwable arg1) {
+		super(arg0, arg1);
+	}
+
+	public SquidAPIException(String arg0) {
+		super(arg0);
+	}
+
+	public SquidAPIException(Throwable arg0) {
+		super(arg0);
 	}
 }

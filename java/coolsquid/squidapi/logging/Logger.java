@@ -10,8 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Level;
 
 import coolsquid.squidapi.exception.SquidAPIException;
+import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.Utils;
 
 public class Logger implements ILogger {
@@ -49,7 +52,7 @@ public class Logger implements ILogger {
 
 	private void write(String line) {
 		try {
-			FileUtils.write(this.file, Utils.newString(line, Utils.newLine()), true);
+			FileUtils.write(this.file, StringUtils.newString(line, MiscLib.LINE), true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,10 +66,9 @@ public class Logger implements ILogger {
 	 * @param print - Decides if the message should be printed to the console.
 	 */
 	
-	@Override
 	public void log(String caller, Level level, String message, boolean print) {
 		String time = this.timeformat.format(Calendar.getInstance().getTime());
-		String line = Utils.newString("[", time, "]", "[", caller, "]", "[", level, "]: ", message);
+		String line = StringUtils.newString("[", time, "]", "[", caller, "]", "[", level, "]: ", message);
 		this.write(line);
 		if (print) {
 			System.out.println(line);
@@ -78,12 +80,11 @@ public class Logger implements ILogger {
 		this.write(msg);
 	}
 	
-	@Override
 	public void log(Throwable t) {
-		this.write(Utils.repeat('#', 30));
-		this.write(Utils.newString(t.getClass().getName(), ": ", t.getMessage()));
+		this.write(StringUtils.repeat('#', 30));
+		this.write(StringUtils.newString(t.getClass().getName(), ": ", t.getMessage()));
 		for (StackTraceElement s: t.getStackTrace()) {
-			this.write(Utils.newString(s.getClassName(), ":", s.getMethodName(), ":", s.getLineNumber()));
+			this.write(StringUtils.newString(s.getClassName(), ":", s.getMethodName(), ":", s.getLineNumber()));
 		}
 	}
 	
@@ -94,5 +95,30 @@ public class Logger implements ILogger {
 		public LoggingException(String s2) {
 			super(s2);
 		}
+	}
+
+	@Override
+	public void log(Level level, Object... msg) {
+		this.log(Utils.getCurrentMod().getName(), level, StringUtils.newString(msg), false);
+	}
+
+	@Override
+	public void info(Object... msg) {
+		this.log(Level.INFO, msg);
+	}
+
+	@Override
+	public void warn(Object... msg) {
+		this.log(Level.WARN, msg);
+	}
+
+	@Override
+	public void error(Object... msg) {
+		this.log(Level.ERROR, msg);
+	}
+
+	@Override
+	public void fatal(Object... msg) {
+		this.log(Level.FATAL, msg);
 	}
 }

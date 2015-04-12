@@ -4,10 +4,16 @@
  *******************************************************************************/
 package coolsquid.squidapi.logging;
 
+import org.apache.logging.log4j.Level;
+
 
 public interface ILogger {
 
-	public abstract void log(String caller, Level level, String message, boolean print);
+	@Deprecated
 	public abstract void log(String msg);
-	public abstract void log(Throwable t);
+	public abstract void log(Level level, Object... msg);
+	public abstract void info(Object... msg);
+	public abstract void warn(Object... msg);
+	public abstract void error(Object... msg);
+	public abstract void fatal(Object... msg);
 }

@@ -10,10 +10,14 @@ import com.google.common.base.Joiner;
 
 public class ModPack implements IContent {
 
-	private final String name;
-	private final String description;
-	private final Set<String> authors;
-	private final String url;
+	private String name;
+	private String description;
+	private Set<String> authors;
+	private String url;
+
+	public ModPack() {
+		
+	}
 
 	public ModPack(String name, String description, String author) {
 		this(name, description, "N/A", author);

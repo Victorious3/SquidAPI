@@ -6,6 +6,7 @@ package coolsquid.squidapi.util;
 
 import java.util.Set;
 
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.registry.Registry;
 import cpw.mods.fml.common.Loader;
@@ -29,7 +30,7 @@ public final class ModManager {
 		if (mod instanceof SquidAPIMod) {
 			return (SquidAPIMod) mod;
 		}
-		return null;
+		return SquidAPI.instance();
 	}
 
 	public Registry<SquidAPIMod> getMods() {
@@ -38,5 +39,13 @@ public final class ModManager {
 
 	public Set<String> getModids() {
 		return this.mods.names();
+	}
+
+	public SquidAPIMod getMod(String modid) {
+		SquidAPIMod mod = this.mods.get(modid);
+		if (mod != null) {
+			return mod;
+		}
+		return SquidAPI.instance();
 	}
 }

@@ -17,7 +17,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 
 import com.google.common.collect.Lists;
 
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 
 public class RecipeHelper {
 	
@@ -26,7 +26,7 @@ public class RecipeHelper {
 		for (Object a: CraftingManager.getInstance().getRecipeList()) {
 			if (a instanceof ShapedRecipes) {
 				ShapedRecipes b = (ShapedRecipes) a;
-				StringBuilder c = Utils.builder();
+				StringBuilder c = StringUtils.builder();
 				c.append(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
 				c.append(" = ");
 				for (ItemStack d: b.recipeItems) {
@@ -40,7 +40,7 @@ public class RecipeHelper {
 			}
 			else if (a instanceof ShapelessRecipes) {
 				ShapelessRecipes b = (ShapelessRecipes) a;
-				StringBuilder c = Utils.builder();
+				StringBuilder c = StringUtils.builder();
 				c.append(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
 				c.append(" = ");
 				for (Object d: b.recipeItems) {
@@ -68,7 +68,7 @@ public class RecipeHelper {
 		for (Object a: FurnaceRecipes.smelting().getSmeltingList().keySet()) {
 			ItemStack b = (ItemStack) a;
 			ItemStack c = (ItemStack) FurnaceRecipes.smelting().getSmeltingList().get(b);
-			list.add(Utils.newString(Item.itemRegistry.getNameForObject(b.getItem()), " = ", Item.itemRegistry.getNameForObject(c.getItem())));
+			list.add(Item.itemRegistry.getNameForObject(b.getItem()) + " = " + Item.itemRegistry.getNameForObject(c.getItem()));
 		}
 		FileHelper.writeFile(file, list);
 	}

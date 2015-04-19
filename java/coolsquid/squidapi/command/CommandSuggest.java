@@ -6,8 +6,8 @@ package coolsquid.squidapi.command;
 
 import net.minecraft.command.ICommandSender;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
-import coolsquid.squidapi.util.Suggestion;
 import coolsquid.squidapi.util.SuggestionManager;
+import coolsquid.squidapi.util.objects.Suggestion;
 
 public class CommandSuggest extends CommandBase {
 

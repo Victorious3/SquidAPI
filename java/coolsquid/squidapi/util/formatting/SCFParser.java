@@ -13,7 +13,7 @@ import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 /**
  * Simple Text Formatting Parser.
  */
-public class SCFParser {
+public class SCFParser implements ISCFParser {
 
 	private final List<ChatMessage> list = Lists.newArrayList();
 
@@ -23,6 +23,7 @@ public class SCFParser {
 		}
 	}
 
+	@Override
 	public List<ChatMessage> get() {
 		return this.list;
 	}

@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidapi.registry;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,9 +22,10 @@ public class Registry<E> extends RegistrySimple<E> {
 		this.map2 = Maps.newHashMap();
 	}
 
-	private Registry(Map<String, E> map, Map<E, String> map2) {
-		this.map = map;
-		this.map2 = map2;
+	private Registry(List<E> list, Map<E, Integer> map, Map<String, E> map2, Map<E, String> map3) {
+		super(list, map);
+		this.map = map2;
+		this.map2 = map3;
 	}
 
 	public E get(String name) {
@@ -90,6 +92,6 @@ public class Registry<E> extends RegistrySimple<E> {
 
 	@Override
 	public Registry<E> clone() {
-		return new Registry<E>(this.map, this.map2);
+		return new Registry<E>(this.getList(), this.getMap(), this.map, this.map2);
 	}
 }

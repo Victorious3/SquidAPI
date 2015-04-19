@@ -36,7 +36,7 @@ public class ExceptionHelper {
 	public void log(Throwable t, CrashReport report, File file) {
 		report.saveToFile(file);
 
-		String marker = StringUtils.repeat('#', 30);
+		String marker = StringUtils.repeat('#', 70);
 		this.logger.error(marker);
 		this.logger.error(t.toString());
 		for (StackTraceElement s: t.getStackTrace()) {

@@ -5,7 +5,7 @@
 package coolsquid.squidapi.compat;
 
 import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.util.IntUtils;
+import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.Loader;
 
@@ -19,7 +19,7 @@ public enum Compat {
 	THAUMCRAFT("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
 	RAILCRAFT("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
 	ENVIROMINE("enviromine"),
-	MINECRAFT("minecraft");
+	MINECRAFT("minecraft", true);
 
 	private final boolean enabled;
 	private final Package api;
@@ -48,6 +48,12 @@ public enum Compat {
 		else {
 			SquidAPI.instance().info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
 		}
+	}
+
+	private Compat(String modid, boolean isEnabled) {
+		this.enabled = isEnabled;
+		this.api = null;
+		this.version = 0;
 	}
 
 	public boolean isEnabled() {

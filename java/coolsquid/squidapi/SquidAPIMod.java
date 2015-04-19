@@ -9,43 +9,37 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.command.CommandDisable;
-import coolsquid.squidapi.logging.ILogger;
+import coolsquid.squidapi.exception.MisuseException;
+import coolsquid.squidapi.mod.AdvancedMod;
+import coolsquid.squidapi.mod.SideOnly.ClientOnly;
+import coolsquid.squidapi.mod.SideOnly.ServerOnly;
 import coolsquid.squidapi.util.Incompatibility;
 import coolsquid.squidapi.util.Incompatibility.Severity;
-import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModManager;
-import coolsquid.squidapi.util.StringUtils;
-import coolsquid.squidapi.util.Suggestion;
 import coolsquid.squidapi.util.SuggestionManager;
-import coolsquid.squidapi.util.TimedClass;
-import coolsquid.squidapi.util.VersionChecker;
 import coolsquid.squidapi.util.io.WebUtils;
+import coolsquid.squidapi.util.math.IntUtils;
+import coolsquid.squidapi.util.objects.Suggestion;
+import coolsquid.squidapi.util.version.UpdateManager;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 
-public class SquidAPIMod extends TimedClass implements ILogger {
+public class SquidAPIMod extends AdvancedMod {
 
-	private final ModContainer mod;
 	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
 	private final File configFile;
-	public final Logger logger;
 	private final int hashCode;
 	private URL curseUrl;
 	private final String curseId;
 
 	public SquidAPIMod(String desc) {
-		this(desc, Lists.newArrayList("CoolSquid"), "", "http://coolsquid.wix.com/software", null);
+		this(desc, null);
 	}
 
 	public SquidAPIMod(String desc, String curseId) {
@@ -57,7 +51,7 @@ public class SquidAPIMod extends TimedClass implements ILogger {
 	}
 
 	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String curseId) {
-		this.mod = Loader.instance().activeModContainer();
+		super(Loader.instance().activeModContainer());
 
 		final int prime = 31;
 		int result = 1;
@@ -66,7 +60,6 @@ public class SquidAPIMod extends TimedClass implements ILogger {
 		this.hashCode = result;
 
 		this.configFile = new File("./config/" + this.getModid() + ".cfg");
-		this.logger = LogManager.getLogger(this.getName());
 
 		this.curseId = curseId;
 		if (curseId != null) {
@@ -82,29 +75,16 @@ public class SquidAPIMod extends TimedClass implements ILogger {
 		meta.authorList = authors;
 		meta.description = desc;
 
+		if (this instanceof ClientOnly && MiscLib.SERVER) {
+			throw new MisuseException(this.getName() + " is clientside only!");
+		}
+		else if (this instanceof ServerOnly && MiscLib.CLIENT) {
+			throw new MisuseException(this.getName() + " is serverside only!");
+		}
+
 		this.info("Registering SquidAPIMod ", this.getModid(), ".");
 
 		ModManager.INSTANCE.registerMod(this.getModid(), this);
-	}
-
-	public final ModContainer getMod() {
-		return this.mod;
-	}
-
-	public final ModMetadata getMetadata() {
-		return this.mod.getMetadata();
-	}
-
-	public final String getModid() {
-		return this.getMod().getModId();
-	}
-
-	public final String getName() {
-		return this.mod.getName();
-	}
-
-	public final String getVersion() {
-		return this.getMod().getVersion();
 	}
 
 	public int getVersionAsInt() {
@@ -134,71 +114,18 @@ public class SquidAPIMod extends TimedClass implements ILogger {
 	}
 
 	protected final void suggestMod(String suggestion, String modid, String reason, String url) {
-		this.suggestMod(new Suggestion(this.getMod().getModId(), suggestion, modid, reason, url));
+		this.suggestMod(new Suggestion(this.getModid(), suggestion, modid, reason, url));
 	}
 
 	protected final void setDisableable() {
 		if (!(this instanceof Disableable)) {
 			throw new IllegalArgumentException();
 		}
-		CommandDisable.disableables.put(this.getMod().getModId(), (Disableable) this);
-	}
-
-	public File getConfigFile() {
-		return this.configFile;
-	}
-
-	public String getCurseId() {
-		return this.curseId;
-	}
-
-	public URL getCurseUrl() {
-		return this.curseUrl;
-	}
-
-	public void setCurseUrl(URL url) {
-		this.curseUrl = url;
-	}
-
-	@Override
-	public void log(Level level, Object... msg) {
-		String a = StringUtils.newString(msg);
-		this.logger.log(level, a);
-		MiscLib.LOGGER.log(this.getName(), level, a, false);
-	}
-	
-	@Override
-	public void info(Object... msg) {
-		this.log(Level.INFO, msg);
-	}
-	
-	@Override
-	public void warn(Object... msg) {
-		this.log(Level.WARN, msg);
-	}
-	
-	@Override
-	public void error(Object... msg) {
-		this.log(Level.ERROR, msg);
-	}
-	
-	@Override
-	public void fatal(Object... msg) {
-		this.log(Level.FATAL, msg);
-	}
-
-	public void bigWarning(Object... msg) {
-		String a = StringUtils.newString(msg);
-		String b = StringUtils.repeat('#', a.length());
-		this.log(Level.FATAL, b);
-		for (String c: a.split(MiscLib.LINE)) {
-			this.log(Level.FATAL, c);
-		}
-		this.log(Level.FATAL, b);
+		CommandDisable.disableables.put(this.getModid(), (Disableable) this);
 	}
 
 	protected final void preInit() {
-		VersionChecker.INSTANCE.check(this);
+		UpdateManager.INSTANCE.check(this);
 	}
 
 	protected final void init() {
@@ -217,7 +144,7 @@ public class SquidAPIMod extends TimedClass implements ILogger {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj.getClass() == SquidAPIMod.class && this.hashCode() == obj.hashCode();
+		return this.hashCode() == obj.hashCode();
 	}
 
 	@Override
@@ -230,9 +157,15 @@ public class SquidAPIMod extends TimedClass implements ILogger {
 		return this.hashCode;
 	}
 
-	@Deprecated
-	@Override
-	public void log(String msg) {
-		throw new UnsupportedOperationException();
+	public File getConfigFile() {
+		return this.configFile;
+	}
+
+	public URL getCurseUrl() {
+		return this.curseUrl;
+	}
+
+	public String getCurseId() {
+		return this.curseId;
 	}
 }

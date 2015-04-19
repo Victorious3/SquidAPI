@@ -23,6 +23,8 @@ import coolsquid.squidapi.util.io.IOUtils;
 
 public class CommandSquidAPI extends CommandBase {
 
+	public static final CommandSquidAPI INSTANCE = new CommandSquidAPI();
+
 	public CommandSquidAPI() {
 		super("SquidAPI", "", false);
 	}
@@ -37,6 +39,7 @@ public class CommandSquidAPI extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
+		super.processCommand(sender, args);
 		if (sender instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) sender;
 			String subcommand = args[0];
@@ -94,9 +97,6 @@ public class CommandSquidAPI extends CommandBase {
 			else if (subcommand.equals("getuuid")) {
 				SquidAPI.instance().info("UUID: ", player.getGameProfile().getId().toString());
 				sender.addChatMessage(new ChatMessage("<SquidAPI> Successfully printed your UUID to the log!"));
-			}
-			else {
-				this.sendMsg(sender, "Type \"/" + this.getCommandName() + " help\" to recieve a list of subcommands.");
 			}
 		}
 	}

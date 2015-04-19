@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import coolsquid.squidapi.util.objects.Suggestion;
 import cpw.mods.fml.common.Loader;
 
 public class SuggestionManager {

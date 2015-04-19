@@ -2,11 +2,14 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidapi.util;
+package coolsquid.squidapi.util.collect;
 
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+
+import coolsquid.squidapi.util.HashUtils;
+import coolsquid.squidapi.util.interfaces.IValueContainer;
 
 public class SquidAPIProperties implements IValueContainer {
 

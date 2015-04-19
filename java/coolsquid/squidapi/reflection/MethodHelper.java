@@ -25,10 +25,11 @@ public class MethodHelper {
 		}
 	}
 	
-	public Object invoke(Object... params) {
+	@SuppressWarnings("unchecked")
+	public <E> E invoke(Object... params) {
 		try {
 			this.method.setAccessible(true);
-			return this.method.invoke(true, params);
+			return (E) this.method.invoke(true, params);
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 			return null;

@@ -2,13 +2,15 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidapi.util;
+package coolsquid.squidapi.util.math;
 
 import java.util.List;
 
 import org.apache.commons.lang3.CharSet;
 
 import com.google.common.collect.Lists;
+
+import coolsquid.squidapi.util.StringUtils;
 
 public class IntUtils {
 	

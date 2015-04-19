@@ -15,10 +15,18 @@ import coolsquid.squidapi.exception.DuplicateRegistryEntryException;
 
 public class RegistrySimple<E> implements Iterable<E> {
 	
-	private final List<E> list = Lists.newArrayList();
-	private final Map<E, Integer> map = Maps.newHashMap();
-	
-	public RegistrySimple() {}
+	private final List<E> list;
+	private final Map<E, Integer> map;
+
+	public RegistrySimple() {
+		this.list = Lists.newArrayList();
+		this.map = Maps.newHashMap();
+	}
+
+	protected RegistrySimple(List<E> list, Map<E, Integer> map) {
+		this.list = list;
+		this.map = map;
+	}
 	
 	public void register(E e) {
 		if (e == null) {
@@ -50,6 +58,14 @@ public class RegistrySimple<E> implements Iterable<E> {
 	protected void clear() {
 		this.list.clear();
 		this.map.clear();
+	}
+
+	protected final List<E> getList() {
+		return this.list;
+	}
+
+	protected final Map<E, Integer> getMap() {
+		return this.map;
 	}
 
 	@Override

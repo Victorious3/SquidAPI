@@ -9,8 +9,9 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import coolsquid.squidapi.SquidAPIMod;
+import coolsquid.squidapi.mod.BaseMod;
 import coolsquid.squidapi.util.ModManager;
-import coolsquid.squidapi.util.OneWaySet;
+import coolsquid.squidapi.util.collect.OneWaySet;
 
 public class ConfigurationManager {
 
@@ -28,7 +29,7 @@ public class ConfigurationManager {
 		}
 	}
 
-	public void loadConfigs(SquidAPIMod mod) {
+	public void loadConfigs(BaseMod mod) {
 		for (ConfigHandler handler: this.handlers.get(mod)) {
 			handler.init();
 		}

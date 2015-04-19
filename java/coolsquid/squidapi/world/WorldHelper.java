@@ -7,6 +7,7 @@ package coolsquid.squidapi.world;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import coolsquid.squidapi.util.MiscLib;
 
@@ -48,5 +49,17 @@ public class WorldHelper {
 
 	public int getDimensionId() {
 		return this.world.provider.dimensionId;
+	}
+
+	public void setCheatsAllowed(boolean b) {
+		this.world.getWorldInfo().allowCommands = b;
+	}
+
+	public EnumDifficulty getDifficulty() {
+		return this.world.difficultySetting;
+	}
+
+	public void setDifficulty(EnumDifficulty difficulty) {
+		this.world.difficultySetting = difficulty;
 	}
 }

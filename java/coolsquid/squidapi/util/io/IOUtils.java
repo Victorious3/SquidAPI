@@ -15,8 +15,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class IOUtils {
 
@@ -138,11 +140,11 @@ public class IOUtils {
 		}
 	}
 	
-	public static List<String> readLines(File file) {
+	public static Set<String> readLines(File file) {
 		if (file == null) {
 			throw new IllegalArgumentException();
 		}
-		List<String> a = Lists.newArrayList();
+		Set<String> a = Sets.newHashSet();
 		for (String b: newReader(file)) {
 			a.add(b);
 		}
@@ -231,6 +233,9 @@ public class IOUtils {
 			}
 			if (!file.exists()) {
 				try {
+					if (file.getParentFile() != null && !file.getParentFile().exists()) {
+						file.getParentFile().mkdirs();
+					}
 					file.createNewFile();
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -12,10 +12,10 @@ import java.io.OutputStreamWriter;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.exception.LoadingException;
-import coolsquid.squidapi.util.CrashCallable;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.RewardManager;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.objects.CrashCallable;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ICrashCallable;
 import cpw.mods.fml.relauncher.Side;

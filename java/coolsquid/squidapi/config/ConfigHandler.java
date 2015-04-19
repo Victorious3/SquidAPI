@@ -34,4 +34,11 @@ public abstract class ConfigHandler {
 	public Configuration getConfig() {
 		return this.config;
 	}
+
+	public void setProperty(String category, String key, String description, boolean value) {
+		this.config.get(category, key, value, description).set(value);
+		if (this.config.hasChanged()) {
+			this.config.save();
+		}
+	}
 }

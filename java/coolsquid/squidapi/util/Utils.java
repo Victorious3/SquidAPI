@@ -7,7 +7,6 @@ package coolsquid.squidapi.util;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -19,16 +18,22 @@ import net.minecraft.util.RegistryNamespaced;
 
 import org.apache.commons.lang3.CharSet;
 
+import com.google.common.collect.BiMap;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import coolsquid.squidapi.logging.ILogger;
+import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.formatting.WebSCFParser;
 import coolsquid.squidapi.util.io.IOUtils;
+import coolsquid.squidapi.util.math.IntUtils;
+import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.registry.GameData;
 
 public class Utils {
 
@@ -63,19 +68,21 @@ public class Utils {
 	}
 	
 	public static ModContainer getMod(String modid) {
-		if (modid.equals("Minecraft")) {
+		if (modid.equalsIgnoreCase("Minecraft")) {
 			return Loader.instance().getMinecraftModContainer();
 		}
 		return Loader.instance().getIndexedModList().get(modid);
 	}
 	
 	public static void runVersionCheckerCompat(String id) {
-		String modid = Loader.instance().activeModContainer().getModId();
-		SquidAPI.instance().info("Running VersionChecker compatibility for ", modid, ".");
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("curseProjectName", newString(id, "-", modid));
-		tag.setString("curseFilenameParser", newString(modid, "-[].jar"));
-		sendModMessage("VersionChecker", "addCurseCheck", tag);
+		if (Loader.isModLoaded("VersionChecker")) {
+			String modid = Loader.instance().activeModContainer().getModId();
+			SquidAPI.instance().info("Running VersionChecker compatibility for ", modid, ".");
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("curseProjectName", newString(id, "-", modid));
+			tag.setString("curseFilenameParser", newString(modid, "-[].jar"));
+			sendModMessage("VersionChecker", "addCurseCheck", tag);
+		}
 	}
 
 	@Deprecated
@@ -185,12 +192,6 @@ public class Utils {
 		return true;
 	}
 
-	/** Move to IterableMap. */
-	@Deprecated
-	public static <E, T> Map<E, T> newIterableMap() {
-		return new IterableMap<E, T>();
-	}
-
 	public static void dump(String modid, File file, RegistryNamespaced registry) {
 		List<String> a = Lists.newArrayList();
 		if (modid == null) {
@@ -241,11 +242,11 @@ public class Utils {
 		printTrace(SquidAPI.instance());
 	}
 
-	public static void printTrace(SquidAPIMod mod) {
+	public static void printTrace(ILogger logger) {
 		StackTraceElement[] a = getTrace();
 		for (int b = 2; b < a.length; b++) {
 			StackTraceElement c = a[b];
-			mod.info(c.toString());
+			logger.info(c.toString());
 		}
 	}
 
@@ -272,5 +273,33 @@ public class Utils {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static LoadController getLoadController() {
+		return getLoadController(Loader.instance());
+	}
+
+	public static LoadController getLoadController(Loader loader) {
+		return ReflectionHelper.in(loader).field("modController", "modController").get();
+	}
+
+	public static LoaderState getLoaderState() {
+		return getLoaderState(getLoadController());
+	}
+
+	public static LoaderState getLoaderState(LoadController loadController) {
+		return ReflectionHelper.in(loadController).field("state", "state").get();
+	}
+
+	public static <T> BiMap<String, T> getSubstitutionMap(Class<T> type) {
+		return ReflectionHelper.in(getGameData()).field("blockSubstitutions", "blockSubstitutions").get();
+	}
+
+	private static GameData getGameData() {
+		return ReflectionHelper.in(GameData.class).method("getMain", "getMain").invoke();
+	}
+
+	public static boolean isSubstituted(Object object, Class<?> type) {
+		return getSubstitutionMap(type).containsValue(object);
 	}
 }

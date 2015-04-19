@@ -25,6 +25,7 @@ import com.google.common.collect.Sets;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.FishingHelper;
 import coolsquid.squidapi.helpers.VillageHelper;
+import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.Loader;
 
 public class ContentRemover {

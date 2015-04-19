@@ -13,7 +13,7 @@ import net.minecraft.command.ICommandSender;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import coolsquid.squidapi.helpers.server.OpHelper;
+import coolsquid.squidapi.helpers.server.ServerHelper;
 
 public class CommandBase implements ICommand {
 	
@@ -24,31 +24,27 @@ public class CommandBase implements ICommand {
 	private List<String> autofilloptions;
 
 	public CommandBase(String name, String desc, boolean needsop) {
-		this.name = name;
-		this.desc = desc;
+		this(name, desc);
 		this.needsop = needsop;
 	}
 
 	public CommandBase(String name, String desc) {
 		this.name = name;
 		this.desc = desc;
+		this.needsop = this instanceof OpOnly;
 	}
 	
 	public CommandBase(String name, String desc, boolean needsop, ISubCommand... subcommands) {
-		this.name = name;
-		this.desc = desc;
+		this(name, desc, subcommands);
 		this.needsop = needsop;
-		for (ISubCommand subcommand: subcommands) {
-			this.subcommands.put(subcommand.getName(), subcommand);
-			this.autofilloptions.add(subcommand.getName());
-		}
 	}
 
 	public CommandBase(String name, String desc, ISubCommand... subcommands) {
-		this.name = name;
-		this.desc = desc;
+		this(name, desc);
+		this.autofilloptions = Lists.newArrayList();
 		for (ISubCommand subcommand: subcommands) {
 			this.subcommands.put(subcommand.getName(), subcommand);
+			this.autofilloptions.add(subcommand.getName());
 		}
 	}
 
@@ -75,11 +71,9 @@ public class CommandBase implements ICommand {
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		if (this.needsop) {
-			return OpHelper.isOp(sender.getCommandSenderName());
+			return sender.canCommandSenderUseCommand(ServerHelper.getServerInstance().getOpPermissionLevel(), this.name);
 		}
-		else {
-			return true;
-		}
+		return true;
 	}
 
 	@Override
@@ -104,5 +98,9 @@ public class CommandBase implements ICommand {
 			}
 			this.subcommands.get(args[0]).execute(sender, args2);
 		}
+	}
+
+	public void registerSubcommand(ISubCommand subcommand) {
+		this.subcommands.put(subcommand.getName(), subcommand);
 	}
 }

@@ -10,6 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import coolsquid.squidapi.logging.Logger;
+import coolsquid.squidapi.util.collect.Blacklist;
+import coolsquid.squidapi.util.collect.SquidAPIProperties;
+import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
@@ -63,7 +66,7 @@ public class MiscLib {
 	}
 
 	static {
-		File file = new File("./logs/SquidAPI.log");
+		File file = new File("./SquidAPI/SquidAPI.log");
 		if (file.exists()) {
 			file.delete();
 		}
@@ -71,7 +74,7 @@ public class MiscLib {
 
 		NICKNAMES.set("Eyamaz", "Eyamapple");
 		NICKNAMES.set("CoolSquid", "Squidly");
-		NICKNAMES.set("MyLittleSquiddy", "Squiddy");
+		NICKNAMES.set("MyLittleSquiddy", "Squidly");
 		NICKNAMES.set("VictiniX888", "ToiletSeatLover");
 		NICKNAMES.set("ZeldoKavira", "Zeldo");
 	}

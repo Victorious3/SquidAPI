@@ -2,13 +2,12 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidapi.command;
+package coolsquid.squidapi.util.formatting;
 
 import java.util.List;
 
-import net.minecraft.command.ICommandSender;
+import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 
-public interface ISubCommand {
-	public abstract String getName();
-	public abstract void execute(ICommandSender sender, List<String> args);
+public interface ISCFParser {
+	public abstract List<ChatMessage> get();
 }

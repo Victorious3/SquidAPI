@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.WorldType;
 import coolsquid.squidapi.registry.WorldTypeRegistry;
+import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 

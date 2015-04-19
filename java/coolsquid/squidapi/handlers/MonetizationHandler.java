@@ -7,8 +7,10 @@ package coolsquid.squidapi.handlers;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.CommandEvent;
-import coolsquid.squidapi.util.Blacklist;
+import coolsquid.squidapi.command.ConsoleDisabled;
+import coolsquid.squidapi.util.collect.Blacklist;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class MonetizationHandler {
@@ -41,10 +43,10 @@ public final class MonetizationHandler {
 	}
 
 	public static boolean a(ICommand a) {
-		return a.getCommandName().hashCode() == 3173137;
+		return a.getCommandName().hashCode() == 3173137 || a instanceof ConsoleDisabled;
 	}
 
 	public static boolean a(ICommandSender a) {
-		return !(a instanceof EntityPlayer);
+		return a instanceof FakePlayer || !(a instanceof EntityPlayer);
 	}
 }

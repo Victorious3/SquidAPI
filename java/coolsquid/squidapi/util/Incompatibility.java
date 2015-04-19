@@ -4,6 +4,8 @@
  *******************************************************************************/
 package coolsquid.squidapi.util;
 
+import coolsquid.squidapi.util.objects.ModVersion;
+
 public final class Incompatibility extends ModVersion {
 
 	private final String reason;

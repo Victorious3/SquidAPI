@@ -14,11 +14,10 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import coolsquid.squidapi.util.IntUtils;
-import coolsquid.squidapi.util.IterableMap;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.IOUtils;
+import coolsquid.squidapi.util.math.IntUtils;
 
 @Deprecated
 public class SquidAPIConfig {
@@ -201,10 +200,8 @@ public class SquidAPIConfig {
 		IOUtils.writeLines(this.configFile, this.lines);
 	}
 	
-	public IterableMap<String, Object> getEntries() {
-		IterableMap<String, Object> map = new IterableMap<String, Object>();
-		map.putAll(this.values);
-		return map;
+	public Map<String, Object> getEntries() {
+		return Maps.newHashMap(this.values);
 	}
 	
 	public void addHeader(String string) {

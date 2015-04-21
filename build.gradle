@@ -28,14 +28,14 @@ sourceSets {
 	}
 }
 
-version = "1.1.7"
+version = "1.1.8"
 group= "coolsquid"
 archivesBaseName = "SquidAPI"
 minecraft.version = "1.7.10-10.13.2.1272"
 
 curse {
 	apiKey = project.curseAPIKey
-	changelog = ''
+	changelog = 'Tweaked the update checker.'
 	projectId = '227345'
 	releaseType = 'release'
 }

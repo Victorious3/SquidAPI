@@ -4,16 +4,20 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.version;
 
-import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.util.io.WebUtils;
 
 public class UpdateChecker implements Runnable {
-	
-	private final SquidAPIMod mod;
 
-	public UpdateChecker(SquidAPIMod mod) {
+	private final IUpdateable mod;
+	private final Thread thread;
+
+	public UpdateChecker(IUpdateable mod) {
 		this.mod = mod;
+		this.thread = new Thread(this);
+	}
+
+	public void start() {
+		this.thread.start();
 	}
 
 	@Override
@@ -26,7 +30,6 @@ public class UpdateChecker implements Runnable {
 			}
 		} catch (Throwable t) {
 			UpdateManager.INSTANCE.disable();
-			SquidAPI.instance().error(t);
 		}
 	}
 }

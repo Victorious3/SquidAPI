@@ -4,8 +4,8 @@
  *******************************************************************************/
 package coolsquid.squidapi.compat;
 
-import net.minecraft.item.ItemStack;
 import vazkii.botania.api.BotaniaAPI;
+import net.minecraft.item.ItemStack;
 
 public class BotaniaCompat {
 	

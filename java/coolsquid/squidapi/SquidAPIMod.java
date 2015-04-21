@@ -26,11 +26,12 @@ import coolsquid.squidapi.util.SuggestionManager;
 import coolsquid.squidapi.util.io.WebUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidapi.util.objects.Suggestion;
+import coolsquid.squidapi.util.version.IUpdateable;
 import coolsquid.squidapi.util.version.UpdateManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModMetadata;
 
-public class SquidAPIMod extends AdvancedMod {
+public class SquidAPIMod extends AdvancedMod implements IUpdateable {
 
 	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
 	private final File configFile;
@@ -80,6 +81,10 @@ public class SquidAPIMod extends AdvancedMod {
 		}
 		else if (this instanceof ServerOnly && MiscLib.CLIENT) {
 			throw new MisuseException(this.getName() + " is serverside only!");
+		}
+
+		if (this instanceof Disableable) {
+			CommandDisable.disableables.put(this.getModid(), (Disableable) this);
 		}
 
 		this.info("Registering SquidAPIMod ", this.getModid(), ".");
@@ -161,6 +166,7 @@ public class SquidAPIMod extends AdvancedMod {
 		return this.configFile;
 	}
 
+	@Override
 	public URL getCurseUrl() {
 		return this.curseUrl;
 	}

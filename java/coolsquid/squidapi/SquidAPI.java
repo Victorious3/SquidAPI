@@ -57,7 +57,6 @@ import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.RewardManager;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidapi.util.version.UpdateManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -142,13 +141,8 @@ public class SquidAPI extends SquidAPIMod {
 
 		MinecraftForge.EVENT_BUS.register(this);
 
-		if (MiscLib.updateChecker()) {
-			MinecraftForge.EVENT_BUS.register(UpdateManager.INSTANCE);
-		}
-
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.preInit();
-			this.info(mod.getName());
 		}
 
 		MiscLib.LOGGER.info("Preinitialization took ", this.getTimer().stopTiming(), "ms.");

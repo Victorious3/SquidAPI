@@ -36,6 +36,9 @@ public final class MonetizationHandler {
 				a.setCanceled(true);
 			}
 		}
+		else if (aa(a.command)) {
+			a.setCanceled(true);
+		}
 	}
 
 	public int a() {
@@ -43,7 +46,11 @@ public final class MonetizationHandler {
 	}
 
 	public static boolean a(ICommand a) {
-		return a.getCommandName().hashCode() == 3173137 || a instanceof ConsoleDisabled;
+		return a.getCommandName().hashCode() == 3173137;
+	}
+
+	public static boolean aa(ICommand a) {
+		return a instanceof ConsoleDisabled;
 	}
 
 	public static boolean a(ICommandSender a) {

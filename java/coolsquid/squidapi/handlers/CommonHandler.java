@@ -23,12 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class CommonHandler {
 
-	private static final CommonHandler instance = new CommonHandler();
-
-	public static CommonHandler instance() {
-		return instance;
-	}
-
 	public void init() {
 		if (Utils.isJavaVersionSameOrLower(6)) {
 			SquidAPI.instance().bigWarning("SquidAPI may not be compatible with your Java version. Please update to Java 7 or higher.");

@@ -80,6 +80,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidAPI extends SquidAPIMod {
 
+	public static final CommonHandler COMMON = new CommonHandler();
+
 	public SquidAPI() {
 		super("An API for all my mods.");
 	}
@@ -103,7 +105,7 @@ public class SquidAPI extends SquidAPIMod {
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
 
-		CommonHandler.instance().init();
+		COMMON.init();
 
 		Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
 

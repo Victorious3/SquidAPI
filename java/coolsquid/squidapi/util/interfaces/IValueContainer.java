@@ -5,7 +5,6 @@
 package coolsquid.squidapi.util.interfaces;
 
 public interface IValueContainer {
-
 	public abstract <E> E getProperty(String key);
 	public abstract boolean getBoolean(String key);
 	public abstract byte getByte(String key);

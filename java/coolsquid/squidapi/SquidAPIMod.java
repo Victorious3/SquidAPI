@@ -110,6 +110,7 @@ public class SquidAPIMod extends AdvancedMod {
 		this.suggestMod(new Suggestion(this.getModid(), suggestion, modid, reason, url));
 	}
 
+	@Deprecated
 	protected final void setDisableable() {
 		if (!(this instanceof Disableable)) {
 			throw new IllegalArgumentException();
@@ -118,11 +119,11 @@ public class SquidAPIMod extends AdvancedMod {
 	}
 
 	protected final void preInit() {
-		
+
 	}
 
 	protected final void init() {
-		
+
 	}
 
 	protected final void postInit() {

@@ -20,41 +20,43 @@ public final class RewardManager {
 
 	public static final RewardManager INSTANCE = new RewardManager();
 
-	private final LockedRegistrySimple<UUID> patreons = new LockedRegistrySimple<UUID>();
+	private final LockedRegistrySimple<UUID> users = new LockedRegistrySimple<UUID>();
 
 	private RewardManager() {
 		
 	}
 
-	public void addPatreons(String... patreons) {
+	public void addSpecialUsers(String... users) {
 		if (Utils.getCaller() == CommonHandler.class) {
-			for (int a = 0; a < patreons.length; a++) {
-				this.patreons.register(UUID.fromString(patreons[a]));
+			for (int a = 0; a < users.length; a++) {
+				this.users.register(UUID.fromString(users[a]));
 			}
 		}
 		else {
-			SquidAPI.instance().bigWarning("An unauthorized class tried to add Patreons to SquidAPI's Patreon list!");
+			SquidAPI.instance().bigWarning("An unauthorized class tried to add SpecialUsers to SquidAPI's list of special users!");
 			throw new SecurityException();
 		}
+		this.users.lock();
 	}
 
-	public void addPatreons(UUID... patreons) {
+	public void addSpecialUsers(UUID... users) {
 		if (Utils.getCaller() == CommonHandler.class) {
-			for (UUID id: patreons) {
-				this.patreons.register(id);
+			for (UUID id: users) {
+				this.users.register(id);
 			}
 		}
 		else {
-			SquidAPI.instance().bigWarning("An unauthorized class tried to add Patreons to SquidAPI's Patreon list!");
+			SquidAPI.instance().bigWarning("An unauthorized class tried to add SpecialUsers to SquidAPI's list of special users!");
 			throw new SecurityException();
 		}
+		this.users.lock();
 	}
 
-	public List<UUID> getPatreons() {
-		return ImmutableList.copyOf(this.patreons);
+	public List<UUID> getSpecialUsers() {
+		return ImmutableList.copyOf(this.users);
 	}
 
 	public boolean isPatreon(UUID id) {
-		return this.getPatreons().contains(id);
+		return this.users.containsValue(id);
 	}
 }

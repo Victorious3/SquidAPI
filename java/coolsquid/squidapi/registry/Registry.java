@@ -22,7 +22,7 @@ public class Registry<E> extends RegistrySimple<E> {
 		this.map2 = Maps.newHashMap();
 	}
 
-	private Registry(List<E> list, Map<E, Integer> map, Map<String, E> map2, Map<E, String> map3) {
+	protected Registry(List<E> list, Map<E, Integer> map, Map<String, E> map2, Map<E, String> map3) {
 		super(list, map);
 		this.map = map2;
 		this.map2 = map3;
@@ -93,5 +93,14 @@ public class Registry<E> extends RegistrySimple<E> {
 	@Override
 	public Registry<E> clone() {
 		return new Registry<E>(this.getList(), this.getMap(), this.map, this.map2);
+	}
+
+	@SafeVarargs
+	public static <T> Registry<T> create(T... content) {
+		Registry<T> result = new Registry<T>();
+		for (T t: content) {
+			result.register(t.toString(), t);
+		}
+		return result;
 	}
 }

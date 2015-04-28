@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.command.ICommand;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,9 +23,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
+import org.apache.logging.log4j.core.Logger;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
+import coolsquid.squidapi.asm.SquidAPIPlugin;
 import coolsquid.squidapi.command.CommandAbout;
 import coolsquid.squidapi.command.CommandDisable;
 import coolsquid.squidapi.command.CommandEnable;
@@ -34,7 +38,6 @@ import coolsquid.squidapi.command.CommandSuggest;
 import coolsquid.squidapi.config.ModConfigHandler;
 import coolsquid.squidapi.exception.JarZipError;
 import coolsquid.squidapi.handlers.CommonHandler;
-import coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
 import coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import coolsquid.squidapi.handlers.ModEventHandler;
 import coolsquid.squidapi.handlers.MonetizationHandler;
@@ -46,10 +49,8 @@ import coolsquid.squidapi.helpers.VillageHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.reflection.ReflectionHelper;
-import coolsquid.squidapi.registry.DamageSourceRegistry;
 import coolsquid.squidapi.registry.VanillaBlockRegistry;
 import coolsquid.squidapi.registry.VanillaItemRegistry;
-import coolsquid.squidapi.registry.WorldTypeRegistry;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.EasterEggUtils;
 import coolsquid.squidapi.util.MiscLib;
@@ -57,6 +58,7 @@ import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.RewardManager;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.objects.TextureMapLogger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -79,7 +81,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SquidAPI extends SquidAPIMod {
 
 	public SquidAPI() {
-		super("An API for all my mods.", "227345");
+		super("An API for all my mods.");
 	}
 
 	@Instance
@@ -139,6 +141,10 @@ public class SquidAPI extends SquidAPIMod {
 			}
 		}
 
+		if (MiscLib.SETTINGS.getBoolean("cleanUpTextureErrors")) {
+			TextureMap.logger = new TextureMapLogger(((Logger) TextureMap.logger).getContext(), TextureMap.logger.getName(), TextureMap.logger.getMessageFactory());
+		}
+
 		MinecraftForge.EVENT_BUS.register(this);
 
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
@@ -159,9 +165,6 @@ public class SquidAPI extends SquidAPIMod {
 		//FMLCommonHandler.instance().bus().register(handler);
 		MinecraftForge.EVENT_BUS.register(handler);
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
-		if (MiscLib.DEV_ENVIRONMENT) {
-			MinecraftForge.EVENT_BUS.register(new DevEnvironmentEventHandler());
-		}
 		if (MiscLib.SERVER) {
 			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(ModManager.INSTANCE.getModids()));
 		}
@@ -209,9 +212,6 @@ public class SquidAPI extends SquidAPIMod {
 		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();
-
-		WorldTypeRegistry.instance();
-		DamageSourceRegistry.INSTANCE.init();
 
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.postInit();

@@ -5,33 +5,37 @@
 package coolsquid.squidapi.config;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.SquidAPIMod;
-import coolsquid.squidapi.mod.BaseMod;
 import coolsquid.squidapi.util.ModManager;
-import coolsquid.squidapi.util.collect.OneWaySet;
 
 public class ConfigurationManager {
 
 	public static final ConfigurationManager INSTANCE = new ConfigurationManager();
 
-	private final Map<SquidAPIMod, OneWaySet<ConfigHandler>> handlers = Maps.newHashMap();
+	private final Map<SquidAPIMod, Set<ConfigHandler>> handlers = Maps.newHashMap();
 
 	public void registerHandlers(ConfigHandler... handlers) {
 		SquidAPIMod mod = ModManager.INSTANCE.activeMod();
 		if (!this.handlers.containsKey(mod)) {
-			this.handlers.put(mod, OneWaySet.newInstance(ConfigHandler.class));
+			this.handlers.put(mod, Sets.newHashSet());
 		}
 		for (ConfigHandler handler: handlers) {
 			this.handlers.get(mod).add(handler);
 		}
 	}
 
-	public void loadConfigs(BaseMod mod) {
+	public void loadConfigs(SquidAPIMod mod) {
 		for (ConfigHandler handler: this.handlers.get(mod)) {
 			handler.init();
 		}
+	}
+
+	public Set<ConfigHandler> getHandlers(SquidAPIMod mod) {
+		return this.handlers.get(mod);
 	}
 }

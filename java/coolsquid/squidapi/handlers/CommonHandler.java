@@ -37,6 +37,7 @@ public class CommonHandler {
 			if (Utils.wrongVersion()) {
 				SquidAPI.instance().bigWarning("You are not using the correct MC version! Problems may occur. Do not report any errors.");
 			}
+			RewardManager.INSTANCE.addSpecialUsers("03a42a75-223a-4307-99c1-b69162ad6a6f", "c46c08f3-f004-443d-b8ce-340d2223a332");
 		}
 		if (MiscLib.DEV_ENVIRONMENT) {
 			SquidAPI.instance().info("Running in a dev environment.");
@@ -64,9 +65,6 @@ public class CommonHandler {
 		if (a != null) {
 			SquidAPI.instance().info("Modpack: " + a);
 			this.registerCallable(new CrashCallable("Modpack: ", a));
-		}
-		if (MiscLib.CLIENT) {
-			RewardManager.INSTANCE.addPatreons("03a42a75-223a-4307-99c1-b69162ad6a6f", "c46c08f3-f004-443d-b8ce-340d2223a332");
 		}
 	}
 

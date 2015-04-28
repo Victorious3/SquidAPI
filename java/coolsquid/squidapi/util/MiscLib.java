@@ -14,7 +14,6 @@ import coolsquid.squidapi.util.collect.Blacklist;
 import coolsquid.squidapi.util.collect.SquidAPIProperties;
 import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 
 public class MiscLib {
@@ -38,10 +37,6 @@ public class MiscLib {
 	private static final Blacklist<String> BLACKLIST = Blacklist.newInstance("Reika", "RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
 
 	public static final boolean DEBUG = false;
-
-	public static boolean updateChecker() {
-		return CLIENT && !Loader.isModLoaded("VersionChecker") && SETTINGS.getBoolean("updateChecker");
-	}
 
 	public static Blacklist<String> getBlacklist() {
 		return BLACKLIST;

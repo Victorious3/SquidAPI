@@ -4,12 +4,33 @@
  *******************************************************************************/
 package coolsquid.squidapi.registry;
 
+import java.util.List;
+import java.util.Map;
+
 public class LockedRegistrySimple<E> extends RegistrySimple<E> {
-	
+
 	private boolean locked;
-	
-	public void lock() {
+
+	public LockedRegistrySimple() {
+
+	}
+
+	@SafeVarargs
+	private LockedRegistrySimple(E... values) {
+
+	}
+
+	public LockedRegistrySimple(List<E> list, Map<E, Integer> map) {
+		super(list, map);
+	}
+
+	public LockedRegistrySimple<E> lock() {
 		this.locked = true;
+		return this;
+	}
+
+	public boolean isLocked() {
+		return this.locked;
 	}
 
 	@Override
@@ -19,8 +40,14 @@ public class LockedRegistrySimple<E> extends RegistrySimple<E> {
 		}
 		super.register(e);
 	}
-	
-	public static <T> LockedRegistrySimple<T> newInstance() {
-		return new LockedRegistrySimple<T>();
+
+	@Override
+	public LockedRegistrySimple<E> clone() {
+		return new LockedRegistrySimple<E>(this.getList(), this.getMap());
+	}
+
+	@SafeVarargs
+	public static <T> LockedRegistrySimple<T> create(T... values) {
+		return new LockedRegistrySimple<T>(values);
 	}
 }

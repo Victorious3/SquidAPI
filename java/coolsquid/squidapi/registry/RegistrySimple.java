@@ -14,7 +14,7 @@ import com.google.common.collect.Maps;
 import coolsquid.squidapi.exception.DuplicateRegistryEntryException;
 
 public class RegistrySimple<E> implements Iterable<E> {
-	
+
 	private final List<E> list;
 	private final Map<E, Integer> map;
 
@@ -27,7 +27,7 @@ public class RegistrySimple<E> implements Iterable<E> {
 		this.list = list;
 		this.map = map;
 	}
-	
+
 	public void register(E e) {
 		if (e == null) {
 			throw new IllegalArgumentException();
@@ -42,19 +42,19 @@ public class RegistrySimple<E> implements Iterable<E> {
 	public E get(int id) {
 		return this.list.get(id);
 	}
-	
+
 	public int getId(E e) {
 		return this.map.get(e);
 	}
-	
+
 	public boolean containsId(int id) {
 		return this.get(id) != null;
 	}
-	
+
 	public boolean containsValue(E e) {
 		return this.map.containsKey(e);
 	}
-	
+
 	protected void clear() {
 		this.list.clear();
 		this.map.clear();
@@ -66,6 +66,10 @@ public class RegistrySimple<E> implements Iterable<E> {
 
 	protected final Map<E, Integer> getMap() {
 		return this.map;
+	}
+
+	public final List<E> values() {
+		return Lists.newArrayList(this.list);
 	}
 
 	@Override
@@ -106,8 +110,13 @@ public class RegistrySimple<E> implements Iterable<E> {
 		return "RegistrySimple [hashCode()=" + this.hashCode() + "]";
 	}
 
+	@Override
+	public RegistrySimple<E> clone() {
+		return new RegistrySimple<E>(this.list, this.map);
+	}
+
 	public void init() {
-		
+
 	}
 
 	@SafeVarargs

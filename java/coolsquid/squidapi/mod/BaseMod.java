@@ -25,6 +25,10 @@ public class BaseMod {
 		this.mod = mod;
 	}
 
+	public ModContainer getContainer() {
+		return this.mod;
+	}
+
 	public final String getModid() {
 		return this.mod.getModId();
 	}

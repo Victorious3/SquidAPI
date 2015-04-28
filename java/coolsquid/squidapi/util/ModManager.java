@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidapi.util;
 
+import java.util.List;
 import java.util.Set;
 
 import coolsquid.squidapi.SquidAPI;
@@ -15,7 +16,7 @@ public final class ModManager {
 
 	public static final ModManager INSTANCE = new ModManager();
 
-	private final Registry<SquidAPIMod> mods = new Registry<SquidAPIMod>();
+	private final Registry<SquidAPIMod> mods = Registry.create();
 
 	private ModManager() {
 		
@@ -39,6 +40,10 @@ public final class ModManager {
 
 	public Set<String> getModids() {
 		return this.mods.names();
+	}
+
+	public List<SquidAPIMod> getModObjects() {
+		return this.mods.values();
 	}
 
 	public SquidAPIMod getMod(String modid) {

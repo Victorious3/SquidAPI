@@ -72,7 +72,7 @@ public class StringUtils {
 		if (objects == null || objects.length <= 0) {
 			return "";
 		}
-		StringBuilder builder = new StringBuilder();
+		StringBuilder builder = builder();
 		for (Object object: objects) {
 			if (object != null) {
 				builder.append(object.toString());

@@ -10,8 +10,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.world.WorldType;
-import coolsquid.squidapi.registry.WorldTypeRegistry;
 import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -80,10 +78,6 @@ public class StringParser {
 			}
 		}
 		return null;
-	}
-
-	public static WorldType parseWorldType(String string) {
-		return WorldTypeRegistry.instance().get(string);
 	}
 
 	public static Enchantment parseEnchantment(String string) {

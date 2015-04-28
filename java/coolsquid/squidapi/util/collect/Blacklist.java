@@ -6,30 +6,31 @@ package coolsquid.squidapi.util.collect;
 
 import java.util.Iterator;
 
-import com.google.common.collect.ImmutableSet;
+import coolsquid.squidapi.registry.LockedRegistrySimple;
+import coolsquid.squidapi.registry.RegistrySimple;
 
 
 public final class Blacklist<E> implements Iterable<E> {
-	
-	private final ImmutableSet<E> list;
+
+	private final LockedRegistrySimple<E> list;
 
 	@SuppressWarnings("unchecked")
 	private Blacklist(E... values) {
-		this.list = ImmutableSet.copyOf(values);
+		this.list = LockedRegistrySimple.create(values);
 	}
 
-	private Blacklist(ImmutableSet<E> values) {
-		this.list = ImmutableSet.copyOf(values);
+	private Blacklist(LockedRegistrySimple<E> values) {
+		this.list = values.clone().lock();
 	}
 
-	public ImmutableSet<E> getBlacklist() {
-		return ImmutableSet.copyOf(this.list);
+	public RegistrySimple<E> getBlacklist() {
+		return this.list.clone();
 	}
-	
+
 	public boolean contains(E value) {
-		return this.list.contains(value);
+		return this.list.containsValue(value);
 	}
-	
+
 	public boolean isBlacklisted(Object object) {
 		for (E e: this.list) {
 			if (object.getClass().getName().startsWith(e.toString())) {
@@ -60,22 +61,22 @@ public final class Blacklist<E> implements Iterable<E> {
 	}
 
 	public static class Builder<T> {
-		
-		private final ImmutableSet.Builder<T> builder = ImmutableSet.builder();
-		
+
+		private final LockedRegistrySimple<T> registry = LockedRegistrySimple.create();
+
 		private Builder() {
-			
+
 		}
-		
+
 		public void add(T t) {
-			this.builder.add(t);
+			this.registry.register(t);
 		}
-		
+
 		public Blacklist<T> build() {
-			return new Blacklist<T>(this.builder.build());
+			return new Blacklist<T>(this.registry);
 		}
 	}
-	
+
 	public static <T> Builder<T> builder() {
 		return new Builder<T>();
 	}

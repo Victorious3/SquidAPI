@@ -12,12 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ChatComponentText;
 import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.handlers.DevEnvironmentEventHandler;
+import coolsquid.squidapi.handlers.ModEventHandler;
 import coolsquid.squidapi.handlers.command.NewsHandler;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
-import coolsquid.squidapi.registry.DamageSourceRegistry;
-import coolsquid.squidapi.registry.WorldTypeRegistry;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.IOUtils;
 
@@ -78,12 +76,6 @@ public class CommandSquidAPI extends CommandBase {
 				else if (args[1].equals("commands")) {
 					IOUtils.writeLines(new File("./dumps/commands.txt"), ServerHelper.getCommands().keySet());
 				}
-				else if (args[1].equals("worldtypes")) {
-					IOUtils.writeLines(new File("./dumps/worldtypes.txt"), WorldTypeRegistry.instance().names());
-				}
-				else if (args[1].equals("damagesources")) {
-					IOUtils.writeLines(new File("./dumps/damagesources.txt"), DamageSourceRegistry.INSTANCE.names());
-				}
 				else {
 					a = false;
 				}
@@ -92,7 +84,7 @@ public class CommandSquidAPI extends CommandBase {
 				}
 			}
 			else if (subcommand.equals("togglesuperspeed")) {
-				DevEnvironmentEventHandler.speedy = !DevEnvironmentEventHandler.speedy;
+				ModEventHandler.speedy = !ModEventHandler.speedy;
 			}
 			else if (subcommand.equals("getuuid")) {
 				SquidAPI.instance().info("UUID: ", player.getGameProfile().getId().toString());

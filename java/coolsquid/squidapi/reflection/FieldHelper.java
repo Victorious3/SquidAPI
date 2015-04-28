@@ -75,7 +75,7 @@ public class FieldHelper {
 			if (this.isfinal) {
 				Field m = Field.class.getDeclaredField("modifiers");
 				m.setAccessible(true);
-				m.setInt(this.field, this.field.getModifiers() & ~Modifier.FINAL);
+				m.setInt(this.field, this.field.getModifiers() - Modifier.FINAL);
 			}
 			this.field.set(this.object, replacement);
 		} catch (ReflectiveOperationException e) {

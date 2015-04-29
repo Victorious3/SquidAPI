@@ -22,7 +22,8 @@ public class ConfigurationManager {
 	public void registerHandlers(ConfigHandler... handlers) {
 		SquidAPIMod mod = ModManager.INSTANCE.activeMod();
 		if (!this.handlers.containsKey(mod)) {
-			this.handlers.put(mod, Sets.newHashSet());
+			Set<ConfigHandler> set = Sets.newHashSet();
+			this.handlers.put(mod, set);
 		}
 		for (ConfigHandler handler: handlers) {
 			this.handlers.get(mod).add(handler);

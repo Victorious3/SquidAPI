@@ -8,9 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.command.ICommand;
 import net.minecraft.potion.Potion;
@@ -21,11 +19,9 @@ import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import org.apache.logging.log4j.core.Logger;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.asm.SquidAPIPlugin;
@@ -42,9 +38,7 @@ import coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import coolsquid.squidapi.handlers.ModEventHandler;
 import coolsquid.squidapi.handlers.MonetizationHandler;
 import coolsquid.squidapi.handlers.ShutdownHandler;
-import coolsquid.squidapi.handlers.ShutdownHandler.ShutdownEvent;
 import coolsquid.squidapi.helpers.IdHelper;
-import coolsquid.squidapi.helpers.OreDictionaryHelper;
 import coolsquid.squidapi.helpers.VillageHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
@@ -66,7 +60,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -146,8 +139,6 @@ public class SquidAPI extends SquidAPIMod {
 		if (MiscLib.SETTINGS.getBoolean("cleanUpTextureErrors")) {
 			TextureMap.logger = new TextureMapLogger(((Logger) TextureMap.logger).getContext(), TextureMap.logger.getName(), TextureMap.logger.getMessageFactory());
 		}
-
-		MinecraftForge.EVENT_BUS.register(this);
 
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.preInit();
@@ -267,28 +258,6 @@ public class SquidAPI extends SquidAPIMod {
 		}
 		if (this.commandConfig.hasChanged()) {
 			this.commandConfig.save();
-		}
-	}
-
-	private final Set<String> oredictEntriesToRemove = ImmutableSet.of("greggy_greg_do_please_kindly_stuff_a_sock_in_it");
-
-	@Optional.Method(modid = "MineFactoryReloaded|CompatIC2")
-	@SubscribeEvent
-	public void onOredictRegistration(OreRegisterEvent event) {
-		if (this.oredictEntriesToRemove.contains(event.Name)) {
-			OreDictionaryHelper.removeEntry(event.Name);
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onShutdown(ShutdownEvent event) {
-		if (Utils.getChance(1, 10)) {
-			this.info("Have a nice day!");
-		}
-		String user = Minecraft.getMinecraft().getSession().getUsername();
-		if (MiscLib.NICKNAMES.containsKey(user) && MiscLib.SETTINGS.getBoolean("easterEggs")) {
-			this.info("Bye, ", MiscLib.NICKNAMES.getProperty(user), "!");
 		}
 	}
 

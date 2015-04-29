@@ -43,7 +43,7 @@ curse {
 jar {
 	manifest {
         attributes 'FMLAT': 'SquidAPI_at.cfg'
-		attributes 'FMLCorePlugin': 'coolsquid.squidapi.SquidAPIPlugin'
+		attributes 'FMLCorePlugin': 'coolsquid.squidapi.asm.SquidAPIPlugin'
 		attributes 'FMLCorePluginContainsFMLMod': 'true'
 	}
 }

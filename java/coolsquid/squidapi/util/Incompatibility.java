@@ -12,14 +12,12 @@ public final class Incompatibility extends ModVersion {
 	private final Severity severity;
 
 	public Incompatibility(String modid, String reason, Severity severity) {
-		super(modid, 0, Integer.MAX_VALUE);
-		this.reason = reason;
-		this.severity = severity;
+		this(modid, reason, severity, "*", "*");
 	}
 
-	public Incompatibility(String modid, String reason, Severity severity, int minVersion, int maxVersion) {
+	public Incompatibility(String modid, String reason, Severity severity, String minVersion, String maxVersion) {
 		super(modid, minVersion, maxVersion);
-		this.reason = reason;
+		this.reason = Charsets.punctuate(reason);
 		this.severity = severity;
 	}
 
@@ -30,10 +28,21 @@ public final class Incompatibility extends ModVersion {
 	public Severity getSeverity() {
 		return this.severity;
 	}
-	
+
 	public enum Severity {
-		LOW,
-		MEDIUM,
-		HIGH;
+		LOW(false),
+		MEDIUM(false),
+		HIGH(false),
+		FATAL(true);
+
+		private final boolean fatal;
+
+		private Severity(boolean fatal) {
+			this.fatal = fatal;
+		}
+
+		public boolean isFatal() {
+			return this.fatal;
+		}
 	}
 }

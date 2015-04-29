@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.command.CommandDisable;
+import coolsquid.squidapi.exception.IncompatibilityException;
 import coolsquid.squidapi.exception.MisuseException;
 import coolsquid.squidapi.mod.AdvancedMod;
 import coolsquid.squidapi.mod.SideOnly.ClientOnly;
@@ -90,6 +91,9 @@ public class SquidAPIMod extends AdvancedMod {
 
 	protected final void registerIncompatibility(Incompatibility incompatibility) {
 		if (Loader.isModLoaded(incompatibility.getModid())) {
+			if (incompatibility.getSeverity().isFatal()) {
+				throw new IncompatibilityException(incompatibility, this.getName());
+			}
 			this.incompatibilities.add(incompatibility);
 		}
 	}
@@ -128,7 +132,7 @@ public class SquidAPIMod extends AdvancedMod {
 
 	protected final void postInit() {
 		for (Incompatibility a: this.getIncompatibilities()) {
-			this.bigWarning("Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), ". Severity: ", a.getSeverity(), ".", MiscLib.LINE, "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
+			this.bigWarning("Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), " Severity: ", a.getSeverity(), ".", MiscLib.LINE, "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
 		}
 	}
 

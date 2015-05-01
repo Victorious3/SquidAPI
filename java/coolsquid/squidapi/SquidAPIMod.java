@@ -38,16 +38,6 @@ public class SquidAPIMod extends AdvancedMod {
 		this(desc, Lists.newArrayList("CoolSquid"), "", "http://coolsquid.wix.com/software");
 	}
 
-	@Deprecated
-	public SquidAPIMod(String desc, String curseId) {
-		this(desc);
-	}
-
-	@Deprecated
-	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String curseId) {
-		this(desc, authors, credits, url);
-	}
-
 	public SquidAPIMod(String desc, List<String> authors, String credits, String url) {
 		super(Loader.instance().activeModContainer());
 

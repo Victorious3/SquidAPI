@@ -5,13 +5,11 @@
 package coolsquid.squidapi.util.objects;
 
 import org.apache.logging.log4j.core.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.message.MessageFactory;
 
 public class TextureMapLogger extends Logger {
 
-	public TextureMapLogger(LoggerContext context, String name, MessageFactory messageFactory) {
-		super(context, name, messageFactory);
+	public TextureMapLogger(Logger logger) {
+		super(logger.getContext(), logger.getName(), logger.getMessageFactory());
 	}
 
 	@Override

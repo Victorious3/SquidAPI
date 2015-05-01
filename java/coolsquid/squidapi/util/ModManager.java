@@ -9,7 +9,7 @@ import java.util.Set;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
-import coolsquid.squidapi.registry.Registry;
+import coolsquid.squidapi.util.collect.Registry;
 import cpw.mods.fml.common.Loader;
 
 public final class ModManager {

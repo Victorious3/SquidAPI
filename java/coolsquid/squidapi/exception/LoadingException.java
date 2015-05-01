@@ -20,11 +20,11 @@ public class LoadingException extends CustomModLoadingErrorDisplayException {
 
 	@Override
 	public void initGui(GuiErrorScreen screen, FontRenderer font) {
-		
+
 	}
 
 	@Override
 	public void drawScreen(GuiErrorScreen screen, FontRenderer font, int mouseRelX, int mouseRelY, float tickTime) {
-		screen.drawString(font, this.text, screen.width / 2 - (font.getStringWidth(this.text) / 2), screen.height / 2, 16777215);
+		screen.drawString(font, this.text, screen.width / 2 - (font.getStringWidth(this.text) / 2), screen.height / 2 - (font.FONT_HEIGHT / 2), 16777215);
 	}
 }

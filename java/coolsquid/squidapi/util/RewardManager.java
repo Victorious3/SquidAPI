@@ -11,7 +11,7 @@ import com.google.common.collect.ImmutableList;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.handlers.CommonHandler;
-import coolsquid.squidapi.registry.LockedRegistrySimple;
+import coolsquid.squidapi.util.collect.LockedRegistrySimple;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,13 +23,13 @@ public final class RewardManager {
 	private final LockedRegistrySimple<UUID> users = new LockedRegistrySimple<UUID>();
 
 	private RewardManager() {
-		
+
 	}
 
 	public void addSpecialUsers(String... users) {
 		if (Utils.getCaller() == CommonHandler.class) {
-			for (int a = 0; a < users.length; a++) {
-				this.users.register(UUID.fromString(users[a]));
+			for (String user : users) {
+				this.users.register(UUID.fromString(user));
 			}
 		}
 		else {

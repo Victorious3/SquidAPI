@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidapi.registry;
+package coolsquid.squidapi.util.collect;
 
 import java.util.Iterator;
 import java.util.List;

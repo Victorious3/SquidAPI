@@ -6,9 +6,6 @@ package coolsquid.squidapi.util.collect;
 
 import java.util.Iterator;
 
-import coolsquid.squidapi.registry.LockedRegistrySimple;
-import coolsquid.squidapi.registry.RegistrySimple;
-
 
 public final class Blacklist<E> implements Iterable<E> {
 

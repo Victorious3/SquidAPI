@@ -43,8 +43,6 @@ import coolsquid.squidapi.helpers.VillageHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.reflection.ReflectionHelper;
-import coolsquid.squidapi.registry.VanillaBlockRegistry;
-import coolsquid.squidapi.registry.VanillaItemRegistry;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.EasterEggUtils;
 import coolsquid.squidapi.util.MiscLib;
@@ -52,6 +50,8 @@ import coolsquid.squidapi.util.ModInfo;
 import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.RewardManager;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.collect.VanillaBlockRegistry;
+import coolsquid.squidapi.util.collect.VanillaItemRegistry;
 import coolsquid.squidapi.util.objects.TextureMapLogger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -124,7 +124,7 @@ public class SquidAPI extends SquidAPIMod {
 		if (!Loader.isModLoaded("DragonAPI") && Potion.potionTypes.length == 32) {
 			this.info("Changing the max potion id...");
 			try {
-				Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 256);
+				Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 128);
 			} catch (IllegalAccessError e) {
 				String marker = "========================================================================================";
 				this.error(marker);
@@ -137,7 +137,7 @@ public class SquidAPI extends SquidAPIMod {
 		}
 
 		if (MiscLib.SETTINGS.getBoolean("cleanUpTextureErrors")) {
-			TextureMap.logger = new TextureMapLogger(((Logger) TextureMap.logger).getContext(), TextureMap.logger.getName(), TextureMap.logger.getMessageFactory());
+			TextureMap.logger = new TextureMapLogger((Logger) TextureMap.logger);
 		}
 
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
@@ -154,9 +154,7 @@ public class SquidAPI extends SquidAPIMod {
 		this.info("Initializing.");
 
 		FMLCommonHandler.instance().bus().register(this);
-		ModEventHandler handler = new ModEventHandler();
-		//FMLCommonHandler.instance().bus().register(handler);
-		MinecraftForge.EVENT_BUS.register(handler);
+		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
 		if (MiscLib.SERVER) {
 			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(ModManager.INSTANCE.getModids()));

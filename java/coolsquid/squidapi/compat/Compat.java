@@ -10,7 +10,7 @@ import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.Loader;
 
 public enum Compat {
-	
+
 	THERMALEXPANSION("ThermalExpansion"),
 	BOTANIA("Botania", "vazkii.botania.api", "35"),
 	ROTARYCRAFT("RotaryCraft"),
@@ -19,12 +19,13 @@ public enum Compat {
 	THAUMCRAFT("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
 	RAILCRAFT("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
 	ENVIROMINE("enviromine"),
-	MINECRAFT("minecraft", true);
+	MINECRAFT("minecraft", true),
+	TICON("TConstruct");
 
 	private final boolean enabled;
 	private final Package api;
 	private final int version;
-	
+
 	private Compat(String modid) {
 		this.enabled = Loader.isModLoaded(modid);
 		this.api = null;
@@ -36,7 +37,7 @@ public enum Compat {
 			SquidAPI.instance().info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
 		}
 	}
-	
+
 	private Compat(String modid, String api, String version) {
 		this.enabled = Loader.isModLoaded(modid);
 		this.api = Package.getPackage(api);
@@ -59,7 +60,7 @@ public enum Compat {
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	private void checkAPI() {
 		try {
 			int versionnumber = IntUtils.parseInt(this.api.getAnnotation(API.class).apiVersion());

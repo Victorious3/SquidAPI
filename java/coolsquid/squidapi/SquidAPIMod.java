@@ -35,7 +35,7 @@ public class SquidAPIMod extends AdvancedMod {
 	private final int hashCode;
 
 	public SquidAPIMod(String desc) {
-		this(desc, Lists.newArrayList("CoolSquid"), "", "http://coolsquid.wix.com/software");
+		this(desc, Lists.newArrayList("CoolSquid"), "", "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2296480-coolsquids-mods-customization-chat-control-mobs");
 	}
 
 	public SquidAPIMod(String desc, List<String> authors, String credits, String url) {
@@ -54,6 +54,7 @@ public class SquidAPIMod extends AdvancedMod {
 		meta.credits = credits;
 		meta.authorList = authors;
 		meta.description = desc;
+		meta.url = url;
 
 		if (this instanceof ClientOnly && MiscLib.SERVER) {
 			throw new MisuseException(this.getName() + " is clientside only!");

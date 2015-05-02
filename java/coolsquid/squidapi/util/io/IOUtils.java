@@ -20,6 +20,8 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import coolsquid.squidapi.util.StringUtils;
+
 public class IOUtils {
 
 	public static FileInputStream newInputStream(File file) {
@@ -139,7 +141,7 @@ public class IOUtils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Set<String> readLines(File file) {
 		if (file == null) {
 			throw new IllegalArgumentException();
@@ -175,17 +177,17 @@ public class IOUtils {
 		}
 		return result;
 	}
-	
+
 	public static void copy(File file, File newfile) {
 		InputStream a = newInputStream(file);
 		OutputStream b = newOutputStream(newfile);
 		copy(a, b);
 	}
-	
+
 	public static void copy(InputStream input, OutputStream output) {
 		copy(input, output, 4096);
 	}
-	
+
 	public static void copy(InputStream input, OutputStream output, int buffersize) {
 		if (input == null || output == null) {
 			throw new NullPointerException();
@@ -269,5 +271,13 @@ public class IOUtils {
 
 	public static SquidAPIFile newFile(String name) {
 		return new SquidAPIFile(name);
+	}
+
+	public static String readAll(File file) {
+		StringBuilder b = StringUtils.builder();
+		for (String line: newReader(file)) {
+			b.append(line);
+		}
+		return b.toString();
 	}
 }

@@ -5,6 +5,11 @@
 package coolsquid.squidapi.handlers;
 
 import java.io.File;
+import java.util.Set;
+
+import org.apache.logging.log4j.message.Message;
+
+import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.exception.LoadingException;
@@ -19,6 +24,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class CommonHandler {
+
+	final Set<Message> shutdownMessages = Sets.newHashSet();
 
 	public void init() {
 		if (Utils.isJavaVersionSameOrLower(6)) {
@@ -56,9 +63,21 @@ public class CommonHandler {
 		FMLCommonHandler.instance().registerCrashCallable(callable);
 	}
 
-	/** Clientside only!!! */
-	@SideOnly(Side.CLIENT)
 	public void throwNewLoadingException() {
-		throw new LoadingException("There was a severe error during mod loading. Erroring mod: " + Utils.getCurrentMod().getName() + ".");
+		if (MiscLib.CLIENT) {
+			throw this.newLoadingException();
+		}
+		else {
+			throw new RuntimeException("There was a severe error during mod loading. Erroring mod: " + Utils.getCurrentMod().getName() + ".");
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	private RuntimeException newLoadingException() {
+		return new LoadingException("There was a severe error during mod loading. Erroring mod: " + Utils.getCurrentMod().getName() + ".");
+	}
+
+	public void registerShutdownMessage(Message message) {
+		this.shutdownMessages.add(message);
 	}
 }

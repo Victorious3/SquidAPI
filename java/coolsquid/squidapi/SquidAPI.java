@@ -154,7 +154,9 @@ public class SquidAPI extends SquidAPIMod {
 		this.info("Initializing.");
 
 		FMLCommonHandler.instance().bus().register(this);
-		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
+		Object handler = new ModEventHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		FMLCommonHandler.instance().bus().register(handler);
 		MinecraftForge.EVENT_BUS.register(new ExplosionRecipeHandler());
 		if (MiscLib.SERVER) {
 			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(ModManager.INSTANCE.getModids()));

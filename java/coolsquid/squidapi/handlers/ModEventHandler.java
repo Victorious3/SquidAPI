@@ -16,6 +16,8 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
+import org.apache.logging.log4j.message.Message;
+
 import com.google.common.collect.ImmutableSet;
 
 import coolsquid.squidapi.SquidAPI;
@@ -70,6 +72,9 @@ public class ModEventHandler {
 		String user = Minecraft.getMinecraft().getSession().getUsername();
 		if (MiscLib.NICKNAMES.containsKey(user) && MiscLib.SETTINGS.getBoolean("easterEggs")) {
 			SquidAPI.instance().info("Bye, ", MiscLib.NICKNAMES.getProperty(user), "!");
+		}
+		for (Message message: SquidAPI.COMMON.shutdownMessages) {
+			SquidAPI.instance().info(message.getFormattedMessage());
 		}
 	}
 

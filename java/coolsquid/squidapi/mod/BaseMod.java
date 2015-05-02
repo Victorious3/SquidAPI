@@ -108,4 +108,10 @@ public class BaseMod {
 	protected final List<String> getOwnedPackages() {
 		return this.mod.getOwnedPackages();
 	}
+
+	protected final void addAuthors(String... authors) {
+		for (String author: authors) {
+			this.getMetadata().authorList.add(author);
+		}
+	}
 }

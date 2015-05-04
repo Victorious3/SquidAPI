@@ -22,14 +22,14 @@ public class ModInfo {
 	 * The version.
 	 */
 
-	public static final String version = "1.1.8";
+	public static final String version = "1.1.9";
 
 	/**
 	 * The MC version to use this mod with.
 	 */
 
 	public static final String mcversion = "1.7.10";
-	
+
 	/**
 	 * Name of the mod author.
 	 */

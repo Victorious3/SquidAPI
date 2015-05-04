@@ -30,7 +30,6 @@ import coolsquid.squidapi.command.CommandDisable;
 import coolsquid.squidapi.command.CommandEnable;
 import coolsquid.squidapi.command.CommandLightningStrike;
 import coolsquid.squidapi.command.CommandSquidAPI;
-import coolsquid.squidapi.command.CommandSuggest;
 import coolsquid.squidapi.config.ModConfigHandler;
 import coolsquid.squidapi.handlers.CommonHandler;
 import coolsquid.squidapi.handlers.ExplosionRecipeHandler;
@@ -126,7 +125,7 @@ public class SquidAPI extends SquidAPIMod {
 			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 128);
 		}
 
-		if (MiscLib.SETTINGS.getBoolean("cleanUpTextureErrors")) {
+		if (MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("cleanUpTextureErrors")) {
 			TextureMap.logger = new TextureMapLogger((Logger) TextureMap.logger);
 		}
 
@@ -152,11 +151,6 @@ public class SquidAPI extends SquidAPIMod {
 			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(ModManager.INSTANCE.getModids()));
 		}
 
-		this.suggestMod("SquidUtils", "It provides the user with many customization options, from disabling mobs to creating new biomes.", "http://bit.ly/1EB3Y5N");
-		this.suggestMod("StarStones", "Meteors!", "http://bit.ly/1EB3Y5N");
-		this.suggestMod("FighterMobs", "Gives abilities to certain Vanilla mobs!", "http://bit.ly/1EB3Y5N");
-		this.suggestMod("SafeChat", "Filters swearwords from the chat. Perfect for family servers!", "http://bit.ly/1EB3Y5N");
-
 		Utils.runVersionCheckerCompat("227345");
 
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
@@ -180,7 +174,6 @@ public class SquidAPI extends SquidAPIMod {
 		}
 		else if (EasterEggUtils.HALLOWEEN) {
 			this.info("Happy halloween... >:)");
-			this.info("If you want to experience a halloween filled with horror, try out BloodNBones by Eyamapple (Eyamaz)!");
 		}
 
 		MiscLib.LOGGER.info("Initialization took " + this.getTimer().stopTiming() + "ms.");
@@ -191,7 +184,11 @@ public class SquidAPI extends SquidAPIMod {
 	public void postInit(FMLPostInitializationEvent event) {
 		this.getTimer().startTiming();
 		this.info("Postinitializing.");
-		UpdateManager.INSTANCE.checkAll();
+
+		if (MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("updateChecker")) {
+			UpdateManager.INSTANCE.checkAll();
+		}
+
 		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();
@@ -214,7 +211,6 @@ public class SquidAPI extends SquidAPIMod {
 			this.registerClientCommand(new CommandEnable());
 			this.registerClientCommand(new CommandAbout());
 			this.registerClientCommand(CommandSquidAPI.INSTANCE);
-			this.registerClientCommand(new CommandSuggest());
 		}
 	}
 

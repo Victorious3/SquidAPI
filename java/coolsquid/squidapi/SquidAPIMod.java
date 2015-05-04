@@ -23,7 +23,6 @@ import coolsquid.squidapi.util.Incompatibility;
 import coolsquid.squidapi.util.Incompatibility.Severity;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModManager;
-import coolsquid.squidapi.util.SuggestionManager;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidapi.util.objects.Suggestion;
 import cpw.mods.fml.common.Loader;
@@ -104,16 +103,19 @@ public class SquidAPIMod extends AdvancedMod {
 		this.registerIncompatibility(new Incompatibility(modid, reason, severity));
 	}
 
+	@Deprecated
 	protected final void suggestMod(Suggestion suggestion) {
-		SuggestionManager.INSTANCE.suggestMod(suggestion);
+
 	}
 
+	@Deprecated
 	protected final void suggestMod(String suggestion, String reason, String url) {
-		this.suggestMod(suggestion, suggestion, reason, url);
+
 	}
 
+	@Deprecated
 	protected final void suggestMod(String suggestion, String modid, String reason, String url) {
-		this.suggestMod(new Suggestion(this.getModid(), suggestion, modid, reason, url));
+
 	}
 
 	@Deprecated

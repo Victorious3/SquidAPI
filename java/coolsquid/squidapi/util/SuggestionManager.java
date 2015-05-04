@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import coolsquid.squidapi.util.objects.Suggestion;
 import cpw.mods.fml.common.Loader;
 
+@Deprecated
 public class SuggestionManager {
 
 	public static final SuggestionManager INSTANCE = new SuggestionManager();

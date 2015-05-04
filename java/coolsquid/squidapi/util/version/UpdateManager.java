@@ -15,11 +15,12 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.collect.Sets;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public final class UpdateManager implements Runnable {
 
 	public static final UpdateManager INSTANCE = new UpdateManager();
@@ -43,20 +44,20 @@ public final class UpdateManager implements Runnable {
 	@Override
 	public void run() {
 		if (this.enabled) {
-			for (ModContainer mod: Loader.instance().getActiveModList()) {
+			/*for (ModContainer mod: Loader.instance().getActiveModList()) {
 				if (mod.getMod() instanceof Updateable) {
 					this.getUpdateChecker(mod).check();
 				}
-			}
+			}*/
 			for (UpdateChecker checker: this.extraCheckers) {
 				checker.check();
 			}
 		}
 	}
 
-	private UpdateChecker getUpdateChecker(ModContainer mod) {
+	/*private UpdateChecker getUpdateChecker(ModContainer mod) {
 		return new UpdateChecker(mod, ((Updateable) mod.getMod()).getUrl());
-	}
+	}*/
 
 	void markAsOutdated(VersionContainer data) {
 		this.outdatedMods.add(data);

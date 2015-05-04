@@ -41,7 +41,7 @@ public class Utils {
 		int a = getRandInt(1, k);
 		return a <= d;
 	}
-	
+
 	public static int getRandInt(int min, int max) {
 		return min + new Random().nextInt(max - min + 1);
 	}
@@ -58,7 +58,7 @@ public class Utils {
 	public static boolean wrongVersion() {
 		return !Loader.MC_VERSION.equals(ModInfo.mcversion);
 	}
-	
+
 	public static Class<?> getClass(String name) {
 		try {
 			return Class.forName(name);
@@ -66,14 +66,14 @@ public class Utils {
 			return null;
 		}
 	}
-	
+
 	public static ModContainer getMod(String modid) {
 		if (modid.equalsIgnoreCase("Minecraft")) {
 			return Loader.instance().getMinecraftModContainer();
 		}
 		return Loader.instance().getIndexedModList().get(modid);
 	}
-	
+
 	public static void runVersionCheckerCompat(String id) {
 		if (Loader.isModLoaded("VersionChecker")) {
 			String modid = Loader.instance().activeModContainer().getModId();
@@ -103,7 +103,7 @@ public class Utils {
 		}
 		return builder.toString();
 	}
-	
+
 	public static ModContainer getCurrentMod() {
 		ModContainer mod = Loader.instance().activeModContainer();
 		if (mod == null) {
@@ -111,19 +111,19 @@ public class Utils {
 		}
 		return mod;
 	}
-	
+
 	public static void sendModMessage(String target, String key, NBTTagCompound value) {
 		FMLInterModComms.sendRuntimeMessage(getCurrentMod().getModId(), target, key, value);
 	}
-	
+
 	public static void sendModMessage(String target, String key, String value) {
 		FMLInterModComms.sendRuntimeMessage(getCurrentMod().getModId(), target, key, value);
 	}
-	
+
 	public static void sendModMessage(String target, String key, ItemStack value) {
 		FMLInterModComms.sendRuntimeMessage(getCurrentMod().getModId(), target, key, value);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <E> E[] newArray(E... objects) {
 		return objects;
@@ -301,5 +301,14 @@ public class Utils {
 
 	public static boolean isSubstituted(Object object, Class<?> type) {
 		return getSubstitutionMap(type).containsValue(object);
+	}
+
+	public static boolean isLoaderInState(LoaderState... states) {
+		for (LoaderState state: states) {
+			if (Loader.instance().isInState(state)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

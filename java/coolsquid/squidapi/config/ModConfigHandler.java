@@ -24,7 +24,7 @@ public class ModConfigHandler extends ConfigHandler {
 		this.config.setCategoryComment(CATEGORY_GENERAL, "General options.");
 		MiscLib.SETTINGS.set("cleanMenu", this.config.getBoolean("cleanMenu", CATEGORY_GENERAL, false, "Cleans up the main menu a bit."));
 		MiscLib.SETTINGS.set("branding", this.config.getString("branding", CATEGORY_GENERAL, "", "Will show up besides the Forge branding on the main menu. Not affected by \"cleanMenu\"."));
-		//MiscLib.SETTINGS.set("updateChecker", this.config.getBoolean("updateChecker", CATEGORY_GENERAL, true, "Enables the update checker."));
+		MiscLib.SETTINGS.set("updateChecker", this.config.getBoolean("updateChecker", CATEGORY_GENERAL, true, "Enables the update checker."));
 		MiscLib.SETTINGS.set("easterEggs", this.config.getBoolean("easterEggs", CATEGORY_GENERAL, true, "Enables all easter eggs."));
 		MiscLib.SETTINGS.set("cleanUpTextureErrors", this.config.getBoolean("cleanUpTextureErrors", CATEGORY_GENERAL, true, "Removes the log spam about missing textures."));
 

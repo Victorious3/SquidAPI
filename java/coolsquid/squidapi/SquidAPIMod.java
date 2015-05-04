@@ -14,6 +14,7 @@ import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.command.CommandDisable;
 import coolsquid.squidapi.exception.IncompatibilityException;
+import coolsquid.squidapi.exception.JarZipError;
 import coolsquid.squidapi.exception.MisuseException;
 import coolsquid.squidapi.mod.AdvancedMod;
 import coolsquid.squidapi.mod.SideOnly.ClientOnly;
@@ -65,6 +66,16 @@ public class SquidAPIMod extends AdvancedMod {
 
 		if (this instanceof Disableable) {
 			CommandDisable.disableables.put(this.getModid(), (Disableable) this);
+		}
+
+		if (!MiscLib.DEV_ENVIRONMENT && !this.getSource().getName().endsWith(".jar")) {
+			String marker = "========================================================================================";
+			this.error(marker);
+			this.error("SquidAPI has detected that the ", this.getName(), " mod file is named ", this.getSource().getName(), ".");
+			this.error("As the filename is not ending in .jar, certain hooks were not loaded by FML.");
+			this.error("Please rename the file to SquidAPI-", this.getVersion() + ".jar.");
+			this.error(marker);
+			throw new JarZipError(this.getName() + " cannot be loaded as a zip file");
 		}
 
 		this.info("Registering SquidAPIMod ", this.getModid(), ".");

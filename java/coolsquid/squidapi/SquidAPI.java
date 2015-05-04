@@ -32,7 +32,6 @@ import coolsquid.squidapi.command.CommandLightningStrike;
 import coolsquid.squidapi.command.CommandSquidAPI;
 import coolsquid.squidapi.command.CommandSuggest;
 import coolsquid.squidapi.config.ModConfigHandler;
-import coolsquid.squidapi.exception.JarZipError;
 import coolsquid.squidapi.handlers.CommonHandler;
 import coolsquid.squidapi.handlers.ExplosionRecipeHandler;
 import coolsquid.squidapi.handlers.ModEventHandler;
@@ -53,6 +52,7 @@ import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.collect.VanillaBlockRegistry;
 import coolsquid.squidapi.util.collect.VanillaItemRegistry;
 import coolsquid.squidapi.util.objects.TextureMapLogger;
+import coolsquid.squidapi.util.version.UpdateManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -123,17 +123,7 @@ public class SquidAPI extends SquidAPIMod {
 
 		if (!Loader.isModLoaded("DragonAPI") && Potion.potionTypes.length == 32) {
 			this.info("Changing the max potion id...");
-			try {
-				Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 128);
-			} catch (IllegalAccessError e) {
-				String marker = "========================================================================================";
-				this.error(marker);
-				this.error("SquidAPI has detected that the mod file is named ", event.getSourceFile().getName(), ".");
-				this.error("As the filename is ending in .zip, certain hooks were not loaded.");
-				this.error("Please rename the file to SquidAPI-", this.getVersion() + ".jar.");
-				this.error(marker);
-				throw new JarZipError("SquidAPI cannot be loaded as a zip file");
-			}
+			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 128);
 		}
 
 		if (MiscLib.SETTINGS.getBoolean("cleanUpTextureErrors")) {
@@ -201,7 +191,7 @@ public class SquidAPI extends SquidAPIMod {
 	public void postInit(FMLPostInitializationEvent event) {
 		this.getTimer().startTiming();
 		this.info("Postinitializing.");
-
+		UpdateManager.INSTANCE.checkAll();
 		ContentRemover.removeContent();
 		IdHelper.saveIds();
 		IdHelper.checkForConflicts();

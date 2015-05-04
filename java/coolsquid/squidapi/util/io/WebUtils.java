@@ -75,11 +75,11 @@ public class WebUtils {
 		}
 		return list;
 	}
-	
+
 	public static void connect(String url) {
 		connect(newURL(url));
 	}
-	
+
 	public static void connect(URL url) {
 		try {
 			newConnection(url).connect();
@@ -87,11 +87,11 @@ public class WebUtils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String getLine(String url, String key) {
 		return getLine(newURL(url), key);
 	}
-	
+
 	public static String getLine(URL url, String key) {
 		return IOUtils.getLine(IOUtils.newReader(getStream(url)), key);
 	}
@@ -134,7 +134,7 @@ public class WebUtils {
 	}
 
 	public static void openBrowser(String url) {
-		openBrowser(newURL(url));
+		openBrowser(newURI(url));
 	}
 
 	public static void openBrowser(URL url) {
@@ -164,7 +164,7 @@ public class WebUtils {
 	public static void saveURL(URL url, OutputStream output) {
 		IOUtils.copy(getStream(url), output);
 	}
-	
+
 	public static String sendGetRequest(URL url) {
 		try {
 			HttpURLConnection a = (HttpURLConnection) url.openConnection();
@@ -235,5 +235,13 @@ public class WebUtils {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static String readAll(String url) {
+		StringBuilder b = StringUtils.builder();
+		for (String line: newReader(url)) {
+			b.append(line);
+		}
+		return b.toString();
 	}
 }

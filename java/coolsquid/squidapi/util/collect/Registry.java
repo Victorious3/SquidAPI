@@ -13,7 +13,7 @@ import com.google.common.collect.Maps;
 import coolsquid.squidapi.exception.DuplicateRegistryEntryException;
 
 public class Registry<E> extends RegistrySimple<E> {
-	
+
 	private final Map<String, E> map;
 	private final Map<E, String> map2;
 
@@ -31,15 +31,15 @@ public class Registry<E> extends RegistrySimple<E> {
 	public E get(String name) {
 		return this.map.get(name);
 	}
-	
+
 	public String getName(E e) {
 		return this.map2.get(e);
 	}
-	
+
 	public boolean containsName(String name) {
 		return this.map.containsKey(name);
 	}
-	
+
 	public void register(String name, E e) {
 		if (name == null) {
 			throw new IllegalArgumentException();
@@ -55,7 +55,7 @@ public class Registry<E> extends RegistrySimple<E> {
 	public Set<String> names() {
 		return this.map.keySet();
 	}
-	
+
 	@Override
 	@Deprecated
 	public void register(E e) {

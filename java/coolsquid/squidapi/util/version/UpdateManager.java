@@ -11,11 +11,15 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.collect.Sets;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
+import coolsquid.squidapi.SquidAPI;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,23 +48,24 @@ public final class UpdateManager implements Runnable {
 	@Override
 	public void run() {
 		if (this.enabled) {
-			/*for (ModContainer mod: Loader.instance().getActiveModList()) {
+			for (ModContainer mod: Loader.instance().getActiveModList()) {
 				if (mod.getMod() instanceof Updateable) {
-					this.getUpdateChecker(mod).check();
+					String url = ((Updateable) mod.getMod()).getUrl();
+					if (url != null) {
+						new UpdateChecker(mod, url).check();
+					}
 				}
-			}*/
+			}
 			for (UpdateChecker checker: this.extraCheckers) {
 				checker.check();
 			}
 		}
 	}
 
-	/*private UpdateChecker getUpdateChecker(ModContainer mod) {
-		return new UpdateChecker(mod, ((Updateable) mod.getMod()).getUrl());
-	}*/
-
 	void markAsOutdated(VersionContainer data) {
 		this.outdatedMods.add(data);
+		SquidAPI.instance().info(data.getMod().getName(), " is outdated! Version ", data.getLatestVersion(), " is available!");
+		SquidAPI.instance().info("The new version may be obtained from: ", data.getMod().getMetadata().url);
 	}
 
 	void disable() {
@@ -68,7 +73,6 @@ public final class UpdateManager implements Runnable {
 	}
 
 	@SuppressWarnings("unchecked")
-	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onGuiInit(InitGuiEvent event) {
 		if (event.gui instanceof GuiMainMenu) {
 			GuiButton button = new GuiButton(10, 10, 0, "Updates") {
@@ -80,7 +84,30 @@ public final class UpdateManager implements Runnable {
 			};
 			button.yPosition = event.gui.height - button.height - 10;
 			button.width = 50;
+			byte severity = 1;
+			for (VersionContainer version: this.outdatedMods) {
+				if (version.getSeverity() > severity) {
+					severity = version.getSeverity();
+				}
+			}
+			if (severity == 2) {
+				button.displayString = "Updates!";
+				button.packedFGColour = 16711680;
+				button.width += 2;
+			}
+			else if (severity >= 3) {
+				button.displayString = "Updates!!!";
+				button.packedFGColour = 16711680;
+				button.width += 5;
+			}
 			event.buttonList.add(button);
+		}
+	}
+
+	@SubscribeEvent
+	public void onDrawScreen(RenderGameOverlayEvent.Pre event) {
+		if (event.type == ElementType.DEBUG) {
+			event.setCanceled(true);
 		}
 	}
 }

@@ -19,7 +19,7 @@ public final class ModManager {
 	private final Registry<SquidAPIMod> mods = Registry.create();
 
 	private ModManager() {
-		
+
 	}
 
 	public void registerMod(String modid, SquidAPIMod mod) {

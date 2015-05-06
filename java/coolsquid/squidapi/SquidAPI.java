@@ -76,6 +76,7 @@ public class SquidAPI extends SquidAPIMod {
 
 	public SquidAPI() {
 		super("An API for all my mods.");
+		this.setUpdateUrl("http://pastebin.com/raw.php?i=rPYGL0rZ");
 	}
 
 	@Instance

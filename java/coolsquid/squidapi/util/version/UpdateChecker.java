@@ -4,6 +4,9 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.version;
 
+import java.util.Map;
+
+import coolsquid.squidapi.util.DataSorter;
 import coolsquid.squidapi.util.io.WebUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.ModContainer;
@@ -20,12 +23,13 @@ public class UpdateChecker {
 
 	public void check() {
 		try {
-			String[] unsortedData = WebUtils.readAll(this.url).split(":");
-			VersionContainer sortedData = new VersionContainer(this.mod, unsortedData[0].replace("v", ""), Byte.parseByte(unsortedData[1].replace("s", "")));
+			Map<String, String> data = DataSorter.sort(WebUtils.readAll(this.url).split(":"), "v", "s");
+			VersionContainer sortedData = new VersionContainer(this.mod, data.get("v"), Byte.parseByte(data.get("s")));
 			if (sortedData.getLatestVersionId() > IntUtils.parseInt(this.mod.getVersion())) {
 				UpdateManager.INSTANCE.markAsOutdated(sortedData);
 			}
 		} catch (Throwable t) {
+			t.printStackTrace();
 			UpdateManager.INSTANCE.disable();
 		}
 	}

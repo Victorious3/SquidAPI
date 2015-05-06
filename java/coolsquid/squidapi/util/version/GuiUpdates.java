@@ -8,10 +8,13 @@ import java.awt.Desktop;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import coolsquid.squidapi.client.gui.GuiBase;
 import coolsquid.squidapi.util.io.WebUtils;
 
 public class GuiUpdates extends GuiBase {
+
+	private int showMessage;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -20,6 +23,9 @@ public class GuiUpdates extends GuiBase {
 		for (VersionContainer version: UpdateManager.INSTANCE.outdatedMods) {
 			GuiButton b = new GuiButtonMod(1, 0, this.height / 2 - 20 + a, version.getMod().getName() + " " + version, version.getMod().getMetadata().url);
 			b.xPosition = this.width / 2 - (b.width / 2);
+			if (version.getSeverity() >= 2) {
+				b.packedFGColour = 16711680;
+			}
 			this.buttonList.add(b);
 			a += b.height + 4;
 		}
@@ -41,7 +47,12 @@ public class GuiUpdates extends GuiBase {
 			this.drawCenteredString(this.fontRendererObj, line1, this.width / 2, this.height / 2 - 60, 16777215);
 		}
 		if (!Desktop.isDesktopSupported()) {
-			this.drawString("Your desktop is not supported. The buttons will not be clickable.", this.width / 2, 20);
+			this.drawString("Your desktop is not supported. Clicking the buttons will not open the site,", this.width / 2, 20);
+			this.drawString("but rather copy the url to your clipboard.", this.width / 2, 30);
+		}
+		if (this.showMessage > 0) {
+			this.drawString("The url was copied to your clipboard.", this.width / 2, this.height - 20);
+			this.showMessage--;
 		}
 	}
 
@@ -50,6 +61,10 @@ public class GuiUpdates extends GuiBase {
 		if (button.id == 1) {
 			if (Desktop.isDesktopSupported()) {
 				WebUtils.openBrowser(((GuiButtonMod) button).getUrl());
+			}
+			else {
+				GuiScreen.setClipboardString(((GuiButtonMod) button).getUrl());
+				this.showMessage = 50;
 			}
 		}
 		else if (button.id == 0) {

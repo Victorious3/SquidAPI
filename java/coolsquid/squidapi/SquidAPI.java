@@ -227,6 +227,7 @@ public class SquidAPI extends SquidAPIMod {
 		}
 	}
 
+	@Deprecated
 	public final List<Object> messages = Lists.newArrayList();
 
 	@SideOnly(Side.CLIENT)

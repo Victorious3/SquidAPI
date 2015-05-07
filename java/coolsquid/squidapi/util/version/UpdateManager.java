@@ -29,7 +29,7 @@ public final class UpdateManager implements Runnable {
 
 	public static final UpdateManager INSTANCE = new UpdateManager();
 
-	public final Set<UpdateChecker> extraCheckers = Sets.newHashSet();
+	private final Set<UpdateChecker> extraCheckers = Sets.newHashSet();
 	final List<VersionContainer> outdatedMods = Lists.newArrayList();
 	private boolean enabled = true;
 	private Thread thread;
@@ -65,7 +65,7 @@ public final class UpdateManager implements Runnable {
 	void markAsOutdated(VersionContainer data) {
 		this.outdatedMods.add(data);
 		SquidAPI.instance().info(data.getMod().getName(), " is outdated! Version ", data.getLatestVersion(), " is available!");
-		SquidAPI.instance().info("The new version may be obtained from: ", data.getMod().getMetadata().url);
+		SquidAPI.instance().info("The new version may be obtained from: ", data.getFriendlyUrl());
 	}
 
 	void disable() {
@@ -103,5 +103,13 @@ public final class UpdateManager implements Runnable {
 			}
 			event.buttonList.add(button);
 		}
+	}
+
+	public void registerUpdateChecker(UpdateChecker updateChecker) {
+		this.extraCheckers.add(updateChecker);
+	}
+
+	public List<VersionContainer> getOutdatedMods() {
+		return Lists.newArrayList(this.outdatedMods);
 	}
 }

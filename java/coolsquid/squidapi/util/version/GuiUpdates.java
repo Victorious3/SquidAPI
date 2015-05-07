@@ -5,6 +5,8 @@
 package coolsquid.squidapi.util.version;
 
 import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -15,13 +17,14 @@ import coolsquid.squidapi.util.io.WebUtils;
 public class GuiUpdates extends GuiBase {
 
 	private int showMessage;
+	private final File modFolder = new File("./mods");
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		int a = 0;
 		for (VersionContainer version: UpdateManager.INSTANCE.outdatedMods) {
-			GuiButton b = new GuiButtonMod(1, 0, this.height / 2 - 20 + a, version.getMod().getName() + " " + version, version.getMod().getMetadata().url);
+			GuiButton b = new GuiButtonMod(1, 0, this.height / 2 - 20 + a, version.getMod().getName() + " " + version, version.getFriendlyUrl());
 			b.xPosition = this.width / 2 - (b.width / 2);
 			if (version.getSeverity() >= 2) {
 				b.packedFGColour = 16711680;
@@ -33,6 +36,12 @@ public class GuiUpdates extends GuiBase {
 		button.yPosition = this.height - button.height - 10;
 		button.width = 50;
 		this.buttonList.add(button);
+		if (Desktop.isDesktopSupported()) {
+			GuiButton button2 = new GuiButton(2, this.width - 60, 0, "Mods");
+			button2.yPosition = this.height - button.height - 10;
+			button2.width = 50;
+			this.buttonList.add(button2);
+		}
 	}
 
 	@Override
@@ -58,7 +67,14 @@ public class GuiUpdates extends GuiBase {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		if (button.id == 1) {
+		if (button.id == 2) {
+			try {
+				Desktop.getDesktop().open(this.modFolder);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (button.id == 1) {
 			if (Desktop.isDesktopSupported()) {
 				WebUtils.openBrowser(((GuiButtonMod) button).getUrl());
 			}

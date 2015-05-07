@@ -10,12 +10,14 @@ import com.google.common.collect.Maps;
 
 public class DataSorter {
 
-	public static Map<String, String> sort(String[] data, String... keys) {
+	public static Map<String, String> sort(String data, String... keys) {
 		Map<String, String> result = Maps.newHashMap();
-		for (String s: data) {
+		String[] datas = data.split(";");
+		for (String s: datas) {
 			for (String key: keys) {
-				if (s.startsWith(key)) {
-					result.put(key, s.replaceFirst(key, ""));
+				if (s.startsWith(key + '(') && s.endsWith(")")) {
+					String s2 = s.replaceFirst(key, "");
+					result.put(key, s2.substring(1, s2.length() - 1));
 					continue;
 				}
 			}

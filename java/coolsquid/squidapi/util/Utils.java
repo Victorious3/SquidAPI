@@ -28,6 +28,8 @@ import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.formatting.WebSCFParser;
 import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidapi.util.math.IntUtils;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ICrashCallable;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
@@ -310,5 +312,30 @@ public class Utils {
 			}
 		}
 		return false;
+	}
+
+	private static List<ICrashCallable> callables;
+
+	public static List<ICrashCallable> getCrashCallables() {
+		if (callables == null) {
+			callables = ReflectionHelper.in(FMLCommonHandler.instance()).field("crashCallables", "crashCallables").get();
+		}
+		return callables;
+	}
+
+	public static void removeCrashCallable(String label) {
+		for (int a = 0; a < callables.size(); a++) {
+			if (!callables.get(a).getClass().getName().startsWith("coolsquid.") && callables.get(a).getLabel().equals(label)) {
+				callables.remove(a);
+			}
+		}
+	}
+
+	public static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] classes = new Class<?>[objects.length];
+		for (int a = 0; a < objects.length; a++) {
+			classes[a] = objects[a].getClass();
+		}
+		return classes;
 	}
 }

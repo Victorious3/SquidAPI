@@ -80,4 +80,9 @@ public class CommonHandler {
 	public void registerShutdownMessage(Message message) {
 		this.shutdownMessages.add(message);
 	}
+
+	@SuppressWarnings("deprecation")
+	public void registerLoginMessage(Object message) {
+		SquidAPI.instance().messages.add(message);
+	}
 }

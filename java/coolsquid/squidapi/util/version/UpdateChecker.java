@@ -23,8 +23,8 @@ public class UpdateChecker {
 
 	public void check() {
 		try {
-			Map<String, String> data = DataSorter.sort(WebUtils.readAll(this.url).split(":"), "v", "s");
-			VersionContainer sortedData = new VersionContainer(this.mod, data.get("v"), Byte.parseByte(data.get("s")));
+			Map<String, String> data = DataSorter.sort(WebUtils.readAll(this.url), "version", "severity", "url");
+			VersionContainer sortedData = new VersionContainer(this.mod, data.get("version"), Byte.parseByte(data.get("severity")), data.containsKey("url") ? data.get("url") : this.mod.getMetadata().url);
 			if (sortedData.getLatestVersionId() > IntUtils.parseInt(this.mod.getVersion())) {
 				UpdateManager.INSTANCE.markAsOutdated(sortedData);
 			}

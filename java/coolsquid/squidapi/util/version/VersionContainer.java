@@ -7,16 +7,18 @@ package coolsquid.squidapi.util.version;
 import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.ModContainer;
 
-class VersionContainer {
+public class VersionContainer {
 
 	private final ModContainer mod;
 	private final String version;
 	private final byte severity;
+	private final String friendlyUrl;
 
-	public VersionContainer(ModContainer mod, String version, byte severity) {
+	public VersionContainer(ModContainer mod, String version, byte severity, String friendlyUrl) {
 		this.mod = mod;
 		this.version = version;
 		this.severity = severity;
+		this.friendlyUrl = friendlyUrl;
 	}
 
 	public String getLatestVersion() {
@@ -29,6 +31,10 @@ class VersionContainer {
 
 	public byte getSeverity() {
 		return this.severity;
+	}
+
+	public String getFriendlyUrl() {
+		return this.friendlyUrl;
 	}
 
 	public ModContainer getMod() {

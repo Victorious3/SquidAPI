@@ -11,7 +11,7 @@ import coolsquid.squidapi.helpers.ExceptionHelper;
 
 public abstract class ConfigHandler {
 
-	protected final Configuration config;
+	protected Configuration config;
 
 	public ConfigHandler(File file) {
 		this.config = new Configuration(file);

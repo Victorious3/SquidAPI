@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.version;
 
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
@@ -11,10 +12,9 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.SquidAPI;
@@ -30,7 +30,7 @@ public final class UpdateManager implements Runnable {
 	public static final UpdateManager INSTANCE = new UpdateManager();
 
 	public final Set<UpdateChecker> extraCheckers = Sets.newHashSet();
-	final Set<VersionContainer> outdatedMods = Sets.newHashSet();
+	final List<VersionContainer> outdatedMods = Lists.newArrayList();
 	private boolean enabled = true;
 	private Thread thread;
 
@@ -73,6 +73,7 @@ public final class UpdateManager implements Runnable {
 	}
 
 	@SuppressWarnings("unchecked")
+	@SubscribeEvent
 	public void onGuiInit(InitGuiEvent event) {
 		if (event.gui instanceof GuiMainMenu) {
 			GuiButton button = new GuiButton(10, 10, 0, "Updates") {
@@ -101,13 +102,6 @@ public final class UpdateManager implements Runnable {
 				button.width += 5;
 			}
 			event.buttonList.add(button);
-		}
-	}
-
-	@SubscribeEvent
-	public void onDrawScreen(RenderGameOverlayEvent.Pre event) {
-		if (event.type == ElementType.DEBUG) {
-			event.setCanceled(true);
 		}
 	}
 }

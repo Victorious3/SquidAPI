@@ -22,8 +22,9 @@ public final class ModManager {
 
 	}
 
-	public void registerMod(String modid, SquidAPIMod mod) {
-		this.mods.register(modid, mod);
+	public void registerMod(SquidAPIMod mod) {
+		this.mods.register(mod.getModid(), mod);
+		mod.info("Registering SquidAPIMod ", mod.getModid(), ".");
 	}
 
 	public SquidAPIMod activeMod() {

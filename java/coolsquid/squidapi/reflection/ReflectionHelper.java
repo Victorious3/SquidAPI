@@ -54,18 +54,18 @@ public class ReflectionHelper {
 		return new MethodHelper(this.clazz, deobfname, obfname, params);
 	}
 
-	public FieldHelper field(String deobfname, String obfname) {
+	public FieldHelper field(String... names) {
 		if (this.object == null) {
-			return new FieldHelper(this.clazz, deobfname, obfname, false);
+			return new FieldHelper(this.clazz, names[0], names.length > 1 ? names[1] : names[0], false);
 		}
-		return new FieldHelper(this.object, deobfname, obfname, false);
+		return new FieldHelper(this.object, names[0], names.length > 1 ? names[1] : names[0], false);
 	}
 
-	public FieldHelper finalField(String deobfname, String obfname) {
+	public FieldHelper finalField(String... names) {
 		if (this.object == null) {
-			return new FieldHelper(this.clazz, deobfname, obfname, true);
+			return new FieldHelper(this.clazz, names[0], names.length > 1 ? names[1] : names[0], true);
 		}
-		return new FieldHelper(this.object, deobfname, obfname, true);
+		return new FieldHelper(this.object, names[0], names.length > 1 ? names[1] : names[0], true);
 	}
 
 	public <E> E newInstance(Object... params) {

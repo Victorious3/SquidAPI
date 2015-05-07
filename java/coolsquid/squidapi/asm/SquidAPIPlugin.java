@@ -54,17 +54,15 @@ public class SquidAPIPlugin implements IFMLLoadingPlugin, IClassTransformer {
 		if (name.startsWith("coolsquid.squidapi.")) {
 			hash += basicClass.length;
 		}
-		if (name.startsWith("coolsquid.") || name.startsWith("squidapimod.")) {
+		if (!ASMHelper.DEV && name.startsWith("coolsquid.") || name.startsWith("squidapimod.")) {
 			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
-			if (!ASMHelper.DEV) {
-				for (int i = 0; i < c.methods.size(); i++) {
-					List<AnnotationNode> as = c.methods.get(i).visibleAnnotations;
-					if (as != null) {
-						for (AnnotationNode a: as) {
-							if (a.desc.equals("Lcoolsquid/squidapi/annotation/DevOnly;")) {
-								c.methods.remove(i);
-								break;
-							}
+			for (int i = 0; i < c.methods.size(); i++) {
+				List<AnnotationNode> as = c.methods.get(i).visibleAnnotations;
+				if (as != null) {
+					for (AnnotationNode a: as) {
+						if (a.desc.equals("Lcoolsquid/squidapi/annotation/DevOnly;")) {
+							c.methods.remove(i);
+							break;
 						}
 					}
 				}

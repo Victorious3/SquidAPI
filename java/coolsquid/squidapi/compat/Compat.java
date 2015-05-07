@@ -20,7 +20,8 @@ public enum Compat {
 	RAILCRAFT("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
 	ENVIROMINE("enviromine"),
 	MINECRAFT("minecraft", true),
-	TICON("TConstruct");
+	TICON("TConstruct"),
+	MINETWEAKER("MineTweaker3");
 
 	private final boolean enabled;
 	private final Package api;

@@ -11,7 +11,7 @@ import coolsquid.squidapi.exception.ReflectionException;
 import coolsquid.squidapi.util.MiscLib;
 
 public class FieldHelper {
-	
+
 	private final Field field;
 	private final Object object;
 	private final boolean isfinal;
@@ -30,7 +30,7 @@ public class FieldHelper {
 		this.isfinal = isfinal;
 		this.field.setAccessible(true);
 	}
-	
+
 	FieldHelper(Object object, String deobfname, String obfname, boolean isfinal) {
 		this.object = object;
 		String name = obfname;
@@ -42,15 +42,7 @@ public class FieldHelper {
 			try {
 				f = object.getClass().getDeclaredField(name);
 			} catch (NoSuchFieldException | SecurityException e) {
-				Class<?> clazz2 = object.getClass().getSuperclass();
-				while (clazz2.getSuperclass() != Object.class) {
-					try {
-						f = clazz2.getDeclaredField(name);
-					} catch (NoSuchFieldException | SecurityException e2) {
-						clazz2 = clazz2.getSuperclass();
-						continue;
-					}
-				}
+				e.printStackTrace();
 			}
 		}
 		else {
@@ -60,7 +52,7 @@ public class FieldHelper {
 		this.field = f;
 		this.field.setAccessible(true);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <E> E get() {
 		try {
@@ -69,13 +61,13 @@ public class FieldHelper {
 			throw new ReflectionException();
 		}
 	}
-	
+
 	public FieldHelper set(Object replacement) {
 		try {
 			if (this.isfinal) {
 				Field m = Field.class.getDeclaredField("modifiers");
 				m.setAccessible(true);
-				m.setInt(this.field, this.field.getModifiers() - Modifier.FINAL);
+				m.setInt(this.field, this.field.getModifiers() & ~Modifier.FINAL);
 			}
 			this.field.set(this.object, replacement);
 		} catch (ReflectiveOperationException e) {

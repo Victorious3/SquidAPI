@@ -22,7 +22,7 @@ public class ModInfo {
 	 * The version.
 	 */
 
-	public static final String version = "1.1.9";
+	public static final String version = "1.1.11";
 
 	/**
 	 * The MC version to use this mod with.
@@ -40,5 +40,5 @@ public class ModInfo {
 	 * List of dependencies.
 	 */
 
-	public static final String dependencies = "after:ThermalExpansion;after:Botania;after:RotaryCraft;after:appliedenergistics2;after:WayOfTime;after:ThaumCraft;after:RailCraft";
+	public static final String dependencies = "after:ThermalExpansion;after:Botania;after:RotaryCraft;after:appliedenergistics2;after:WayOfTime;after:ThaumCraft;after:RailCraft;after:uptodate";
 }

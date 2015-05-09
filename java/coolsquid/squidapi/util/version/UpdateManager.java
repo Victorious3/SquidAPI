@@ -34,18 +34,16 @@ public final class UpdateManager implements Runnable, UpdaterAPI {
 
 	private final Set<UpdateChecker> updateCheckers = Sets.newHashSet();
 	private final List<VersionContainer> outdatedMods = Lists.newArrayList();
-	private boolean enabled = MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("updateChecker");
-	private Thread thread;
+	private final Thread thread;
 
 	public UpdateManager() {
-		if (this.enabled) {
-			MinecraftForge.EVENT_BUS.register(this);
-			this.thread = new Thread(this);
-		}
+		this.thread = new Thread(this);
 	}
 
 	public void start() {
-		if (this.enabled) {
+		boolean enabled = MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("updateChecker");
+		if (enabled) {
+			MinecraftForge.EVENT_BUS.register(this);
 			this.thread.start();
 		}
 	}
@@ -69,10 +67,6 @@ public final class UpdateManager implements Runnable, UpdaterAPI {
 		this.outdatedMods.add(data);
 		SquidAPI.instance().info(data.getMod().getName(), " is outdated! Version ", data.getLatestVersion(), " is available!");
 		SquidAPI.instance().info("The new version may be obtained from: ", data.getFriendlyUrl());
-	}
-
-	void disable() {
-		this.enabled = false;
 	}
 
 	@SideOnly(Side.CLIENT)

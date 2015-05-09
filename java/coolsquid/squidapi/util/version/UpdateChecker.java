@@ -39,7 +39,6 @@ public class UpdateChecker {
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
-			this.manager.disable();
 		}
 	}
 }

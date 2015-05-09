@@ -24,7 +24,8 @@ public enum Compat {
 	MINETWEAKER("MineTweaker3"),
 	SQUIDUTILS("SquidUtils", "coolsquid.squidutils.api", "2.0.0"),
 	STARSTONES("StarStones"),
-	SAFECHAT("SafeChat");
+	SAFECHAT("SafeChat"),
+	UPTODATE("uptodate");
 
 	private final boolean enabled;
 	private final Package api;

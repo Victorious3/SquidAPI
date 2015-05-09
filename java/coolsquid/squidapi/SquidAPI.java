@@ -97,6 +97,8 @@ public class SquidAPI extends SquidAPIMod {
 		this.info("Version id: ", this.hash(), ".");
 		this.info("File hash: ", SquidAPIPlugin.getHash(), ".");
 
+		this.runVersionChecker("http://pastebin.com/raw.php?i=Dnwxw2p8");
+
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
 

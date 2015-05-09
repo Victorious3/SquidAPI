@@ -33,6 +33,7 @@ import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidapi.util.math.Timer;
 import coolsquid.squidapi.util.objects.Suggestion;
+import coolsquid.squidapi.util.version.UpToDateable;
 import coolsquid.squidapi.util.version.Updateable;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModMetadata;
@@ -227,6 +228,12 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 
 	public Logger getLogger() {
 		return this.logger;
+	}
+
+	public void runVersionChecker(String url) {
+		if (Loader.isModLoaded("uptodate")) {
+			new UpToDateable(this.getName(), this.getVersion(), url).register();
+		}
 	}
 
 	private void log(Level level, Object... msg) {

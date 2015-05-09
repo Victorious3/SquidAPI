@@ -1,0 +1,16 @@
+[
+{
+  "modid": "SquidAPI",
+  "name": "SquidAPI",
+  "description": "Modding library.",
+  "version": "",
+  "mcversion": "",
+  "url": "http://www.curse.com/mc-mods/minecraft/227345-squidapi",
+  "updateUrl": "",
+  "authorList": ["CoolSquid"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

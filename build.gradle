@@ -44,3 +44,18 @@ jar {
         attributes 'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vm.vendor'] + ')'
     }
 }
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives sourcesJar
+    archives devJar
+}

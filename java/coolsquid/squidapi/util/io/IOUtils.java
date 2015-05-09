@@ -278,8 +278,8 @@ public class IOUtils {
 		}
 	}
 
-	public static SquidAPIFile newFile(String name) {
-		return new SquidAPIFile(name);
+	public static File newFile(String name) {
+		return new File(name);
 	}
 
 	public static String readAll(File file) {

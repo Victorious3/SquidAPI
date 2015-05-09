@@ -9,16 +9,20 @@ import cpw.mods.fml.common.ModContainer;
 
 public class VersionContainer {
 
-	private final ModContainer mod;
-	private final String version;
-	private final byte severity;
-	private final String friendlyUrl;
+	private ModContainer mod;
+	private String version;
+	private byte severity;
+	private String url;
 
-	public VersionContainer(ModContainer mod, String version, byte severity, String friendlyUrl) {
+	public VersionContainer() {
+
+	}
+
+	public VersionContainer(ModContainer mod, String version, byte severity, String url) {
 		this.mod = mod;
 		this.version = version;
 		this.severity = severity;
-		this.friendlyUrl = friendlyUrl;
+		this.url = url;
 	}
 
 	public String getLatestVersion() {
@@ -34,7 +38,7 @@ public class VersionContainer {
 	}
 
 	public String getFriendlyUrl() {
-		return this.friendlyUrl;
+		return this.url;
 	}
 
 	public ModContainer getMod() {

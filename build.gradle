@@ -1,18 +1,18 @@
 buildscript {
-	repositories {
-		mavenCentral()
-		maven {
-			name = "forge"
-			url = "http://files.minecraftforge.net/maven"
-		}
-		maven {
-			name = "sonatype"
-			url = "https://oss.sonatype.org/content/repositories/snapshots/"
-		}
-	}
-	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-	}
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+    }
 }
 
 apply plugin: "forge"
@@ -20,22 +20,27 @@ apply plugin: "forge"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-sourceSets {
-	main {
-		java { srcDirs = ["$projectDir/java"] }
-		resources { srcDirs = ["$projectDir/resources"] }
-	}
-}
-
-version = "1.1.10"
 group= "coolsquid"
 archivesBaseName = "SquidAPI"
-minecraft.version = "1.7.10-10.13.2.1272"
+version = modVersion
+minecraft.version = mcVer
+
+// Jenkins support
+if (System.env.BUILD_NUMBER != null) version = "$version.$System.env.BUILD_NUMBER"
+
+sourceSets {
+    main {
+        java { srcDirs = ["$projectDir/java"] }
+        resources { srcDirs = ["$projectDir/resources"] }
+    }
+}
 
 jar {
-	manifest {
+    manifest {
         attributes 'FMLAT': 'SquidAPI_at.cfg'
-		attributes 'FMLCorePlugin': 'coolsquid.squidapi.asm.SquidAPIPlugin'
-		attributes 'FMLCorePluginContainsFMLMod': 'true'
-	}
+        attributes 'FMLCorePlugin': 'coolsquid.squidapi.asm.SquidAPIPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'Built-By': System.properties['user.name']
+        attributes 'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vm.vendor'] + ')'
+    }
 }

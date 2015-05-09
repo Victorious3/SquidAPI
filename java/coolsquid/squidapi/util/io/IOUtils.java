@@ -270,6 +270,11 @@ public class IOUtils {
 			public String next() {
 				return this.line;
 			}
+
+			@Override
+			public void remove() {
+
+			}
 		}
 	}
 

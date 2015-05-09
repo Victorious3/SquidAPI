@@ -216,6 +216,11 @@ public class WebUtils {
 			public String next() {
 				return this.line;
 			}
+
+			@Override
+			public void remove() {
+
+			}
 		}
 	}
 

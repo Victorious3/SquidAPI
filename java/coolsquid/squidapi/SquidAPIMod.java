@@ -20,7 +20,7 @@ import coolsquid.squidapi.exception.IncompatibilityException;
 import coolsquid.squidapi.exception.JarZipError;
 import coolsquid.squidapi.exception.MisuseException;
 import coolsquid.squidapi.helpers.ExceptionHelper;
-import coolsquid.squidapi.logging.ILogger;
+import coolsquid.squidapi.logging.IExtendedLogger;
 import coolsquid.squidapi.mod.BaseMod;
 import coolsquid.squidapi.mod.SideOnly.ClientOnly;
 import coolsquid.squidapi.mod.SideOnly.ServerOnly;
@@ -29,6 +29,7 @@ import coolsquid.squidapi.util.Incompatibility.Severity;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.StringUtils;
+import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidapi.util.math.Timer;
 import coolsquid.squidapi.util.objects.Suggestion;
@@ -36,7 +37,7 @@ import coolsquid.squidapi.util.version.Updateable;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModMetadata;
 
-public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
+public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger {
 
 	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
 	private final int hashCode;
@@ -48,11 +49,48 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 		this(null);
 	}
 
-	public SquidAPIMod(String desc) {
-		this(desc, null, null, null);
+	public SquidAPIMod(int curseId) {
+		this(null, curseId);
 	}
 
-	public SquidAPIMod(String desc, List<String> authors, String credits, String url) {
+	public SquidAPIMod(String desc) {
+		this(desc, null);
+	}
+
+	public SquidAPIMod(String desc, int curseId) {
+		this(desc, null, curseId);
+	}
+
+	public SquidAPIMod(String desc, String url) {
+		this(desc, url, null);
+	}
+
+	public SquidAPIMod(String desc, String url, int curseId) {
+		this(desc, url, null, curseId);
+	}
+
+	public SquidAPIMod(String desc, String url, String updateUrl) {
+		this(desc, null, url, updateUrl);
+	}
+
+	public SquidAPIMod(String desc, String url, String updateUrl, int curseId) {
+		this(desc, null, url, updateUrl, curseId);
+	}
+
+	public SquidAPIMod(String desc, String credits, String url, String updateUrl) {
+		this(desc, null, credits, url, updateUrl);
+	}
+
+	public SquidAPIMod(String desc, String credits, String url, String updateUrl, int curseId) {
+		this(desc, null, credits, url, updateUrl, curseId);
+	}
+
+	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String updateUrl, int curseId) {
+		this(desc, authors, credits, url, updateUrl);
+		Utils.runVersionCheckerCompat(curseId);
+	}
+
+	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String updateUrl) {
 		super(Loader.instance().activeModContainer());
 
 		final byte prime = 31;
@@ -71,6 +109,7 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 		meta.authorList = authors != null ? authors : Lists.newArrayList("CoolSquid");
 		meta.description = desc != null ? desc : "";
 		meta.url = url != null ? url : "http://coolsquidmc.blogspot.no/";
+		meta.updateUrl = updateUrl != null ? updateUrl : "";
 
 		if (this instanceof ClientOnly && MiscLib.SERVER) {
 			throw new MisuseException(this.getName() + " is clientside only!");
@@ -179,23 +218,36 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 
 	@Override
 	public String getUrl() {
-		return this.getMetadata().updateUrl;
+		return this.getMetadata().updateUrl.isEmpty() ? null : this.getMetadata().updateUrl;
 	}
 
-	@Override
-	public void log(Level level, Object... msg) {
-		String a = StringUtils.newString(msg);
-		this.logger.log(level, a);
-		MiscLib.LOGGER.log(this.getName(), level, a, false);
+	public Timer getTimer() {
+		return this.timer;
 	}
 
 	public Logger getLogger() {
 		return this.logger;
 	}
 
+	private void log(Level level, Object... msg) {
+		String a = StringUtils.newString(msg);
+		this.logger.log(level, a);
+		MiscLib.LOGGER.log(this.getName(), level, a);
+	}
+
+	private void log(Level level, String msg) {
+		this.logger.log(level, msg);
+		MiscLib.LOGGER.log(this.getName(), level, msg);
+	}
+
 	@Override
 	public void info(Object... msg) {
 		this.log(Level.INFO, msg);
+	}
+
+	@Override
+	public void debug(Object... msg) {
+		this.log(Level.DEBUG, msg);
 	}
 
 	@Override
@@ -213,10 +265,29 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 		this.log(Level.FATAL, msg);
 	}
 
-	@Deprecated
 	@Override
-	public void log(String msg) {
-		throw new UnsupportedOperationException();
+	public void info(String msg) {
+		this.log(Level.INFO, msg);
+	}
+
+	@Override
+	public void debug(String msg) {
+		this.log(Level.DEBUG, msg);
+	}
+
+	@Override
+	public void warn(String msg) {
+		this.log(Level.WARN, msg);
+	}
+
+	@Override
+	public void error(String msg) {
+		this.log(Level.ERROR, msg);
+	}
+
+	@Override
+	public void fatal(String msg) {
+		this.log(Level.FATAL, msg);
 	}
 
 	public void bigWarning(Object... msg) {
@@ -233,11 +304,58 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 		return this.exceptionHelper;
 	}
 
-	public void error(Throwable t) {
-		this.exceptionHelper.log(t);
+	@Override
+	public void info(Throwable t) {
+		this.exceptionHelper.log(Level.INFO, t);
 	}
 
-	public Timer getTimer() {
-		return this.timer;
+	@Override
+	public void warn(Throwable t) {
+		this.exceptionHelper.log(Level.WARN, t);
+	}
+
+	@Override
+	public void error(Throwable t) {
+		this.exceptionHelper.log(Level.ERROR, t);
+	}
+
+	@Override
+	public void fatal(Throwable t) {
+		this.exceptionHelper.log(Level.FATAL, t);
+	}
+
+	@Override
+	public void info(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.info(object.toString());
+		}
+	}
+
+	@Override
+	public void debug(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.debug(object.toString());
+		}
+	}
+
+	@Override
+	public void warn(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.warn(object.toString());
+		}
+	}
+
+	@Override
+	public void error(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.error(object.toString());
+		}
+	}
+
+	@Override
+	public void fatal(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.fatal(object.toString());
+		}
 	}
 }

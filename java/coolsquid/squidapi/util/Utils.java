@@ -76,13 +76,17 @@ public class Utils {
 		return Loader.instance().getIndexedModList().get(modid);
 	}
 
+	public static void runVersionCheckerCompat(int id) {
+		runVersionCheckerCompat(String.valueOf(id));
+	}
+
 	public static void runVersionCheckerCompat(String id) {
 		if (Loader.isModLoaded("VersionChecker")) {
 			String modid = Loader.instance().activeModContainer().getModId();
 			SquidAPI.instance().info("Running VersionChecker compatibility for ", modid, ".");
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("curseProjectName", newString(id, "-", modid));
-			tag.setString("curseFilenameParser", newString(modid, "-[].jar"));
+			tag.setString("curseProjectName", StringUtils.newString(id, "-", modid));
+			tag.setString("curseFilenameParser", StringUtils.newString(modid, "-[].jar"));
 			sendModMessage("VersionChecker", "addCurseCheck", tag);
 		}
 	}

@@ -4,7 +4,6 @@
  *******************************************************************************/
 package coolsquid.squidapi.reflection;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import coolsquid.squidapi.util.StringUtils;
@@ -68,15 +67,9 @@ public class ReflectionHelper {
 		return new FieldHelper(this.object, names[0], names.length > 1 ? names[1] : names[0], true);
 	}
 
-	public <E> E newInstance(Object... params) {
-		Class<?>[] paramTypes = new Class<?>[params.length];
-		for (int a = 0; a < params.length; a++) {
-			paramTypes[a] = params[a].getClass();
-		}
+	public <E> E newInstance(Object... parameters) {
 		try {
-			Constructor<E> c = (Constructor<E>) this.clazz.getConstructor(paramTypes);
-			c.setAccessible(true);
-			return c.newInstance(params);
+			return (E) this.clazz.getConstructor(Utils.getClasses(parameters)).newInstance(parameters);
 		} catch (InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {

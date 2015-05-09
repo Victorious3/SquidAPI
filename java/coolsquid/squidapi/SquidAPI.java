@@ -52,6 +52,7 @@ import coolsquid.squidapi.util.collect.VanillaBlockRegistry;
 import coolsquid.squidapi.util.collect.VanillaItemRegistry;
 import coolsquid.squidapi.util.objects.TextureMapLogger;
 import coolsquid.squidapi.util.version.UpdateManager;
+import coolsquid.squidapi.util.version.UpdaterAPI;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -73,9 +74,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SquidAPI extends SquidAPIMod {
 
 	public static final CommonHandler COMMON = new CommonHandler();
+	public static final UpdaterAPI UPDATER = new UpdateManager();
 
 	public SquidAPI() {
-		super("An API for all my mods.");
+		super("An API for all my mods.", 227345);
 		this.setUpdateUrl("http://pastebin.com/raw.php?i=rPYGL0rZ");
 	}
 
@@ -121,8 +123,8 @@ public class SquidAPI extends SquidAPIMod {
 			ReflectionHelper.in(FMLCommonHandler.instance()).field("brandingsNoMC", "brandingsNoMC").set(Lists.newArrayList(branding));
 		}
 
-		if (!Loader.isModLoaded("DragonAPI") && Potion.potionTypes.length == 32) {
-			this.info("Changing the max potion id...");
+		if (Potion.potionTypes.length == 32) {
+			this.info("Changing the max potion id.");
 			Potion.potionTypes = Arrays.copyOf(Potion.potionTypes, 128);
 		}
 
@@ -151,8 +153,6 @@ public class SquidAPI extends SquidAPIMod {
 		if (MiscLib.SERVER) {
 			MinecraftForge.EVENT_BUS.register(new MonetizationHandler(ModManager.INSTANCE.getModids()));
 		}
-
-		Utils.runVersionCheckerCompat("227345");
 
 		for (SquidAPIMod mod: ModManager.INSTANCE.getMods()) {
 			mod.init();
@@ -186,9 +186,7 @@ public class SquidAPI extends SquidAPIMod {
 		this.getTimer().startTiming();
 		this.info("Postinitializing.");
 
-		if (MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("updateChecker")) {
-			UpdateManager.INSTANCE.checkAll();
-		}
+		((UpdateManager) UPDATER).start();
 
 		ContentRemover.removeContent();
 		IdHelper.saveIds();

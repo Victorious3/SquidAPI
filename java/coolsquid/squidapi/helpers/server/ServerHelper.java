@@ -153,7 +153,7 @@ public class ServerHelper {
 	}
 
 	public static void removeCommand(String name) {
-		if (!MiscLib.getBlacklist().contains(name)) {
+		if (MiscLib.getBlacklister(name) == null) {
 			getCommands().remove(name);
 		}
 	}

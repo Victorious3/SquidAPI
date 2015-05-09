@@ -21,7 +21,10 @@ public enum Compat {
 	ENVIROMINE("enviromine"),
 	MINECRAFT("minecraft", true),
 	TICON("TConstruct"),
-	MINETWEAKER("MineTweaker3");
+	MINETWEAKER("MineTweaker3"),
+	SQUIDUTILS("SquidUtils", "coolsquid.squidutils.api", "2.0.0"),
+	STARSTONES("StarStones"),
+	SAFECHAT("SafeChat");
 
 	private final boolean enabled;
 	private final Package api;

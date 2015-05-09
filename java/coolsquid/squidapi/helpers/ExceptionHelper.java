@@ -7,11 +7,13 @@ package coolsquid.squidapi.helpers;
 import java.io.File;
 
 import net.minecraft.crash.CrashReport;
+
+import org.apache.logging.log4j.Level;
+
 import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.util.DateUtils;
 import coolsquid.squidapi.util.ModManager;
 import coolsquid.squidapi.util.StringUtils;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class ExceptionHelper {
 
@@ -33,7 +35,7 @@ public class ExceptionHelper {
 		return new ExceptionHelper(logger);
 	}
 
-	public void log(Throwable t, CrashReport report, File file) {
+	public void log(Level level,Throwable t, CrashReport report, File file) {
 		report.saveToFile(file);
 
 		String marker = StringUtils.repeat('#', 70);
@@ -45,11 +47,11 @@ public class ExceptionHelper {
 		this.logger.error(marker);
 	}
 
-	public void log(Throwable t, File file) {
-		this.log(t, new CrashReport(t.toString(), t), file);
+	public void log(Level level, Throwable t, File file) {
+		this.log(level, t, new CrashReport(t.toString(), t), file);
 	}
 
-	public void log(Throwable t) {
-		this.log(t, new SquidAPIFile("./SquidAPI/errors/ErrorLog-" + DateUtils.getTime("h-m-s-d-M-y") + ".txt"));
+	public void log(Level level, Throwable t) {
+		this.log(level, t, new File("./SquidAPI/errors/ErrorLog-" + DateUtils.getTime("h-m-s-d-M-y") + ".txt"));
 	}
 }

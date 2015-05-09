@@ -11,9 +11,9 @@ import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemBase extends Item {
-	
+
 	public boolean isRepairable = false;
-	
+
 	public ItemBase(String name) {
 		String modid = Utils.getCurrentMod().getModId();
 		SquidAPI.instance().info("Registering item ", name, " from ", modid, ".");
@@ -21,11 +21,11 @@ public class ItemBase extends Item {
 		GameRegistry.registerItem(this, name);
 		this.setTextureName(StringUtils.newString(modid, ":", name));
 	}
-	
+
 	public int getMaxStackSize() {
 		return this.maxStackSize;
 	}
-	
+
 	@Override
 	public boolean isRepairable() {
 		return this.isRepairable;

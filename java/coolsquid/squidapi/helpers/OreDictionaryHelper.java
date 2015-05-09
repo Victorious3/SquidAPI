@@ -17,24 +17,25 @@ import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.exception.SquidAPIException;
 import coolsquid.squidapi.reflection.ReflectionHelper;
+import coolsquid.squidapi.util.io.IOUtils;
 
 public class OreDictionaryHelper {
-	
+
 	private static final ReflectionHelper r = ReflectionHelper.in(OreDictionary.class);
-	
+
 	public static final List<String> idToName() {
 		return r.field("idToName", "idToName").get();
 	}
-	
+
 	public static final Map<String, Integer> nameToId() {
 		return r.field("nameToId", "nameToId").get();
 	}
-	
+
 	public static void removeEntry(String name) {
 		idToName().remove(name);
 		nameToId().remove(name);
 	}
-	
+
 	public static void registerOres(String name, Object... ores) {
 		for (Object ore: ores) {
 			if (ore instanceof Item) {
@@ -51,12 +52,12 @@ public class OreDictionaryHelper {
 			}
 		}
 	}
-	
+
 	public static void dumpOres(File file) {
 		List<String> list = Lists.newArrayList();
 		for (String name: OreDictionary.getOreNames()) {
 			list.add(name);
 		}
-		FileHelper.writeFile(file, OreDictionary.getOreNames());
+		IOUtils.writeLines(file, (Object[]) OreDictionary.getOreNames());
 	}
 }

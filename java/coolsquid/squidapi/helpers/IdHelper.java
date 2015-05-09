@@ -21,16 +21,17 @@ import com.google.common.collect.Maps;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.exception.IdException;
+import coolsquid.squidapi.util.io.IOUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class IdHelper {
-	
+
 	private static final Map<String, Integer> biomenameToId;
 	private static final Map<Integer, BiomeGenBase> idToBiome = Maps.newHashMap();
-	
+
 	public static int findFreeBiomeId(String biomename) {
 		if (biomenameToId.containsKey(biomename)) {
-				return biomenameToId.get(biomename);
+			return biomenameToId.get(biomename);
 		}
 		for (int a = 0; a < 256; a++) {
 			BiomeGenBase b = BiomeGenBase.getBiomeGenArray()[a];
@@ -41,11 +42,11 @@ public class IdHelper {
 		}
 		throw new IdException("No free biome ids!");
 	}
-	
+
 	public static void registerBiome(BiomeGenBase biome) {
 		idToBiome.put(biome.biomeID, biome);
 	}
-	
+
 	public static void checkForConflicts() {
 		for (int a = 0; a < idToBiome.size(); a++) {
 			if (idToBiome.containsKey(a)) {
@@ -65,7 +66,7 @@ public class IdHelper {
 			}
 		}
 	}
-	
+
 	public static int findFreeEnchantmentId() {
 		for (int a = 0; a < Enchantment.enchantmentsList.length; a++) {
 			Enchantment e = Enchantment.enchantmentsList[a];
@@ -75,7 +76,7 @@ public class IdHelper {
 		}
 		throw new IdException("No free enchantment ids!");
 	}
-	
+
 	public static int findFreePotionId() {
 		for (int a = 0; a < Potion.potionTypes.length; a++) {
 			Potion p = Potion.potionTypes[a];
@@ -85,7 +86,7 @@ public class IdHelper {
 		}
 		throw new IdException("No free potion ids!");
 	}
-	
+
 	public static void checkBiomeId(int id) {
 		if (BiomeGenBase.getBiomeGenArray()[id] != null) {
 			SquidAPI.instance().bigWarning(Level.WARN, "Found biome id conflict!");
@@ -109,10 +110,10 @@ public class IdHelper {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static {
 		biomenameToId = Maps.newHashMap();
-		for (String string: FileHelper.readFile(new File("./config/SquidAPI/"), new File("./config/SquidAPI/biomes.cfg"))) {
+		for (String string: IOUtils.newReader("./config/SquidAPI/biomes.cfg")) {
 			String[] strings = string.split(" : ");
 			try {
 				biomenameToId.put(strings[0], Integer.parseInt(strings[1]));

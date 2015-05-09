@@ -9,8 +9,8 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
+import coolsquid.squidapi.compat.EnumBlacklist;
 import coolsquid.squidapi.logging.Logger;
-import coolsquid.squidapi.util.collect.Blacklist;
 import coolsquid.squidapi.util.collect.SquidAPIProperties;
 import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -34,12 +34,10 @@ public class MiscLib {
 	public static final boolean SERVER = FMLCommonHandler.instance().getSide().equals(Side.SERVER);
 	public static final Side SIDE = FMLCommonHandler.instance().getSide();
 
-	private static final Blacklist<String> BLACKLIST = Blacklist.newInstance("Reika", "RotaryCraft", "ReactorCraft", "ElectriCraft", "ChromatiCraft");
-
 	public static final boolean DEBUG = false;
 
-	public static Blacklist<String> getBlacklist() {
-		return BLACKLIST;
+	public static EnumBlacklist[] getBlacklist() {
+		return EnumBlacklist.values();
 	}
 
 	public static String getBlacklister(Object object) {
@@ -54,8 +52,10 @@ public class MiscLib {
 			String a = object.getClass().getName();
 			name = a.substring(0, a.indexOf('.') - 1);
 		}
-		if (getBlacklist().contains(name)) {
-			return name;
+		for (EnumBlacklist entry: EnumBlacklist.values()) {
+			if (entry.getName().equals(name)) {
+				return name;
+			}
 		}
 		return null;
 	}

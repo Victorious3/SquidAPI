@@ -4,8 +4,8 @@
  *******************************************************************************/
 package coolsquid.squidapi.helpers;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,62 +14,72 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
-
-import com.google.common.collect.Lists;
-
 import coolsquid.squidapi.util.StringUtils;
+import coolsquid.squidapi.util.io.IOUtils;
 
 public class RecipeHelper {
-	
+
 	public static void dumpAllRecipes(File file) {
-		List<String> list = Lists.newArrayList();
-		for (Object a: CraftingManager.getInstance().getRecipeList()) {
-			if (a instanceof ShapedRecipes) {
-				ShapedRecipes b = (ShapedRecipes) a;
-				StringBuilder c = StringUtils.builder();
-				c.append(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
-				c.append(" = ");
-				for (ItemStack d: b.recipeItems) {
-					if (d != null) {
-						c.append(Item.itemRegistry.getNameForObject(d.getItem()));
-						c.append(", ");
+		try {
+			BufferedWriter w = IOUtils.newWriter(file);
+			for (Object a: CraftingManager.getInstance().getRecipeList()) {
+				if (a instanceof ShapedRecipes) {
+					ShapedRecipes b = (ShapedRecipes) a;
+					StringBuilder c = StringUtils.builder();
+					c.append(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
+					c.append(" = ");
+					for (ItemStack d: b.recipeItems) {
+						if (d != null) {
+							c.append(Item.itemRegistry.getNameForObject(d.getItem()));
+							c.append(", ");
+						}
+					}
+					String d = c.substring(0, c.length() - 2);
+					w.write(d);
+					w.newLine();
+				}
+				else if (a instanceof ShapelessRecipes) {
+					ShapelessRecipes b = (ShapelessRecipes) a;
+					StringBuilder c = StringUtils.builder();
+					c.append(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
+					c.append(" = ");
+					for (Object d: b.recipeItems) {
+						ItemStack e = (ItemStack) d;
+						if (d != null) {
+							c.append(Item.itemRegistry.getNameForObject(e.getItem()));
+							c.append(", ");
+						}
+					}
+					String d = c.substring(0, c.length() - 2);
+					w.write(d);
+					w.newLine();
+				}
+				else {
+					IRecipe b = (IRecipe) a;
+					if (b.getRecipeOutput() != null) {
+						w.write(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
+						w.newLine();
 					}
 				}
-				String d = c.substring(0, c.length() - 2);
-				list.add(d);
 			}
-			else if (a instanceof ShapelessRecipes) {
-				ShapelessRecipes b = (ShapelessRecipes) a;
-				StringBuilder c = StringUtils.builder();
-				c.append(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
-				c.append(" = ");
-				for (Object d: b.recipeItems) {
-					ItemStack e = (ItemStack) d;
-					if (d != null) {
-						c.append(Item.itemRegistry.getNameForObject(e.getItem()));
-						c.append(", ");
-					}
-				}
-				String d = c.substring(0, c.length() - 2);
-				list.add(d);
-			}
-			else {
-				IRecipe b = (IRecipe) a;
-				if (b.getRecipeOutput() != null) {
-					list.add(Item.itemRegistry.getNameForObject(b.getRecipeOutput().getItem()));
-				}
-			}
+			w.close();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
-		FileHelper.writeFile(file, list);
 	}
-	
+
 	public static void dumpAllSmeltingRecipes(File file) {
-		List<String> list = Lists.newArrayList();
-		for (Object a: FurnaceRecipes.smelting().getSmeltingList().keySet()) {
-			ItemStack b = (ItemStack) a;
-			ItemStack c = (ItemStack) FurnaceRecipes.smelting().getSmeltingList().get(b);
-			list.add(Item.itemRegistry.getNameForObject(b.getItem()) + " = " + Item.itemRegistry.getNameForObject(c.getItem()));
+		try {
+			BufferedWriter w = IOUtils.newWriter(file);
+			for (Object a: FurnaceRecipes.smelting().getSmeltingList().keySet()) {
+				ItemStack b = (ItemStack) a;
+				ItemStack c = (ItemStack) FurnaceRecipes.smelting().getSmeltingList().get(b);
+				w.write(Item.itemRegistry.getNameForObject(b.getItem()) + " = " + Item.itemRegistry.getNameForObject(c.getItem()));
+				w.newLine();
+			}
+			w.close();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
-		FileHelper.writeFile(file, list);
 	}
 }

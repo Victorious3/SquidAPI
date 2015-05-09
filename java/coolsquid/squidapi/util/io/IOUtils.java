@@ -96,14 +96,18 @@ public class IOUtils {
 		return new BufferedWriter(new OutputStreamWriter(newOutputStream(file)));
 	}
 
-	public static void writeLines(File file, Iterable<String> lines) {
+	public static BufferedWriter newWriter(String file) {
+		return new BufferedWriter(new OutputStreamWriter(newOutputStream(new File(file))));
+	}
+
+	public static void writeLines(File file, Iterable<? extends Object> lines) {
 		if (file == null) {
 			throw new IllegalArgumentException();
 		}
 		BufferedWriter a = newWriter(newOutputStream(file));
 		try {
-			for (String b: lines) {
-				a.write(b);
+			for (Object b: lines) {
+				a.write(b.toString());
 				a.newLine();
 			}
 			a.close();
@@ -279,5 +283,17 @@ public class IOUtils {
 			b.append(line);
 		}
 		return b.toString();
+	}
+
+	public static FileReader newReader(String file) {
+		return newReader(newFile(file));
+	}
+
+	public static Set<String> readLines(String file) {
+		return readLines(newFile(file));
+	}
+
+	public static void writeLines(String file, Iterable<? extends Object> lines) {
+		writeLines(newFile(file), lines);
 	}
 }

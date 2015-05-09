@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.version;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Set;
 
@@ -18,47 +19,49 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public final class UpdateManager implements Runnable {
+public final class UpdateManager implements Runnable, UpdaterAPI {
 
-	public static final UpdateManager INSTANCE = new UpdateManager();
+	@Deprecated
+	public static final UpdaterAPI INSTANCE = SquidAPI.UPDATER;
 
-	private final Set<UpdateChecker> extraCheckers = Sets.newHashSet();
-	final List<VersionContainer> outdatedMods = Lists.newArrayList();
-	private boolean enabled = true;
+	private final Set<UpdateChecker> updateCheckers = Sets.newHashSet();
+	private final List<VersionContainer> outdatedMods = Lists.newArrayList();
+	private boolean enabled = MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("updateChecker");
 	private Thread thread;
 
-	private UpdateManager() {
+	public UpdateManager() {
 		if (this.enabled) {
 			MinecraftForge.EVENT_BUS.register(this);
 			this.thread = new Thread(this);
 		}
 	}
 
-	public void checkAll() {
-		this.thread.start();
+	public void start() {
+		if (this.enabled) {
+			this.thread.start();
+		}
 	}
 
 	@Override
 	public void run() {
-		if (this.enabled) {
-			for (ModContainer mod: Loader.instance().getActiveModList()) {
-				if (mod.getMod() instanceof Updateable) {
-					String url = ((Updateable) mod.getMod()).getUrl();
-					if (url != null) {
-						new UpdateChecker(mod, url).check();
-					}
+		for (ModContainer mod: Loader.instance().getActiveModList()) {
+			if (mod.getMod() instanceof Updateable) {
+				String url = ((Updateable) mod.getMod()).getUrl();
+				if (url != null) {
+					new UpdateChecker(mod, url, this).check();
 				}
 			}
-			for (UpdateChecker checker: this.extraCheckers) {
-				checker.check();
-			}
+		}
+		for (UpdateChecker checker: this.updateCheckers) {
+			checker.check();
 		}
 	}
 
@@ -72,6 +75,7 @@ public final class UpdateManager implements Runnable {
 		this.enabled = false;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public void onGuiInit(InitGuiEvent event) {
@@ -79,7 +83,7 @@ public final class UpdateManager implements Runnable {
 			GuiButton button = new GuiButton(10, 10, 0, "Updates") {
 				@Override
 				public void mouseReleased(int p_146118_1_, int p_146118_2_) {
-					GuiScreen screen = new GuiUpdates();
+					GuiScreen screen = new GuiUpdates(UpdateManager.this.outdatedMods);
 					Minecraft.getMinecraft().displayGuiScreen(screen);
 				}
 			};
@@ -93,23 +97,35 @@ public final class UpdateManager implements Runnable {
 			}
 			if (severity == 2) {
 				button.displayString = "Updates!";
-				button.packedFGColour = 16711680;
+				button.packedFGColour = Color.YELLOW.getRGB();
 				button.width += 2;
 			}
 			else if (severity >= 3) {
 				button.displayString = "Updates!!!";
-				button.packedFGColour = 16711680;
+				button.packedFGColour = Color.RED.getRGB();
 				button.width += 5;
 			}
 			event.buttonList.add(button);
 		}
 	}
 
-	public void registerUpdateChecker(UpdateChecker updateChecker) {
-		this.extraCheckers.add(updateChecker);
-	}
-
+	@Override
 	public List<VersionContainer> getOutdatedMods() {
 		return Lists.newArrayList(this.outdatedMods);
+	}
+
+	@Override
+	public void registerUpdateChecker(UpdateChecker updateChecker) {
+		this.updateCheckers.add(updateChecker);
+	}
+
+	@Override
+	public void registerUpdateChecker(ModContainer mod, String url) {
+		this.registerUpdateChecker(new UpdateChecker(mod, url, this));
+	}
+
+	@Override
+	public void registerUpdateChecker(String url) {
+		this.registerUpdateChecker(Utils.getCurrentMod(), url);
 	}
 }

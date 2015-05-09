@@ -23,6 +23,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.compat.EnumBlacklist;
 import coolsquid.squidapi.helpers.FishingHelper;
 import coolsquid.squidapi.helpers.VillageHelper;
 import coolsquid.squidapi.util.math.IntUtils;
@@ -32,23 +33,21 @@ public class ContentRemover {
 
 	private static final List<Item> recipesToRemove = new ArrayList<Item>();
 	private static final Set<Item> furnaceRecipesToRemove = Sets.newHashSet();
-	
+
 	public static boolean isBlacklistedModLoaded() {
-		for (String mod: MiscLib.getBlacklist()) {
-			if (Loader.isModLoaded(mod)) {
+		for (EnumBlacklist entry: MiscLib.getBlacklist()) {
+			if (Loader.isModLoaded(entry.getName())) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public static void remove(String name, ContentType type) {
-		for (String mod: MiscLib.getBlacklist()) {
-			if (name.startsWith(mod + ":")) {
-				String content = type.toString() + " " + name;
-				SquidAPI.instance().warn(mod + " has requested to be blacklisted from content removal. " + content + " will not be removed.");
-				return;
-			}
+		if (MiscLib.getBlacklister(name) != null) {
+			String content = type.toString() + " " + name;
+			SquidAPI.instance().warn(MiscLib.getBlacklister(name) + " has requested to be blacklisted from content removal. " + content + " will not be removed.");
+			return;
 		}
 		if (type == ContentType.RECIPE) {
 			recipesToRemove.add((Item) Item.itemRegistry.getObject(name));
@@ -93,10 +92,10 @@ public class ContentRemover {
 		else if (type == ContentType.SMELTING) {
 			furnaceRecipesToRemove.add((Item) Item.itemRegistry.getObject(name));
 		}
-		
+
 		SquidAPI.instance().info("Removed ", type, " ", name, ".");
 	}
-	
+
 	public enum ContentType {
 		RECIPE,
 		FISH,
@@ -107,11 +106,11 @@ public class ContentRemover {
 		PROFESSION,
 		SMELTING;
 	}
-	
+
 	/**
 	 * Removes recipes for all blocks in the recipesToRemove list.
 	 */
-	
+
 	public static void removeContent() {
 		if (!recipesToRemove.isEmpty()) {
 			for (int a = 0; a < CraftingManager.getInstance().getRecipeList().size(); a++) {

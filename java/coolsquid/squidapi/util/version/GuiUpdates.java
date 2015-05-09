@@ -4,30 +4,43 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.version;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import coolsquid.squidapi.client.gui.GuiBase;
 import coolsquid.squidapi.util.io.WebUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiUpdates extends GuiBase {
 
 	private int showMessage;
 	private final File modFolder = new File("./mods");
+	private final List<VersionContainer> outdatedMods;
+
+	public GuiUpdates(List<VersionContainer> outdatedMods) {
+		this.outdatedMods = outdatedMods;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		int a = 0;
-		for (VersionContainer version: UpdateManager.INSTANCE.outdatedMods) {
+		for (VersionContainer version: this.outdatedMods) {
 			GuiButton b = new GuiButtonMod(1, 0, this.height / 2 - 20 + a, version.getMod().getName() + " " + version, version.getFriendlyUrl());
 			b.xPosition = this.width / 2 - (b.width / 2);
-			if (version.getSeverity() >= 2) {
-				b.packedFGColour = 16711680;
+			if (version.getSeverity() >= 3) {
+				b.packedFGColour = Color.RED.getRGB();
+			}
+			else if (version.getSeverity() == 2) {
+				b.packedFGColour = Color.YELLOW.getRGB();
 			}
 			this.buttonList.add(b);
 			a += b.height + 4;
@@ -48,7 +61,7 @@ public class GuiUpdates extends GuiBase {
 	public void drawScreen(int mouseRelX, int mouseRelY, float tickTime) {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseRelX, mouseRelY, tickTime);
-		if (UpdateManager.INSTANCE.outdatedMods.isEmpty()) {
+		if (this.outdatedMods.isEmpty()) {
 			this.drawString("No updates available.", this.width / 2, this.height / 2);
 		}
 		else {

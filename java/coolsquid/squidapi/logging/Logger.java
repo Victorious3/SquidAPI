@@ -18,14 +18,14 @@ import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.Utils;
 
 public class Logger implements ILogger {
-	
+
 	protected final File file;
 	protected final boolean usetime;
 
 	public Logger(File file) {
 		this(file, false);
 	}
-	
+
 	public Logger(File file, boolean usetime) {
 		this.file = file;
 		this.usetime = usetime;
@@ -65,21 +65,17 @@ public class Logger implements ILogger {
 	 * @param message - The message.
 	 * @param print - Decides if the message should be printed to the console.
 	 */
-	
-	public void log(String caller, Level level, String message, boolean print) {
+
+	public void log(String caller, Level level, String message) {
 		String time = this.timeformat.format(Calendar.getInstance().getTime());
 		String line = StringUtils.newString("[", time, "]", "[", caller, "]", "[", level, "]: ", message);
 		this.write(line);
-		if (print) {
-			System.out.println(line);
-		}
 	}
 
-	@Override
 	public void log(String msg) {
 		this.write(msg);
 	}
-	
+
 	public void log(Throwable t) {
 		this.write(StringUtils.repeat('#', 30));
 		this.write(StringUtils.newString(t.getClass().getName(), ": ", t.getMessage()));
@@ -87,24 +83,28 @@ public class Logger implements ILogger {
 			this.write(StringUtils.newString(s.getClassName(), ":", s.getMethodName(), ":", s.getLineNumber()));
 		}
 	}
-	
+
 	public static class LoggingException extends SquidAPIException {
-		
+
 		private static final long serialVersionUID = 528745347;
-				
+
 		public LoggingException(String s2) {
 			super(s2);
 		}
 	}
 
-	@Override
 	public void log(Level level, Object... msg) {
-		this.log(Utils.getCurrentMod().getName(), level, StringUtils.newString(msg), false);
+		this.log(Utils.getCurrentMod().getName(), level, StringUtils.newString(msg));
 	}
 
 	@Override
 	public void info(Object... msg) {
 		this.log(Level.INFO, msg);
+	}
+
+	@Override
+	public void debug(Object... msg) {
+		this.log(Level.DEBUG, msg);
 	}
 
 	@Override
@@ -120,5 +120,65 @@ public class Logger implements ILogger {
 	@Override
 	public void fatal(Object... msg) {
 		this.log(Level.FATAL, msg);
+	}
+
+	@Override
+	public void info(String msg) {
+		this.log(Utils.getCurrentMod().getName(), Level.INFO, msg);
+	}
+
+	@Override
+	public void debug(String msg) {
+		this.log(Level.DEBUG, msg);
+	}
+
+	@Override
+	public void warn(String msg) {
+		this.log(Utils.getCurrentMod().getName(), Level.INFO, msg);
+	}
+
+	@Override
+	public void error(String msg) {
+		this.log(Utils.getCurrentMod().getName(), Level.INFO, msg);
+	}
+
+	@Override
+	public void fatal(String msg) {
+		this.log(Utils.getCurrentMod().getName(), Level.INFO, msg);
+	}
+
+	@Override
+	public void info(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.info(object.toString());
+		}
+	}
+
+	@Override
+	public void debug(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.debug(object.toString());
+		}
+	}
+
+	@Override
+	public void warn(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.warn(object.toString());
+		}
+	}
+
+	@Override
+	public void error(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.error(object.toString());
+		}
+	}
+
+	@Override
+	public void fatal(Iterable<?> msg) {
+		for (Object object: msg) {
+			this.fatal(object.toString());
+		}
 	}
 }

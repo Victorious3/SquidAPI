@@ -14,66 +14,88 @@ public enum Compat {
 	THERMALEXPANSION("ThermalExpansion"),
 	BOTANIA("Botania", "vazkii.botania.api", "35"),
 	ROTARYCRAFT("RotaryCraft"),
-	APPLIEDENERGISTICS2("appliedenergistics2", "appeng.api", "rv2"),
 	BLOODMAGIC("AWWayofTime"),
-	THAUMCRAFT("ThaumCraft", "thaumcraft.api", "4.2.2.0"),
 	RAILCRAFT("RailCraft", "mods.railcraft.api.crafting", "1.0.0"),
-	ENVIROMINE("enviromine"),
 	MINECRAFT("minecraft", true),
 	TICON("TConstruct"),
 	MINETWEAKER("MineTweaker3"),
 	SQUIDUTILS("SquidUtils", "coolsquid.squidutils.api", "2.0.0"),
 	STARSTONES("StarStones"),
 	SAFECHAT("SafeChat"),
-	UPTODATE("uptodate");
+	UPTODATE("uptodate"),
+	FORGEUPDATER("forgeupdater"),
+	VERSIONCHECKER("VersionChecker");
 
+	private final String modid;
 	private final boolean enabled;
-	private final Package api;
-	private final int version;
+	private final API api;
 
 	private Compat(String modid) {
+		this.modid = modid;
 		this.enabled = Loader.isModLoaded(modid);
 		this.api = null;
-		this.version = 0;
 		if (this.enabled) {
-			SquidAPI.instance().info(modid, " is loaded. Enabling ", modid, " compatibility.");
+			SquidAPI.instance().info(modid + " is loaded. Enabling " + modid + " compatibility.");
 		}
 		else {
-			SquidAPI.instance().info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
+			SquidAPI.instance().info(modid + " is not loaded. Not enabling " + modid + " compatibility.");
 		}
 	}
 
 	private Compat(String modid, String api, String version) {
+		this.modid = modid;
 		this.enabled = Loader.isModLoaded(modid);
-		this.api = Package.getPackage(api);
-		this.version = IntUtils.parseInt(version);
 		if (this.enabled) {
-			this.checkAPI();
-			SquidAPI.instance().info(modid, " is loaded. Enabling ", modid, " compatibility.");
+			this.api = Package.getPackage(api).getAnnotation(API.class);
+			this.checkAPI(version);
+			SquidAPI.instance().info(modid + " is loaded. Enabling " + modid + " compatibility.");
 		}
 		else {
-			SquidAPI.instance().info(modid, " is not loaded. Not enabling ", modid, " compatibility.");
+			this.api = null;
+			SquidAPI.instance().info(modid + " is not loaded. Not enabling " + modid + " compatibility.");
 		}
 	}
 
 	private Compat(String modid, boolean isEnabled) {
+		this.modid = modid;
 		this.enabled = isEnabled;
 		this.api = null;
-		this.version = 0;
+	}
+
+	private Compat(String modid, boolean isEnabled, String api, String version) {
+		this.modid = modid;
+		this.enabled = isEnabled;
+		this.api = Package.getPackage(api).getAnnotation(API.class);
+		if (this.enabled) {
+			this.checkAPI(version);
+			SquidAPI.instance().info(modid + " is loaded. Enabling " + modid + " compatibility.");
+		}
+		else {
+			SquidAPI.instance().info(modid + " is not loaded. Not enabling " + modid + " compatibility.");
+		}
+	}
+
+	public String getModid() {
+		return this.modid;
+	}
+
+	public API getAPI() {
+		return this.api;
 	}
 
 	public boolean isEnabled() {
 		return this.enabled;
 	}
 
-	private void checkAPI() {
+	private void checkAPI(String version) {
 		try {
-			int versionnumber = IntUtils.parseInt(this.api.getAnnotation(API.class).apiVersion());
-			if (versionnumber > this.version) {
-				SquidAPI.instance().warn("The version of ", this.toString(), " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
+			int versionId = IntUtils.parseInt(version);
+			int versionId2 = IntUtils.parseInt(this.api.apiVersion());
+			if (versionId2 > versionId) {
+				SquidAPI.instance().warn("The version of " + this.toString() + " loaded is newer than the version SquidAPI was made with. Problems may occur. Please contact CoolSquid.");
 			}
-			else if (versionnumber < this.version) {
-				SquidAPI.instance().warn("The version of ", this.toString(), " loaded is older than the version SquidAPI was made with. Problems may occur. Please update ", this.toString(), ".");
+			else if (versionId2 < versionId) {
+				SquidAPI.instance().warn("The version of " + this.toString() + " loaded is older than the version SquidAPI was made with. Problems may occur. Please update " + this.toString() + ".");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

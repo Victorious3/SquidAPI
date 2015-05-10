@@ -71,7 +71,7 @@ public class ModEventHandler {
 		}
 		String user = Minecraft.getMinecraft().getSession().getUsername();
 		if (MiscLib.NICKNAMES.containsKey(user) && MiscLib.SETTINGS.getBoolean("easterEggs")) {
-			SquidAPI.instance().info("Bye, ", MiscLib.NICKNAMES.getProperty(user), "!");
+			SquidAPI.instance().info("Bye, " + MiscLib.NICKNAMES.getProperty(user) + '!');
 		}
 		for (Message message: SquidAPI.COMMON.shutdownMessages) {
 			SquidAPI.instance().info(message.getFormattedMessage());

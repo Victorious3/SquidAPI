@@ -27,7 +27,7 @@ public abstract class ConfigHandler {
 	}
 
 	public void init() {
-		this.logger.info("Loading ", this.config.getConfigFile().getName(), '.');
+		this.logger.info("Loading " + this.config.getConfigFile().getName() + '.');
 		this.config.load();
 		try {
 			this.loadConfig();
@@ -37,7 +37,7 @@ public abstract class ConfigHandler {
 		if (this.config.hasChanged()) {
 			this.config.save();
 		}
-		this.logger.info("Finished loading ", this.config.getConfigFile().getName(), '.');
+		this.logger.info("Finished loading " + this.config.getConfigFile().getName() + '.');
 	}
 
 	public abstract void loadConfig();
@@ -47,7 +47,7 @@ public abstract class ConfigHandler {
 	}
 
 	public void setProperty(String category, String key, String description, String value) {
-		this.logger.info("Setting the property '", key, "' to '", value, '\'');
+		this.logger.info("Setting the property '" + key + "' to '" + value + '\'');
 		this.config.get(category, key, value, description).set(value);
 		if (this.config.hasChanged()) {
 			this.config.save();

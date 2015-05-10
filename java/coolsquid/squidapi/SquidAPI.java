@@ -94,8 +94,8 @@ public class SquidAPI extends SquidAPIMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		this.getTimer().startTiming();
 		this.info("Preinitializing.");
-		this.info("Version id: ", this.hash(), ".");
-		this.info("File hash: ", SquidAPIPlugin.getHash(), ".");
+		this.info("Version id: " + this.hash() + '.');
+		this.info("File hash: " + SquidAPIPlugin.getHash() + '.');
 
 		VanillaBlockRegistry.instance();
 		VanillaItemRegistry.instance();
@@ -136,7 +136,7 @@ public class SquidAPI extends SquidAPIMod {
 			mod.preInit();
 		}
 
-		MiscLib.LOGGER.info("Preinitialization took ", this.getTimer().stopTiming(), "ms.");
+		MiscLib.LOGGER.info("Preinitialization took " + this.getTimer().stopTiming() + "ms.");
 		this.info("Finished preinitialization.");
 	}
 
@@ -257,7 +257,7 @@ public class SquidAPI extends SquidAPIMod {
 		String name = command.getCommandName();
 		if (this.commandConfig.get(name, "enabled", true).getBoolean()) {
 			ClientCommandHandler.instance.registerCommand(command);
-			this.info("Registering clientside command ", name, ".");
+			this.info("Registering clientside command " + name + '.');
 		}
 	}
 
@@ -265,7 +265,7 @@ public class SquidAPI extends SquidAPIMod {
 		String name = command.getCommandName();
 		if (name != null && this.commandConfig.get(name, "enabled", true).getBoolean()) {
 			ServerHelper.registerCommand(command);
-			this.info("Registering serverside command ", name, ".");
+			this.info("Registering serverside command " + name + '.');
 		}
 	}
 }

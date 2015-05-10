@@ -22,6 +22,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.reflection.ReflectionHelper;
@@ -34,6 +35,7 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameData;
 
@@ -81,13 +83,17 @@ public class Utils {
 	}
 
 	public static void runVersionCheckerCompat(String id) {
-		if (Loader.isModLoaded("VersionChecker")) {
-			String modid = Loader.instance().activeModContainer().getModId();
-			SquidAPI.instance().info("Running VersionChecker compatibility for ", modid, ".");
+		if (Compat.VERSIONCHECKER.isEnabled()) {
+			String name = Loader.instance().activeModContainer().getName();
+			SquidAPI.instance().info("Running VersionChecker compatibility for " + name + '.');
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("curseProjectName", StringUtils.newString(id, "-", modid));
-			tag.setString("curseFilenameParser", StringUtils.newString(modid, "-[].jar"));
-			sendModMessage("VersionChecker", "addCurseCheck", tag);
+			tag.setString("curseProjectName", id + "-" + name);
+			tag.setString("curseFilenameParser", name + "-[].jar");
+			FMLInterModComms.sendMessage(Compat.VERSIONCHECKER.getModid(), "addCurseCheck", tag);
+		}
+		if (Compat.FORGEUPDATER.isEnabled()) {
+			String name = Loader.instance().activeModContainer().getName();
+			FMLInterModComms.sendMessage(Compat.FORGEUPDATER.getModid(), "updaterInfo", "{id='[" + id + '-' + name + "]', formats=['" + name + "-$v.jar']}");
 		}
 	}
 
@@ -341,5 +347,12 @@ public class Utils {
 			classes[a] = objects[a].getClass();
 		}
 		return classes;
+	}
+
+	public static String metaToString(ModMetadata meta) {
+		return "ModMetadata [modId=" + meta.modId + ", name=" + meta.name + ", description="
+				+ meta.description + ", url=" + meta.url + ", updateUrl=" + meta.updateUrl
+				+ ", version=" + meta.version + ", credits=" + meta.credits
+				+ ", dependencies=" + meta.dependencies + "]";
 	}
 }

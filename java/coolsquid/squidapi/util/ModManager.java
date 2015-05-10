@@ -24,8 +24,8 @@ public final class ModManager {
 
 	public void registerMod(SquidAPIMod mod) {
 		this.mods.register(mod.getModid(), mod);
-		mod.info("Registering SquidAPIMod ", mod.getName(), ".");
-		mod.info("Copyright (C) ", mod.getMetadata().getAuthorList(), ", 2015. ", mod.getName(), " is provided \"AS IS\", with no warranties");
+		mod.info("Registering SquidAPIMod " + mod.getName() + ".");
+		mod.info("Copyright (C) " + mod.getMetadata().getAuthorList() + ", 2015. " + mod.getName() + " is provided \"AS IS\", with no warranties");
 	}
 
 	public SquidAPIMod activeMod() {

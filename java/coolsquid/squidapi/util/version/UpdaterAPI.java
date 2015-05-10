@@ -11,6 +11,7 @@ import cpw.mods.fml.common.ModContainer;
 public interface UpdaterAPI {
 	public abstract void registerUpdateChecker(UpdateChecker updateChecker);
 	public abstract void registerUpdateChecker(ModContainer mod, String url);
+	public abstract void registerUpdateChecker(ModContainer mod);
 	public abstract void registerUpdateChecker(String url);
 	public abstract List<VersionContainer> getOutdatedMods();
 }

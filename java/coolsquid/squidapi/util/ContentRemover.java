@@ -93,7 +93,7 @@ public class ContentRemover {
 			furnaceRecipesToRemove.add((Item) Item.itemRegistry.getObject(name));
 		}
 
-		SquidAPI.instance().info("Removed ", type, " ", name, ".");
+		SquidAPI.instance().info("Removed " + type + ' ' + name + '.');
 	}
 
 	public enum ContentType {

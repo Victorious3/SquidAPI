@@ -87,7 +87,7 @@ public class CommandSquidAPI extends CommandBase {
 				ModEventHandler.speedy = !ModEventHandler.speedy;
 			}
 			else if (subcommand.equals("getuuid")) {
-				SquidAPI.instance().info("UUID: ", player.getGameProfile().getId().toString());
+				SquidAPI.instance().info("UUID: " + player.getGameProfile().getId().toString());
 				sender.addChatMessage(new ChatMessage("<SquidAPI> Successfully printed your UUID to the log!"));
 			}
 		}

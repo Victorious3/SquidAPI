@@ -16,7 +16,7 @@ public class ItemBase extends Item {
 
 	public ItemBase(String name) {
 		String modid = Utils.getCurrentMod().getModId();
-		SquidAPI.instance().info("Registering item ", name, " from ", modid, ".");
+		SquidAPI.instance().info("Registering item " + name + " from " + modid + '.');
 		this.setUnlocalizedName(name);
 		GameRegistry.registerItem(this, name);
 		this.setTextureName(StringUtils.newString(modid, ":", name));

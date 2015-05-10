@@ -125,9 +125,9 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 		if (!MiscLib.DEV_ENVIRONMENT && !this.getSource().getName().endsWith(".jar")) {
 			String marker = "========================================================================================";
 			this.error(marker);
-			this.error("SquidAPI has detected that the ", this.getName(), " mod file is named ", this.getSource().getName(), ".");
+			this.error("SquidAPI has detected that the " + this.getName() + " mod file is named " + this.getSource().getName() + '.');
 			this.error("As the filename is not ending in .jar, certain hooks were not loaded by FML.");
-			this.error("Please rename the file to SquidAPI-", this.getVersion() + ".jar.");
+			this.error("Please rename the file to SquidAPI-" + this.getVersion() + ".jar.");
 			this.error(marker);
 			throw new JarZipError(this.getName() + " cannot be loaded as a zip file");
 		}
@@ -189,7 +189,7 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 
 	protected final void postInit() {
 		for (Incompatibility a: this.getIncompatibilities()) {
-			this.bigWarning("Incompatibility detected! ", this.mod.getName(), " has issues with ", a.getModid(), ". Reason: ", a.getReason(), " Severity: ", a.getSeverity(), ".", MiscLib.LINE, "Please contact ", this.mod.getMetadata().getAuthorList(), " for more information.");
+			this.bigWarning("Incompatibility detected! " + this.mod.getName() + " has issues with " + a.getModid() + ". Reason: " + a.getReason() + " Severity: " + a.getSeverity() + '.' + MiscLib.LINE + "Please contact " + this.mod.getMetadata().getAuthorList() + " for more information.");
 		}
 	}
 
@@ -240,28 +240,33 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 		MiscLib.LOGGER.log(this.getName(), level, msg);
 	}
 
+	@Deprecated
 	@Override
-	public void info(Object... msg) {
+	public void info(Object[] msg) {
 		this.log(Level.INFO, msg);
 	}
 
+	@Deprecated
 	@Override
-	public void debug(Object... msg) {
+	public void debug(Object[] msg) {
 		this.log(Level.DEBUG, msg);
 	}
 
+	@Deprecated
 	@Override
-	public void warn(Object... msg) {
+	public void warn(Object[] msg) {
 		this.log(Level.WARN, msg);
 	}
 
+	@Deprecated
 	@Override
-	public void error(Object... msg) {
+	public void error(Object[] msg) {
 		this.log(Level.ERROR, msg);
 	}
 
+	@Deprecated
 	@Override
-	public void fatal(Object... msg) {
+	public void fatal(Object[] msg) {
 		this.log(Level.FATAL, msg);
 	}
 
@@ -290,11 +295,10 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 		this.log(Level.FATAL, msg);
 	}
 
-	public void bigWarning(Object... msg) {
-		String a = StringUtils.newString(msg);
-		String b = StringUtils.repeat('=', a.length());
+	public void bigWarning(String msg) {
+		String b = StringUtils.repeat('=', msg.length());
 		this.log(Level.FATAL, b);
-		for (String c: a.split(MiscLib.LINE)) {
+		for (String c: msg.split(MiscLib.LINE)) {
 			this.log(Level.FATAL, c);
 		}
 		this.log(Level.FATAL, b);
@@ -357,5 +361,30 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 		for (Object object: msg) {
 			this.fatal(object.toString());
 		}
+	}
+
+	@Override
+	public void info(Object msg) {
+		this.info(msg.toString());
+	}
+
+	@Override
+	public void debug(Object msg) {
+		this.debug(msg.toString());
+	}
+
+	@Override
+	public void warn(Object msg) {
+		this.warn(msg.toString());
+	}
+
+	@Override
+	public void error(Object msg) {
+		this.error(msg.toString());
+	}
+
+	@Override
+	public void fatal(Object msg) {
+		this.fatal(msg.toString());
 	}
 }

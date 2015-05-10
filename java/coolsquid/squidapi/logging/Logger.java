@@ -93,32 +93,36 @@ public class Logger implements ILogger {
 		}
 	}
 
-	public void log(Level level, Object... msg) {
+	public void log(Level level, Object[] msg) {
 		this.log(Utils.getCurrentMod().getName(), level, StringUtils.newString(msg));
 	}
 
+	public void log(Level level, String msg) {
+		this.log(Utils.getCurrentMod().getName(), level, msg);
+	}
+
 	@Override
-	public void info(Object... msg) {
+	public void info(Object[] msg) {
 		this.log(Level.INFO, msg);
 	}
 
 	@Override
-	public void debug(Object... msg) {
+	public void debug(Object[] msg) {
 		this.log(Level.DEBUG, msg);
 	}
 
 	@Override
-	public void warn(Object... msg) {
+	public void warn(Object[] msg) {
 		this.log(Level.WARN, msg);
 	}
 
 	@Override
-	public void error(Object... msg) {
+	public void error(Object[] msg) {
 		this.log(Level.ERROR, msg);
 	}
 
 	@Override
-	public void fatal(Object... msg) {
+	public void fatal(Object[] msg) {
 		this.log(Level.FATAL, msg);
 	}
 
@@ -180,5 +184,30 @@ public class Logger implements ILogger {
 		for (Object object: msg) {
 			this.fatal(object.toString());
 		}
+	}
+
+	@Override
+	public void info(Object msg) {
+		this.info(msg.toString());
+	}
+
+	@Override
+	public void debug(Object msg) {
+		this.debug(msg.toString());
+	}
+
+	@Override
+	public void warn(Object msg) {
+		this.warn(msg.toString());
+	}
+
+	@Override
+	public void error(Object msg) {
+		this.error(msg.toString());
+	}
+
+	@Override
+	public void fatal(Object msg) {
+		this.fatal(msg.toString());
 	}
 }

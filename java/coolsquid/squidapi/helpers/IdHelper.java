@@ -15,8 +15,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 
-import org.apache.logging.log4j.Level;
-
 import com.google.common.collect.Maps;
 
 import coolsquid.squidapi.SquidAPI;
@@ -89,7 +87,7 @@ public class IdHelper {
 
 	public static void checkBiomeId(int id) {
 		if (BiomeGenBase.getBiomeGenArray()[id] != null) {
-			SquidAPI.instance().bigWarning(Level.WARN, "Found biome id conflict!");
+			SquidAPI.instance().bigWarning("Found a biome id conflict!");
 			FMLCommonHandler.instance().exitJava(44, false);
 		}
 	}

@@ -40,7 +40,7 @@ public class ServerHelper {
 			LoadController loader = ReflectionHelper.in(Loader.instance()).field("modController", "modController").get();
 			LoaderState state = ReflectionHelper.in(loader).field("state", "state").get();
 			SquidAPI.instance().fatal(StringUtils.newString("LoaderState: ", state.toString()));
-			SquidAPI.instance().fatal("The error occured in: ", clazz, ".", method, ":", line, ".");
+			SquidAPI.instance().fatal("The error occured in: " + clazz + '.' + method + ':' + line + '.');
 			throw new NullPointerException("No existing MinecraftServer instance.");
 		}
 		return server;

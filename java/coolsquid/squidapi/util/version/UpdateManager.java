@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.SquidAPI;
+import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.Loader;
@@ -41,8 +42,7 @@ public final class UpdateManager implements Runnable, UpdaterAPI {
 	}
 
 	public void start() {
-		boolean enabled = MiscLib.CLIENT && MiscLib.SETTINGS.getBoolean("updateChecker");
-		if (enabled) {
+		if (MiscLib.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(this);
 			this.thread.start();
 		}
@@ -53,7 +53,7 @@ public final class UpdateManager implements Runnable, UpdaterAPI {
 		for (ModContainer mod: Loader.instance().getActiveModList()) {
 			if (mod.getMod() instanceof Updateable) {
 				String url = ((Updateable) mod.getMod()).getUrl();
-				if (url != null) {
+				if (url != null && (MiscLib.SETTINGS.getBoolean("updateChecker") || Compat.UPTODATE.isEnabled())) {
 					new UpdateChecker(mod, url, this).check();
 				}
 			}
@@ -65,8 +65,8 @@ public final class UpdateManager implements Runnable, UpdaterAPI {
 
 	void markAsOutdated(VersionContainer data) {
 		this.outdatedMods.add(data);
-		SquidAPI.instance().info(data.getMod().getName(), " is outdated! Version ", data.getLatestVersion(), " is available!");
-		SquidAPI.instance().info("The new version may be obtained from: ", data.getFriendlyUrl());
+		SquidAPI.instance().info(data.getMod().getName() + " is outdated! Version " + data.getLatestVersion() + " is available!");
+		SquidAPI.instance().info("The new version may be obtained from: " + data.getFriendlyUrl());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -116,6 +116,11 @@ public final class UpdateManager implements Runnable, UpdaterAPI {
 	@Override
 	public void registerUpdateChecker(ModContainer mod, String url) {
 		this.registerUpdateChecker(new UpdateChecker(mod, url, this));
+	}
+
+	@Override
+	public void registerUpdateChecker(ModContainer mod) {
+		this.registerUpdateChecker(mod, mod.getMetadata().updateUrl);
 	}
 
 	@Override

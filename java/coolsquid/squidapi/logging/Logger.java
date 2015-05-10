@@ -19,6 +19,8 @@ import coolsquid.squidapi.util.Utils;
 
 public class Logger implements ILogger {
 
+	private static final String marker = StringUtils.repeat('#', 70);
+
 	protected final File file;
 	protected final boolean usetime;
 
@@ -209,5 +211,55 @@ public class Logger implements ILogger {
 	@Override
 	public void fatal(Object msg) {
 		this.fatal(msg.toString());
+	}
+
+	@Override
+	public void info(Throwable t) {
+		this.info(marker);
+		this.info(t.toString());
+		for (StackTraceElement s: t.getStackTrace()) {
+			this.info(s.toString());
+		}
+		this.info(marker);
+	}
+
+	@Override
+	public void debug(Throwable t) {
+		this.debug(marker);
+		this.debug(t.toString());
+		for (StackTraceElement s: t.getStackTrace()) {
+			this.debug(s.toString());
+		}
+		this.debug(marker);
+	}
+
+	@Override
+	public void warn(Throwable t) {
+		this.warn(marker);
+		this.warn(t.toString());
+		for (StackTraceElement s: t.getStackTrace()) {
+			this.warn(s.toString());
+		}
+		this.warn(marker);
+	}
+
+	@Override
+	public void error(Throwable t) {
+		this.error(marker);
+		this.error(t.toString());
+		for (StackTraceElement s: t.getStackTrace()) {
+			this.error(s.toString());
+		}
+		this.error(marker);
+	}
+
+	@Override
+	public void fatal(Throwable t) {
+		this.fatal(marker);
+		this.fatal(t.toString());
+		for (StackTraceElement s: t.getStackTrace()) {
+			this.fatal(s.toString());
+		}
+		this.fatal(marker);
 	}
 }

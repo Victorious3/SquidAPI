@@ -27,4 +27,9 @@ public interface ILogger {
 	public abstract void warn(Object[] msg);
 	public abstract void error(Object[] msg);
 	public abstract void fatal(Object[] msg);
+	public abstract void info(Throwable t);
+	public abstract void debug(Throwable t);
+	public abstract void warn(Throwable t);
+	public abstract void error(Throwable t);
+	public abstract void fatal(Throwable t);
 }

@@ -20,7 +20,7 @@ import coolsquid.squidapi.exception.IncompatibilityException;
 import coolsquid.squidapi.exception.JarZipError;
 import coolsquid.squidapi.exception.MisuseException;
 import coolsquid.squidapi.helpers.ExceptionHelper;
-import coolsquid.squidapi.logging.IExtendedLogger;
+import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.mod.BaseMod;
 import coolsquid.squidapi.mod.SideOnly.ClientOnly;
 import coolsquid.squidapi.mod.SideOnly.ServerOnly;
@@ -37,7 +37,7 @@ import coolsquid.squidapi.util.version.Updateable;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModMetadata;
 
-public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger {
+public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 
 	private final Set<Incompatibility> incompatibilities = Sets.newHashSet();
 	private final int hashCode;
@@ -229,10 +229,10 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 		return this.logger;
 	}
 
-	private void log(Level level, Object... msg) {
-		String a = StringUtils.newString(msg);
-		this.logger.log(level, a);
-		MiscLib.LOGGER.log(this.getName(), level, a);
+	private void log(Level level, Object[] msg) {
+		for (Object object: msg) {
+			this.log(level, object.toString());
+		}
 	}
 
 	private void log(Level level, String msg) {
@@ -240,31 +240,26 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 		MiscLib.LOGGER.log(this.getName(), level, msg);
 	}
 
-	@Deprecated
 	@Override
 	public void info(Object[] msg) {
 		this.log(Level.INFO, msg);
 	}
 
-	@Deprecated
 	@Override
 	public void debug(Object[] msg) {
 		this.log(Level.DEBUG, msg);
 	}
 
-	@Deprecated
 	@Override
 	public void warn(Object[] msg) {
 		this.log(Level.WARN, msg);
 	}
 
-	@Deprecated
 	@Override
 	public void error(Object[] msg) {
 		this.log(Level.ERROR, msg);
 	}
 
-	@Deprecated
 	@Override
 	public void fatal(Object[] msg) {
 		this.log(Level.FATAL, msg);
@@ -311,6 +306,11 @@ public class SquidAPIMod extends BaseMod implements Updateable, IExtendedLogger 
 	@Override
 	public void info(Throwable t) {
 		this.exceptionHelper.log(Level.INFO, t);
+	}
+
+	@Override
+	public void debug(Throwable t) {
+		this.exceptionHelper.log(Level.DEBUG, t);
 	}
 
 	@Override

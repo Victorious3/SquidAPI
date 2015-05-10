@@ -7,13 +7,12 @@ package coolsquid.squidapi.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
-import coolsquid.squidapi.logging.IErrorLogger;
-import coolsquid.squidapi.logging.IExtendedLogger;
+import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.util.ModManager;
 
 public abstract class ConfigHandler {
 
-	protected IExtendedLogger logger;
+	protected ILogger logger;
 	protected Configuration config;
 
 	public ConfigHandler(File file) {
@@ -21,7 +20,7 @@ public abstract class ConfigHandler {
 		this.config = new Configuration(file);
 	}
 
-	public ConfigHandler(IErrorLogger logger, File file) {
+	public ConfigHandler(ILogger logger, File file) {
 		this.logger = ModManager.INSTANCE.activeMod();
 		this.config = new Configuration(file);
 	}

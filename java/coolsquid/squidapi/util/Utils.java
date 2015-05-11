@@ -97,25 +97,6 @@ public class Utils {
 		}
 	}
 
-	@Deprecated
-	public static String newString(Object... objects) {
-		return newString2(objects);
-	}
-
-	@Deprecated
-	public static String newString2(Object[] objects) {
-		if (objects == null || objects.length <= 0) {
-			return "";
-		}
-		StringBuilder builder = new StringBuilder();
-		for (Object object: objects) {
-			if (object != null) {
-				builder.append(object.toString());
-			}
-		}
-		return builder.toString();
-	}
-
 	public static ModContainer getCurrentMod() {
 		ModContainer mod = Loader.instance().activeModContainer();
 		if (mod == null) {
@@ -275,16 +256,7 @@ public class Utils {
 	}
 
 	public static <E> E newInstance(Class<E> clazz, Object... args) {
-		Class<?>[] args2 = new Class<?>[args.length];
-		for (int a = 0; a < args.length; a++) {
-			args2[a] = args[a].getClass();
-		}
-		try {
-			return clazz.getConstructor(args2).newInstance(args);
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return ReflectionHelper.in(clazz).newInstance(args);
 	}
 
 	public static LoadController getLoadController() {

@@ -44,6 +44,7 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 	protected final Logger logger;
 	protected final ExceptionHelper exceptionHelper;
 	protected final Timer timer;
+	private int curseId = 0;
 
 	public SquidAPIMod() {
 		this(null);
@@ -87,7 +88,7 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 
 	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String updateUrl, int curseId) {
 		this(desc, authors, credits, url, updateUrl);
-		Utils.runVersionCheckerCompat(curseId);
+		this.curseId = curseId;
 	}
 
 	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String updateUrl) {
@@ -180,7 +181,9 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 	}
 
 	protected final void preInit() {
-
+		if (this.curseId != 0) {
+			Utils.runVersionCheckerCompat(this.curseId);
+		}
 	}
 
 	protected final void init() {

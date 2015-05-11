@@ -22,7 +22,7 @@ public enum Compat {
 	SQUIDUTILS("SquidUtils", "coolsquid.squidutils.api", "2.0.0"),
 	STARSTONES("StarStones"),
 	SAFECHAT("SafeChat"),
-	UPTODATE("uptodate"),
+	UPTODATE("uptodate", "pt.uptodate.api", "1.0"),
 	FORGEUPDATER("forgeupdater"),
 	VERSIONCHECKER("VersionChecker");
 

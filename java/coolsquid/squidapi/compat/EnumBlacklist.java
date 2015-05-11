@@ -4,10 +4,13 @@
  *******************************************************************************/
 package coolsquid.squidapi.compat;
 
+import coolsquid.squidapi.SquidAPI;
+
 
 public enum EnumBlacklist {
 
 	REIKA("Reika"),
+	DRAGONAPI("DragonAPI"),
 	ROTARYCRAFT("RotaryCraft"),
 	CHROMATICRAFT("ChromatiCraft"),
 	REACTORCRAFT("ReactorCraft"),
@@ -17,9 +20,15 @@ public enum EnumBlacklist {
 
 	private EnumBlacklist(String name) {
 		this.name = name;
+		SquidAPI.instance().info("Found blacklist entry: " + this.toString());
 	}
 
 	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public String toString() {
 		return this.name;
 	}
 }

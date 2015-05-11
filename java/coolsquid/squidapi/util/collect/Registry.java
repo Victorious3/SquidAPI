@@ -56,6 +56,10 @@ public class Registry<E> extends RegistrySimple<E> {
 		return this.map.keySet();
 	}
 
+	public Map<String, E> getNameToEMap() {
+		return Maps.newHashMap(this.map);
+	}
+
 	@Override
 	@Deprecated
 	public void register(E e) {

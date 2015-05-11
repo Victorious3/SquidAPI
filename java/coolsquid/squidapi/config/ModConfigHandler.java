@@ -6,9 +6,10 @@ package coolsquid.squidapi.config;
 
 import java.io.File;
 
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.MiscLib;
 
-public class ModConfigHandler extends ConfigHandler {
+public class ModConfigHandler extends ConfigHandlerImpl {
 
 	public static final ModConfigHandler INSTANCE = new ModConfigHandler(new File("./config/SquidAPI/SquidAPI.cfg"));
 

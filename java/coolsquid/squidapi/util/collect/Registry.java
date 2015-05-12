@@ -4,8 +4,10 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.collect;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.collect.Maps;
@@ -24,8 +26,8 @@ public class Registry<E> extends RegistrySimple<E> {
 
 	protected Registry(List<E> list, Map<E, Integer> map, Map<String, E> map2, Map<E, String> map3) {
 		super(list, map);
-		this.map = map2;
-		this.map2 = map3;
+		this.map = Maps.newHashMap(map2);
+		this.map2 = Maps.newHashMap(map3);
 	}
 
 	public E get(String name) {
@@ -57,7 +59,7 @@ public class Registry<E> extends RegistrySimple<E> {
 	}
 
 	public Map<String, E> getNameToEMap() {
-		return Maps.newHashMap(this.map);
+		return Collections.unmodifiableMap(this.map);
 	}
 
 	@Override
@@ -68,25 +70,17 @@ public class Registry<E> extends RegistrySimple<E> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		if (this.map != null) {
-			result = prime * result + ((this.map == null) ? 0 : this.map.hashCode());
-			for (E e: this.map.values()) {
-				if (e != null) {
-					result = prime * result + e.hashCode();
-				}
-			}
+		return Objects.hash(super.hashCode(), this.map, this.map2);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj instanceof Registry && super.equals(obj)) {
+			Registry<?> other = (Registry<?>) obj;
+			return this.map.equals(other.map) && this.map2.equals(other.map2);
 		}
-		if (this.map2 != null) {
-			result = prime * result + ((this.map2 == null) ? 0 : this.map2.hashCode());
-			for (String e: this.map2.values()) {
-				if (e != null) {
-					result = prime * result + e.hashCode();
-				}
-			}
-		}
-		return result;
+		return false;
 	}
 
 	@Override

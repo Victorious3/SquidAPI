@@ -5,6 +5,7 @@
 package coolsquid.squidapi;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.logging.log4j.Level;
@@ -93,12 +94,7 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 
 	public SquidAPIMod(String desc, List<String> authors, String credits, String url, String updateUrl) {
 		super(Loader.instance().activeModContainer());
-
-		final byte prime = 31;
-		int result = 1;
-		result = prime * result + this.getModid().hashCode();
-		result = prime * result + this.getVersion().hashCode();
-		this.hashCode = result;
+		this.hashCode = Objects.hash(this.getModid(), this.getVersionId());
 
 		this.logger = LogManager.getLogger(this.getName());
 		this.exceptionHelper = ExceptionHelper.getInstance(this);
@@ -195,13 +191,11 @@ public class SquidAPIMod extends BaseMod implements Updateable, ILogger {
 			this.bigWarning("Incompatibility detected! " + this.mod.getName() + " has issues with " + a.getModid() + ". Reason: " + a.getReason() + " Severity: " + a.getSeverity() + '.' + MiscLib.LINE + "Please contact " + this.mod.getMetadata().getAuthorList() + " for more information.");
 		}
 	}
-
-	public long hash() {
-		return this.hashCode;
-	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof SquidAPIMod)) return false;
 		return this.hashCode() == obj.hashCode();
 	}
 

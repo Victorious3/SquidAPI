@@ -94,7 +94,7 @@ public class SquidAPI extends SquidAPIMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		this.getTimer().startTiming();
 		this.info("Preinitializing.");
-		this.info("Version id: " + this.hash() + '.');
+		this.info("Version id: " + this.hashCode() + '.');
 		this.info("File hash: " + SquidAPIPlugin.getHash() + '.');
 
 		VanillaBlockRegistry.instance();

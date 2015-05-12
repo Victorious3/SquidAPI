@@ -5,6 +5,7 @@
 package coolsquid.squidapi.recipe;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 
@@ -36,12 +37,7 @@ public class ExplosionRecipe {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((input == null) ? 0 : input.hashCode());
-		result = prime * result + ((output == null) ? 0 : output.hashCode());
-		result = prime * result + Float.floatToIntBits(strength);
-		return result;
+		return Objects.hash(input, output, strength);
 	}
 
 	@Override

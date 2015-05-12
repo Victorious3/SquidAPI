@@ -4,9 +4,15 @@
  *******************************************************************************/
 package coolsquid.squidapi.util.collect;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import javax.swing.plaf.ListUI;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -24,8 +30,8 @@ public class RegistrySimple<E> implements Iterable<E> {
 	}
 
 	protected RegistrySimple(List<E> list, Map<E, Integer> map) {
-		this.list = list;
-		this.map = map;
+		this.list = Lists.newArrayList(list);
+		this.map = Maps.newHashMap(map);
 	}
 
 	public void register(E e) {
@@ -69,7 +75,7 @@ public class RegistrySimple<E> implements Iterable<E> {
 	}
 
 	public final List<E> values() {
-		return Lists.newArrayList(this.list);
+		return Collections.unmodifiableList(list);
 	}
 
 	@Override
@@ -79,30 +85,16 @@ public class RegistrySimple<E> implements Iterable<E> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		if (this.list != null) {
-			result = prime * result + this.list.hashCode();
-			for (E e: this.list) {
-				if (e != null) {
-					result = prime * result + e.hashCode();
-				}
-			}
-		}
-		if (this.map != null) {
-			result = prime * result + ((this.map == null) ? 0 : this.map.hashCode());
-			for (Integer e: this.map.values()) {
-				if (e != null) {
-					result = prime * result + e.hashCode();
-				}
-			}
-		}
-		return result;
+		return Objects.hash(this.list, this.map);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return this.hashCode() == obj.hashCode();
+		if (this == obj) return true;
+		if (!(obj instanceof RegistrySimple<?>)) return false;
+		RegistrySimple<?> other = (RegistrySimple<?>) obj;
+		
+		return map.equals(other.map) && list.equals(other.list);
 	}
 
 	@Override
